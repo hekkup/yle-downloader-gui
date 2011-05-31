@@ -76,8 +76,10 @@ void MainWindow::reportProgress(int percentage)
 
 void MainWindow::reportUnknownProgress()
 {
-    ui->progressBar->setMaximum(0);
-    ui->progressBar->setValue(0);
+    if (ui->progressBar->maximum() > 0) {
+        ui->progressBar->setMaximum(0);
+        ui->progressBar->setValue(0);
+    }
 }
 
 void MainWindow::downloadSucceeded()
@@ -98,6 +100,8 @@ void MainWindow::downloadEnded()
 
     if (ui->progressBar->maximum() == 0) {
         ui->progressBar->setVisible(false);
+    } else {
+        ui->progressBar->setValue(100);
     }
 
     delete m_downloader;
