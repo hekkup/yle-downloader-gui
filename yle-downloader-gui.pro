@@ -8,9 +8,13 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        MainWindow.cpp
+        MainWindow.cpp \
+    Downloader.cpp \
+    ProgressParser.cpp
 
-HEADERS  += MainWindow.h
+HEADERS  += MainWindow.h \
+    Downloader.h \
+    ProgressParser.h
 
 FORMS    += MainWindow.ui
 
