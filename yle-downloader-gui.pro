@@ -19,3 +19,7 @@ HEADERS  += MainWindow.h \
 FORMS    += MainWindow.ui
 
 PKGCONFIG += json
+
+TRANSLATIONS = fi.ts
+
+RESOURCES = translations.qrc

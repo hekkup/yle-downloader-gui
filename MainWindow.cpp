@@ -65,7 +65,7 @@ void MainWindow::startDownload()
 
     m_downloader->start();
 
-    ui->statusLabel->setText("Downloading...");
+    ui->statusLabel->setText(tr("Downloading..."));
 }
 
 void MainWindow::reportProgress(int percentage)

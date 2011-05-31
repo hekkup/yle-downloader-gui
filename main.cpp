@@ -1,12 +1,17 @@
-#include <QtGui/QApplication>
+#include <QtGui>
 #include "MainWindow.h"
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+    QApplication app(argc, argv);
     QApplication::setApplicationName("yle-downloader-gui");
+
+    QTranslator translator;
+    translator.load(":/fi");
+    app.installTranslator(&translator);
+
     MainWindow w;
     w.show();
 
-    return a.exec();
+    return app.exec();
 }

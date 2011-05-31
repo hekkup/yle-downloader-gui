@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>YLE Areena -lataaja</string>
+   <string>YLE Areena downloader</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -47,14 +47,14 @@
        <item>
         <widget class="QLabel" name="urlLabel">
          <property name="text">
-          <string>Videon osoite:</string>
+          <string>Video address:</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QLineEdit" name="urlEdit">
          <property name="toolTip">
-          <string>Etsi YLE Areenasta haluamasi video ja kopioi sen osoite selaimen osoitepalkista tähän.</string>
+          <string>Find the video you want from YLE Areena and paste here the address from the browser's address bar.</string>
          </property>
         </widget>
        </item>
@@ -77,7 +77,7 @@
           <number>0</number>
          </property>
          <property name="value">
-          <number>2523</number>
+          <number>3913</number>
          </property>
         </widget>
        </item>
