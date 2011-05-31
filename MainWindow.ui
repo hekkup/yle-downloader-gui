@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>YLE Areena -lataaja</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -21,7 +21,7 @@
        <item>
         <widget class="QLabel" name="destDirLabel">
          <property name="text">
-          <string>Latauskansio:</string>
+          <string>Download folder</string>
          </property>
         </widget>
        </item>
@@ -34,7 +34,7 @@
           </size>
          </property>
          <property name="text">
-          <string>Vaihda</string>
+          <string>&amp;Select...</string>
          </property>
         </widget>
        </item>
@@ -52,7 +52,11 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="urlEdit"/>
+        <widget class="QLineEdit" name="urlEdit">
+         <property name="toolTip">
+          <string>Etsi YLE Areenasta haluamasi video ja kopioi sen osoite selaimen osoitepalkista tähän.</string>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -63,14 +67,17 @@
        <item>
         <widget class="QPushButton" name="downloadButton">
          <property name="text">
-          <string>Lataa</string>
+          <string>&amp;Download</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QProgressBar" name="progressBar">
-         <property name="value">
+         <property name="maximum">
           <number>0</number>
+         </property>
+         <property name="value">
+          <number>2523</number>
          </property>
         </widget>
        </item>
@@ -80,7 +87,7 @@
     <item>
      <widget class="QLabel" name="statusLabel">
       <property name="text">
-       <string>Tila</string>
+       <string>Status</string>
       </property>
      </widget>
     </item>

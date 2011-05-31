@@ -54,5 +54,12 @@ void Downloader::moreInputAvailable()
     std::fflush(stdout);
 
     m_progressParser.addData(buf);
-    emit downloadProgress(m_progressParser.getProgressPercentage());
+    int progress = m_progressParser.getProgress();
+    if (progress > 0) {
+        if (m_progressParser.isProgressAsPercentage()) {
+            emit downloadProgress(progress);
+        } else {
+            emit downloadUnknownProgress();
+        }
+    }
 }

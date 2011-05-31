@@ -1,7 +1,9 @@
 #include "ProgressParser.h"
 
 ProgressParser::ProgressParser()
-    : m_percentage(0)
+    : m_percentageKnown(false),
+    m_percentage(0),
+    m_indeterminateProgress(0)
 {
 }
 
@@ -11,14 +13,9 @@ void ProgressParser::addData(QByteArray buf)
     processBufferedLines();
 }
 
-int ProgressParser::getProgressPercentage()
-{
-    return m_percentage;
-}
-
 void ProgressParser::processBufferedLines()
 {
-    m_lineBuffer.replace('\r', '\n');
+    m_lineBuffer.replace('\r', '\n'); // Progress lines end in a carriage return
     QList<QByteArray> lines = m_lineBuffer.split('\n');
     m_lineBuffer = lines.last();
     lines.removeLast();
@@ -30,8 +27,29 @@ void ProgressParser::processBufferedLines()
 void ProgressParser::processLine(QString line)
 {
     line = line.trimmed();
-    QRegExp progressRegex("^.* / .* sec \\((\\d+).*%\\)$");
-    if (progressRegex.exactMatch(line)) {
-        m_percentage = progressRegex.cap(1).toInt();
+    if (!tryAsProgressLine(line)) {
+        tryAsUnknownProgressLine(line);
     }
+}
+
+bool ProgressParser::tryAsProgressLine(QString line)
+{
+    QRegExp regex("^.* / .* sec \\((\\d+).*%\\)$");
+    if (regex.exactMatch(line)) {
+        m_percentageKnown = true;
+        m_percentage = regex.cap(1).toInt();
+        return true;
+    }
+    return false;
+}
+
+bool ProgressParser::tryAsUnknownProgressLine(QString line)
+{
+    QRegExp regex("^.* / .* sec$");
+    if (regex.exactMatch(line)) {
+        m_percentageKnown = false;
+        m_indeterminateProgress += 1;
+        return true;
+    }
+    return false;
 }
