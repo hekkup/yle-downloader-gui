@@ -25,7 +25,7 @@ void Downloader::start()
     connect(m_process, SIGNAL(readyRead()), this, SLOT(moreInputAvailable()));
 
     m_process->setWorkingDirectory(m_destDir.absolutePath());
-    m_process->start("yle-dl", QStringList() << "--hashes" << m_url.toString());
+    m_process->start("yle-dl", QStringList() << m_url.toString());
 
     m_process->waitForStarted(-1);
     emit downloadStarted();
