@@ -5,6 +5,9 @@
 Downloader::Downloader(QUrl url, QDir destDir, QObject* parent)
     : QObject(parent), m_url(url), m_destDir(destDir), m_process(0)
 {
+    connect(&m_progressParser, SIGNAL(fileNameDetermined(QString)), this, SIGNAL(downloadFileCreated(QString)));
+    connect(&m_progressParser, SIGNAL(progressMade(int)), this, SIGNAL(downloadProgress(int)));
+    connect(&m_progressParser, SIGNAL(indeterminateProgressMade()), this, SIGNAL(downloadUnknownProgress()));
 }
 
 Downloader::~Downloader()
@@ -54,12 +57,4 @@ void Downloader::moreInputAvailable()
     std::fflush(stdout);
 
     m_progressParser.addData(buf);
-    int progress = m_progressParser.getProgress();
-    if (progress > 0) {
-        if (m_progressParser.isProgressAsPercentage()) {
-            emit downloadProgress(progress);
-        } else {
-            emit downloadUnknownProgress();
-        }
-    }
 }

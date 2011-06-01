@@ -3,30 +3,28 @@
 
 #include <QtCore>
 
-class ProgressParser
+class ProgressParser: public QObject
 {
+    Q_OBJECT
 public:
-    ProgressParser();
+    ProgressParser(QObject* parent = 0);
+    virtual ~ProgressParser();
 
     void addData(QByteArray buf);
-    bool isProgressAsPercentage() { return m_percentageKnown; }
-    int getProgress()
-    {
-        if (m_percentageKnown) {
-            return m_percentage;
-        } else {
-            return m_indeterminateProgress;
-        }
-    }
+
+signals:
+    void fileNameDetermined(QString fileName);
+    void progressMade(int percentage);
+    void indeterminateProgressMade();
 
 private:
-    bool m_percentageKnown;
     int m_percentage;
-    int m_indeterminateProgress;
+    bool m_gotFileName;
     QByteArray m_lineBuffer;
 
     void processBufferedLines();
     void processLine(QString line);
+    bool tryAsFileNameLineLine(QString line);
     bool tryAsProgressLine(QString line);
     bool tryAsUnknownProgressLine(QString line);
 };

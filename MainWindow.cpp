@@ -60,12 +60,18 @@ void MainWindow::startDownload()
     connect(m_downloader, SIGNAL(downloadSucceeded()), this, SLOT(downloadSucceeded()));
     connect(m_downloader, SIGNAL(downloadFailed()), this, SLOT(downloadFailed()));
 
+    connect(m_downloader, SIGNAL(downloadFileCreated(QString)), this, SLOT(reportDestFileName(QString)));
     connect(m_downloader, SIGNAL(downloadProgress(int)), this, SLOT(reportProgress(int)));
     connect(m_downloader, SIGNAL(downloadUnknownProgress()), this, SLOT(reportUnknownProgress()));
 
     m_downloader->start();
 
-    ui->statusLabel->setText(tr("Downloading..."));
+    ui->statusLabel->setText(tr("Starting download..."));
+}
+
+void MainWindow::reportDestFileName(QString name)
+{
+    ui->statusLabel->setText(tr("Downloading to file %1").arg(name));
 }
 
 void MainWindow::reportProgress(int percentage)

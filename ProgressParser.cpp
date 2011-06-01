@@ -1,9 +1,13 @@
 #include "ProgressParser.h"
 
-ProgressParser::ProgressParser()
-    : m_percentageKnown(false),
+ProgressParser::ProgressParser(QObject* parent)
+    : QObject(parent),
     m_percentage(0),
-    m_indeterminateProgress(0)
+    m_gotFileName(false)
+{
+}
+
+ProgressParser::~ProgressParser()
 {
 }
 
@@ -20,24 +24,40 @@ void ProgressParser::processBufferedLines()
     m_lineBuffer = lines.last();
     lines.removeLast();
     foreach (QByteArray line, lines) {
-        processLine(QString(line));
+        processLine(QString::fromLocal8Bit(line));
     }
 }
 
 void ProgressParser::processLine(QString line)
 {
     line = line.trimmed();
-    if (!tryAsProgressLine(line)) {
-        tryAsUnknownProgressLine(line);
+    bool done = false;
+    done = done || (!m_gotFileName && tryAsFileNameLineLine(line));
+    done = done || !tryAsProgressLine(line);
+    done = done || !tryAsUnknownProgressLine(line);
+    (void)done;
+}
+
+bool ProgressParser::tryAsFileNameLineLine(QString line)
+{
+    QRegExp regex("^INFO: Saving to (.*)$");
+    if (regex.exactMatch(line)) {
+        QString fileName = regex.cap(1);
+        emit fileNameDetermined(fileName);
+        return true;
     }
+    return false;
 }
 
 bool ProgressParser::tryAsProgressLine(QString line)
 {
     QRegExp regex("^.* / .* sec \\((\\d+).*%\\)$");
     if (regex.exactMatch(line)) {
-        m_percentageKnown = true;
-        m_percentage = regex.cap(1).toInt();
+        int newPercentage = regex.cap(1).toInt();
+        if (newPercentage > m_percentage) {
+            emit progressMade(newPercentage);
+        }
+        m_percentage = newPercentage;
         return true;
     }
     return false;
@@ -47,8 +67,7 @@ bool ProgressParser::tryAsUnknownProgressLine(QString line)
 {
     QRegExp regex("^.* / .* sec$");
     if (regex.exactMatch(line)) {
-        m_percentageKnown = false;
-        m_indeterminateProgress += 1;
+        emit indeterminateProgressMade();
         return true;
     }
     return false;

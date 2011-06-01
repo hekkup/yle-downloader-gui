@@ -22,6 +22,7 @@ private slots:
     void chooseDestDir();
 
     void startDownload();
+    void reportDestFileName(QString name);
     void reportProgress(int percentage);
     void reportUnknownProgress();
     void downloadSucceeded();

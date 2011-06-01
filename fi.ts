@@ -46,22 +46,28 @@
         <translation>Valitse lataushakemisto</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="68"/>
-        <source>Downloading...</source>
-        <translation>Ladataan...</translation>
+        <location filename="MainWindow.cpp" line="69"/>
+        <source>Starting download...</source>
+        <translation>Aloitetaan lataus...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="85"/>
+        <location filename="MainWindow.cpp" line="74"/>
+        <source>Downloading to file %1</source>
+        <oldsource>Downloading %1</oldsource>
+        <translation>Ladataan tiedostoon %1</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.cpp" line="93"/>
         <source>Download finished.</source>
         <translation>Lataus valmis.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="91"/>
+        <location filename="MainWindow.cpp" line="99"/>
         <source>Download failed.</source>
         <translation>Lataus epäonnistui.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="116"/>
+        <location filename="MainWindow.cpp" line="126"/>
         <source>Download folder: %1</source>
         <translation>Lataushakemisto: %1</translation>
     </message>

@@ -20,6 +20,7 @@ public:
 signals:
     void downloadStarted();
 
+    void downloadFileCreated(QString fileName);
     void downloadProgress(int progressPercentage);
     void downloadUnknownProgress();
 
