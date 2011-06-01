@@ -2,6 +2,8 @@
 *.qm
 
 Makefile
+Makefile.Debug
+Makefile.Release
 moc_*
 qrc_*
 ui_*

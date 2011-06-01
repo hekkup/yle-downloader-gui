@@ -1,6 +1,4 @@
 
-CONFIG   += link_pkgconfig
-
 QT       += core gui
 
 TARGET = yle-downloader-gui
@@ -17,8 +15,6 @@ HEADERS  += MainWindow.h \
     ProgressParser.h
 
 FORMS    += MainWindow.ui
-
-PKGCONFIG += json
 
 TRANSLATIONS = fi.ts
 
