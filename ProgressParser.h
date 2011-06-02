@@ -16,6 +16,7 @@ signals:
     void fileNameDetermined(QString fileName);
     void progressMade(int percentage);
     void indeterminateProgressMade();
+    void outputLineSeen(QString line);
 
 private:
     int m_percentage;

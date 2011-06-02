@@ -31,6 +31,7 @@ void ProgressParser::processBufferedLines()
 void ProgressParser::processLine(QString line)
 {
     line = line.trimmed();
+    emit outputLineSeen(line);
     bool done = false;
     done = done || (!m_gotFileName && tryAsFileNameLineLine(line));
     done = done || !tryAsProgressLine(line);

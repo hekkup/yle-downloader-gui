@@ -25,6 +25,7 @@ private slots:
     void reportDestFileName(QString name);
     void reportProgress(int percentage);
     void reportUnknownProgress();
+    void downloaderOutputWritten(QString line);
     void downloadSucceeded();
     void downloadFailed();
 

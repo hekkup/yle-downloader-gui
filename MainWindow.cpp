@@ -19,6 +19,9 @@ MainWindow::MainWindow(QWidget *parent) :
     updateDestDirLabel();
     ui->statusLabel->setText("");
     ui->progressBar->setVisible(false);
+    ui->detailsWidget->setVisible(false);
+
+    layout()->setSizeConstraint(QLayout::SetFixedSize);
 
     ui->urlEdit->setFocus(Qt::OtherFocusReason);
 
@@ -26,6 +29,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->downloadButton, SIGNAL(clicked()), this, SLOT(startDownload()));
 
     connect(ui->urlEdit, SIGNAL(returnPressed()), ui->downloadButton, SLOT(click()));
+
+    connect(ui->detailsButton, SIGNAL(toggled(bool)), ui->detailsWidget, SLOT(setVisible(bool)));
 }
 
 MainWindow::~MainWindow()
@@ -63,6 +68,7 @@ void MainWindow::startDownload()
     connect(m_downloader, SIGNAL(downloadFileCreated(QString)), this, SLOT(reportDestFileName(QString)));
     connect(m_downloader, SIGNAL(downloadProgress(int)), this, SLOT(reportProgress(int)));
     connect(m_downloader, SIGNAL(downloadUnknownProgress()), this, SLOT(reportUnknownProgress()));
+    connect(m_downloader, SIGNAL(downloaderOutputWritten(QString)), this, SLOT(downloaderOutputWritten(QString)));
 
     ui->statusLabel->setText(tr("Starting download..."));
 
@@ -86,6 +92,11 @@ void MainWindow::reportUnknownProgress()
         ui->progressBar->setMaximum(0);
         ui->progressBar->setValue(0);
     }
+}
+
+void MainWindow::downloaderOutputWritten(QString line)
+{
+    ui->detailsTextEdit->appendPlainText(line);
 }
 
 void MainWindow::downloadSucceeded()
