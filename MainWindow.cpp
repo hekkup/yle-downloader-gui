@@ -59,7 +59,8 @@ void MainWindow::startDownload()
     m_downloader = new Downloader(url, m_destDir, this);
 
     setDownloadWidgetsDisabled(true);
-    ui->progressBar->setValue(0);
+    ui->progressBar->setMaximum(0);
+    ui->progressBar->setValue(-1);
     ui->progressBar->setVisible(true);
 
     connect(m_downloader, SIGNAL(downloadSucceeded()), this, SLOT(downloadSucceeded()));
@@ -90,7 +91,7 @@ void MainWindow::reportUnknownProgress()
 {
     if (ui->progressBar->maximum() > 0) {
         ui->progressBar->setMaximum(0);
-        ui->progressBar->setValue(0);
+        ui->progressBar->setValue(-1);
     }
 }
 
