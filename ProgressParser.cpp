@@ -19,7 +19,13 @@ void ProgressParser::addData(QByteArray buf)
 
 void ProgressParser::processBufferedLines()
 {
-    m_lineBuffer.replace('\r', '\n'); // Progress lines end in a carriage return
+#ifdef Q_WS_WIN
+    // On windows, avoid double-newlines when we replace '\r'->'\n' next.
+    // If the buffer happens to end between and '\r' and an '\n',
+    // we get an extra newline, which only makes the output slightly uglier.
+    m_lineBuffer.replace("\r\n", "\n");
+#endif
+    m_lineBuffer.replace('\r', '\n'); // Progress lines end in a carriage return only
     QList<QByteArray> lines = m_lineBuffer.split('\n');
     m_lineBuffer = lines.last();
     lines.removeLast();
