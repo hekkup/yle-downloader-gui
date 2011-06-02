@@ -24,7 +24,7 @@ private slots:
     void startDownload();
     void reportDestFileName(QString name);
     void reportProgress(int percentage);
-    void reportUnknownProgress();
+    void reportUnknownProgress(double secondsDownloaded);
     void downloaderOutputWritten(QString line);
     void downloadSucceeded();
     void downloadFailed();
@@ -35,11 +35,14 @@ private:
     QSettings m_settings;
     QDir m_destDir;
     Downloader* m_downloader;
+    QString destFileName;
 
     void downloadEnded();
     void setDownloadWidgetsDisabled(bool disabled);
 
     void updateDestDirLabel();
+
+    QString formatSecondsDownloaded(double secondsDownloaded);
 };
 
 #endif // MAINWINDOW_H

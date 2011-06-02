@@ -51,30 +51,46 @@
         <translation>Valitse lataushakemisto</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="73"/>
+        <location filename="MainWindow.cpp" line="74"/>
         <source>Starting download...</source>
         <translation>Aloitetaan lataus...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="80"/>
+        <location filename="MainWindow.cpp" line="82"/>
         <source>Downloading to file %1</source>
         <oldsource>Downloading %1</oldsource>
         <translation>Ladataan tiedostoon %1</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="105"/>
+        <location filename="MainWindow.cpp" line="98"/>
+        <source>Downloading to file %1  (%2 downloaded)</source>
+        <oldsource>Downloading to file %1 (%2 downloaded)</oldsource>
+        <translation>Ladataan tiedostoon %1  (%2 ladattu)</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.cpp" line="111"/>
         <source>Download finished.</source>
         <translation>Lataus valmis.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="111"/>
+        <location filename="MainWindow.cpp" line="117"/>
         <source>Download failed.</source>
         <translation>Lataus epäonnistui.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="138"/>
+        <location filename="MainWindow.cpp" line="144"/>
         <source>Download folder: %1</source>
         <translation>Lataushakemisto: %1</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.cpp" line="153"/>
+        <source>%1 min %2 sec</source>
+        <translation>%1 min %2 s</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.cpp" line="155"/>
+        <source>%1 sec</source>
+        <translation>%1 s</translation>
     </message>
 </context>
 </TS>

@@ -7,7 +7,7 @@ Downloader::Downloader(QUrl url, QDir destDir, QObject* parent)
 {
     connect(&m_progressParser, SIGNAL(fileNameDetermined(QString)), this, SIGNAL(downloadFileCreated(QString)));
     connect(&m_progressParser, SIGNAL(progressMade(int)), this, SIGNAL(downloadProgress(int)));
-    connect(&m_progressParser, SIGNAL(indeterminateProgressMade()), this, SIGNAL(downloadUnknownProgress()));
+    connect(&m_progressParser, SIGNAL(indeterminateProgressMade(double)), this, SIGNAL(downloadUnknownProgress(double)));
     connect(&m_progressParser, SIGNAL(outputLineSeen(QString)), this, SIGNAL(downloaderOutputWritten(QString)));
 }
 

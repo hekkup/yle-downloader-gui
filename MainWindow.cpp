@@ -68,7 +68,7 @@ void MainWindow::startDownload()
 
     connect(m_downloader, SIGNAL(downloadFileCreated(QString)), this, SLOT(reportDestFileName(QString)));
     connect(m_downloader, SIGNAL(downloadProgress(int)), this, SLOT(reportProgress(int)));
-    connect(m_downloader, SIGNAL(downloadUnknownProgress()), this, SLOT(reportUnknownProgress()));
+    connect(m_downloader, SIGNAL(downloadUnknownProgress(double)), this, SLOT(reportUnknownProgress(double)));
     connect(m_downloader, SIGNAL(downloaderOutputWritten(QString)), this, SLOT(downloaderOutputWritten(QString)));
 
     ui->statusLabel->setText(tr("Starting download..."));
@@ -78,6 +78,7 @@ void MainWindow::startDownload()
 
 void MainWindow::reportDestFileName(QString name)
 {
+    destFileName = name;
     ui->statusLabel->setText(tr("Downloading to file %1").arg(name));
 }
 
@@ -87,12 +88,17 @@ void MainWindow::reportProgress(int percentage)
     ui->progressBar->setValue(percentage);
 }
 
-void MainWindow::reportUnknownProgress()
+void MainWindow::reportUnknownProgress(double secondsDownloaded)
 {
     if (ui->progressBar->maximum() > 0) {
         ui->progressBar->setMaximum(0);
         ui->progressBar->setValue(-1);
     }
+
+    QString status = tr("Downloading to file %1  (%2 downloaded)")
+            .arg(destFileName)
+            .arg(formatSecondsDownloaded(secondsDownloaded));
+    ui->statusLabel->setText(status);
 }
 
 void MainWindow::downloaderOutputWritten(QString line)
@@ -136,4 +142,16 @@ void MainWindow::setDownloadWidgetsDisabled(bool disabled)
 void MainWindow::updateDestDirLabel()
 {
     ui->destDirLabel->setText(tr("Download folder: %1").arg(m_destDir.absolutePath()));
+}
+
+QString MainWindow::formatSecondsDownloaded(double secondsDownloaded)
+{
+    int seconds = secondsDownloaded;
+    int minutes = seconds / 60;
+    seconds = seconds % 60;
+    if (minutes > 0) {
+        return tr("%1 min %2 sec").arg(minutes, 2).arg(seconds, 2);
+    } else {
+        return tr("%1 sec").arg(seconds);
+    }
 }

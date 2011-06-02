@@ -22,7 +22,7 @@ signals:
 
     void downloadFileCreated(QString fileName);
     void downloadProgress(int progressPercentage);
-    void downloadUnknownProgress();
+    void downloadUnknownProgress(double secondsDownloaded);
     void downloaderOutputWritten(QString line);
 
     void downloadSucceeded();

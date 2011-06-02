@@ -40,8 +40,8 @@ void ProgressParser::processLine(QString line)
     emit outputLineSeen(line);
     bool done = false;
     done = done || (!m_gotFileName && tryAsFileNameLineLine(line));
-    done = done || !tryAsProgressLine(line);
-    done = done || !tryAsUnknownProgressLine(line);
+    done = done || tryAsProgressLine(line);
+    done = done || tryAsUnknownProgressLine(line);
     (void)done;
 }
 
@@ -72,9 +72,10 @@ bool ProgressParser::tryAsProgressLine(QString line)
 
 bool ProgressParser::tryAsUnknownProgressLine(QString line)
 {
-    QRegExp regex("^.* / .* sec$");
+    QRegExp regex("^.* / (.*) sec$");
     if (regex.exactMatch(line)) {
-        emit indeterminateProgressMade();
+        double seconds = regex.cap(1).toDouble();
+        emit indeterminateProgressMade(seconds);
         return true;
     }
     return false;
