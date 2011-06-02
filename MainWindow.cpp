@@ -64,9 +64,9 @@ void MainWindow::startDownload()
     connect(m_downloader, SIGNAL(downloadProgress(int)), this, SLOT(reportProgress(int)));
     connect(m_downloader, SIGNAL(downloadUnknownProgress()), this, SLOT(reportUnknownProgress()));
 
-    m_downloader->start();
-
     ui->statusLabel->setText(tr("Starting download..."));
+
+    m_downloader->start();
 }
 
 void MainWindow::reportDestFileName(QString name)

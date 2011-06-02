@@ -28,11 +28,20 @@ void Downloader::start()
     connect(m_process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(processFinished(int,QProcess::ExitStatus)));
     connect(m_process, SIGNAL(readyRead()), this, SLOT(moreInputAvailable()));
 
-    m_process->setWorkingDirectory(m_destDir.absolutePath());
-    m_process->start("yle-dl", QStringList() << m_url.toString());
+    QString binary = "yle-dl";
+#ifdef Q_WS_WIN
+    binary += "-windows";
+#endif
 
-    m_process->waitForStarted(-1);
-    emit downloadStarted();
+    m_process->setWorkingDirectory(m_destDir.absolutePath());
+    m_process->start(binary, QStringList() << m_url.toString());
+
+    if (m_process->waitForStarted(-1)) {
+        emit downloadStarted();
+    } else {
+        qDebug() << m_process->errorString();
+        emit downloadFailed();
+    }
 }
 
 void Downloader::cancel()
