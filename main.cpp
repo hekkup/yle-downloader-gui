@@ -15,6 +15,7 @@ int main(int argc, char *argv[])
 #endif
 
     QApplication app(argc, argv);
+    QApplication::setOrganizationName("nobody");
     QApplication::setApplicationName("yle-downloader-gui");
 
     QTranslator translator;
