@@ -1,0 +1,11 @@
+== YLE Areena -lataaja ==
+
+Tällä ohjelmalla voi ladata ohjelmia YLE Areenasta.
+Kopioi haluamasi ohjelman osoite selaimen osoitepalkista tähän ohjelmaan.
+
+Tämä on käyttöliittymä Antti Ajangin RTMPDump-YLE-ohjelmalle [1], jota olisi muuten hankala käyttää Windowsissa.
+
+Ohjelman uusin versio sekä lähdekoodi ja linkit käytettyihin kirjastoihin yms. löytyvät ohjelman kotisivulta [2].
+
+[1] http://users.tkk.fi/~aajanki/rtmpdump-yle/index.html
+[2] https://github.com/mpartel/yle-downloader-gui

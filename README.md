@@ -25,6 +25,7 @@ A precompiled Windows package including the downloader is available on the downl
   - `QtCore4.dll`
   - `QtGui4.dll`
   - `README.md`
+  - `Tietoa Ohjelmasta.txt`
   - `yle-downloader-gui.exe`, obviously :)
 
 ## Bugs ##
