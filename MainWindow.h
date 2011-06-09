@@ -27,7 +27,10 @@ private slots:
     void reportUnknownProgress(double secondsDownloaded);
     void downloaderOutputWritten(QString line);
     void downloadSucceeded();
+    void downloadCanceled();
     void downloadFailed();
+
+    void cancelRequested();
 
 private:
     Ui::MainWindow *ui;
@@ -37,7 +40,7 @@ private:
     Downloader* m_downloader;
     QString destFileName;
 
-    void downloadEnded();
+    void downloadEnded(bool success);
     void setDownloadWidgetsDisabled(bool disabled);
 
     void updateDestDirLabel();

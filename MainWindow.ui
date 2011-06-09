@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>600</width>
-    <height>439</height>
+    <height>507</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -97,6 +97,13 @@
         <widget class="QProgressBar" name="progressBar">
          <property name="maximum">
           <number>0</number>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="cancelButton">
+         <property name="text">
+          <string>&amp;Cancel</string>
          </property>
         </widget>
        </item>

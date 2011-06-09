@@ -11,10 +11,10 @@ public:
     Downloader(QUrl url, QDir destDir, QObject* parent = 0);
     virtual ~Downloader();
 
-    void start();
-
     bool isStarted() { return m_process != 0; }
 
+public slots:
+    void start();
     void cancel();
 
 signals:
@@ -26,6 +26,7 @@ signals:
     void downloaderOutputWritten(QString line);
 
     void downloadSucceeded();
+    void downloadCanceled();
     void downloadFailed();
 
 private slots:
@@ -37,6 +38,7 @@ private:
     QDir m_destDir;
     QProcess* m_process;
     ProgressParser m_progressParser;
+    bool m_cancelRequested;
 };
 
 #endif // DOWNLOADER_H

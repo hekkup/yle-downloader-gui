@@ -18,6 +18,8 @@ int main(int argc, char *argv[])
     QApplication::setOrganizationName("nobody");
     QApplication::setApplicationName("yle-downloader-gui");
 
+    QLocale::setDefault(QLocale::Finnish);
+
     QTranslator translator;
     translator.load(":/fi");
     app.installTranslator(&translator);

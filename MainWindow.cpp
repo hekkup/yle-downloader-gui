@@ -19,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
     updateDestDirLabel();
     ui->statusLabel->setText("");
     ui->progressBar->setVisible(false);
+    ui->cancelButton->setVisible(false);
     ui->detailsWidget->setVisible(false);
 
     layout()->setSizeConstraint(QLayout::SetFixedSize);
@@ -27,6 +28,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->destDirButton, SIGNAL(clicked()), this, SLOT(chooseDestDir()));
     connect(ui->downloadButton, SIGNAL(clicked()), this, SLOT(startDownload()));
+
+    connect(ui->cancelButton, SIGNAL(clicked()), this, SLOT(cancelRequested()));
 
     connect(ui->urlEdit, SIGNAL(returnPressed()), ui->downloadButton, SLOT(click()));
 
@@ -53,6 +56,7 @@ void MainWindow::startDownload()
     QUrl url = QUrl(ui->urlEdit->text());
 
     if (m_downloader) {
+        qWarning() << "Old downloader shouldn't exist. Deleting.";
         delete m_downloader;
     }
 
@@ -62,8 +66,11 @@ void MainWindow::startDownload()
     ui->progressBar->setMaximum(0);
     ui->progressBar->setValue(-1);
     ui->progressBar->setVisible(true);
+    ui->cancelButton->setVisible(true);
+    ui->detailsTextEdit->clear();
 
     connect(m_downloader, SIGNAL(downloadSucceeded()), this, SLOT(downloadSucceeded()));
+    connect(m_downloader, SIGNAL(downloadCanceled()), this, SLOT(downloadCanceled()));
     connect(m_downloader, SIGNAL(downloadFailed()), this, SLOT(downloadFailed()));
 
     connect(m_downloader, SIGNAL(downloadFileCreated(QString)), this, SLOT(reportDestFileName(QString)));
@@ -109,24 +116,52 @@ void MainWindow::downloaderOutputWritten(QString line)
 void MainWindow::downloadSucceeded()
 {
     ui->statusLabel->setText(tr("Download finished."));
-    downloadEnded();
+    downloadEnded(true);
+}
+
+void MainWindow::downloadCanceled()
+{
+    ui->statusLabel->setText(tr("Download canceled."));
+    downloadEnded(false);
 }
 
 void MainWindow::downloadFailed()
 {
     ui->statusLabel->setText(tr("Download failed."));
-    downloadEnded();
+    downloadEnded(false);
 }
 
-void MainWindow::downloadEnded()
+void MainWindow::cancelRequested()
+{
+    if (m_downloader) {
+        QMessageBox::StandardButton choice =
+                QMessageBox::question(this,
+                                      tr("YLE downloader"),
+                                      tr("Really cancel download?"),
+                                      QMessageBox::Yes | QMessageBox::No,
+                                      QMessageBox::Yes);
+        if (choice == QMessageBox::Yes) {
+            if (m_downloader) {
+                m_downloader->cancel();
+            }
+        }
+    } else {
+        qWarning() << "Downloader didn't exist when cancel requested.";
+    }
+}
+
+void MainWindow::downloadEnded(bool success)
 {
     setDownloadWidgetsDisabled(false);
 
-    if (ui->progressBar->maximum() == 0) {
-        ui->progressBar->setVisible(false);
-    } else {
+    if (success) {
+        ui->progressBar->setMaximum(100);
         ui->progressBar->setValue(100);
+    } else {
+        ui->progressBar->setVisible(false);
     }
+
+    ui->cancelButton->setVisible(false);
 
     delete m_downloader;
     m_downloader = 0;

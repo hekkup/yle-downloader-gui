@@ -3,7 +3,7 @@
 #include <cstdio>
 
 Downloader::Downloader(QUrl url, QDir destDir, QObject* parent)
-    : QObject(parent), m_url(url), m_destDir(destDir), m_process(0)
+    : QObject(parent), m_url(url), m_destDir(destDir), m_process(0), m_cancelRequested(false)
 {
     connect(&m_progressParser, SIGNAL(fileNameDetermined(QString)), this, SIGNAL(downloadFileCreated(QString)));
     connect(&m_progressParser, SIGNAL(progressMade(int)), this, SIGNAL(downloadProgress(int)));
@@ -48,6 +48,7 @@ void Downloader::start()
 void Downloader::cancel()
 {
     Q_ASSERT(isStarted());
+    m_cancelRequested = true;
     m_process->kill();
 }
 
@@ -55,6 +56,8 @@ void Downloader::processFinished(int exitCode, QProcess::ExitStatus exitStatus)
 {
     if (exitStatus == QProcess::NormalExit && exitCode == 0) {
         emit downloadSucceeded();
+    } else if (m_cancelRequested) {
+        emit downloadCanceled();
     } else {
         emit downloadFailed();
     }

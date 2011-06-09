@@ -36,61 +36,92 @@
         <translation>&amp;Lataa</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="112"/>
+        <location filename="MainWindow.ui" line="106"/>
+        <source>&amp;Cancel</source>
+        <oldsource>Cancel</oldsource>
+        <translation>&amp;Peruuta</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.ui" line="119"/>
         <source>Status</source>
         <translation>Tila</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="125"/>
+        <location filename="MainWindow.ui" line="132"/>
         <source>&amp;Technical...</source>
         <translation>&amp;Teknistä...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="43"/>
+        <location filename="MainWindow.cpp" line="46"/>
         <source>Choose download folder</source>
         <translation>Valitse lataushakemisto</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="74"/>
+        <location filename="MainWindow.cpp" line="81"/>
         <source>Starting download...</source>
         <translation>Aloitetaan lataus...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="82"/>
+        <location filename="MainWindow.cpp" line="89"/>
         <source>Downloading to file %1</source>
         <oldsource>Downloading %1</oldsource>
         <translation>Ladataan tiedostoon %1</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="98"/>
+        <location filename="MainWindow.cpp" line="105"/>
         <source>Downloading to file %1  (%2 downloaded)</source>
         <oldsource>Downloading to file %1 (%2 downloaded)</oldsource>
         <translation>Ladataan tiedostoon %1  (%2 ladattu)</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="111"/>
+        <location filename="MainWindow.cpp" line="118"/>
         <source>Download finished.</source>
         <translation>Lataus valmis.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="117"/>
+        <location filename="MainWindow.cpp" line="124"/>
+        <source>Download canceled.</source>
+        <translation>Lataus peruutettu.</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.cpp" line="130"/>
         <source>Download failed.</source>
         <translation>Lataus epäonnistui.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="144"/>
+        <location filename="MainWindow.cpp" line="140"/>
+        <source>Really cancel download?</source>
+        <translation>Peruutetaanko lataus varmasti?</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.cpp" line="179"/>
         <source>Download folder: %1</source>
         <translation>Lataushakemisto: %1</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="153"/>
+        <location filename="MainWindow.cpp" line="188"/>
         <source>%1 min %2 sec</source>
         <translation>%1 min %2 s</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="155"/>
+        <location filename="MainWindow.cpp" line="190"/>
         <source>%1 sec</source>
         <translation>%1 s</translation>
+    </message>
+</context>
+<context>
+    <name>QDialogButtonBox</name>
+    <message>
+        <location filename="required_qt_translations.cpp" line="8"/>
+        <source>&amp;Yes</source>
+        <oldsource>Yes</oldsource>
+        <translation>&amp;Kyllä</translation>
+    </message>
+    <message>
+        <location filename="required_qt_translations.cpp" line="9"/>
+        <source>&amp;No</source>
+        <oldsource>No</oldsource>
+        <translation>&amp;Ei</translation>
     </message>
 </context>
 </TS>

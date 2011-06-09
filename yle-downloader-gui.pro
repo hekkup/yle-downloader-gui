@@ -8,7 +8,8 @@ TEMPLATE = app
 SOURCES += main.cpp\
         MainWindow.cpp \
     Downloader.cpp \
-    ProgressParser.cpp
+    ProgressParser.cpp \
+    required_qt_translations.cpp
 
 HEADERS  += MainWindow.h \
     Downloader.h \
