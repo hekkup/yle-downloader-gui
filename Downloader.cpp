@@ -1,5 +1,6 @@
 
 #include "Downloader.h"
+#include "ProcessUtils.h"
 #include <cstdio>
 
 Downloader::Downloader(QUrl url, QDir destDir, QObject* parent)
@@ -14,7 +15,7 @@ Downloader::Downloader(QUrl url, QDir destDir, QObject* parent)
 Downloader::~Downloader()
 {
     if (m_process && m_process->state() != QProcess::NotRunning) {
-        m_process->kill();
+        ProcessUtils::killProcessTree(*m_process);
         m_process->waitForFinished(5000);
     }
 }
@@ -49,7 +50,7 @@ void Downloader::cancel()
 {
     Q_ASSERT(isStarted());
     m_cancelRequested = true;
-    m_process->kill();
+    ProcessUtils::killProcessTree(*m_process);
 }
 
 void Downloader::processFinished(int exitCode, QProcess::ExitStatus exitStatus)

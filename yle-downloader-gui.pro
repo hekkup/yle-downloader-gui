@@ -9,11 +9,13 @@ SOURCES += main.cpp\
         MainWindow.cpp \
     Downloader.cpp \
     ProgressParser.cpp \
-    required_qt_translations.cpp
+    required_qt_translations.cpp \
+    ProcessUtils.cpp
 
 HEADERS  += MainWindow.h \
     Downloader.h \
-    ProgressParser.h
+    ProgressParser.h \
+    ProcessUtils.h
 
 FORMS    += MainWindow.ui
 

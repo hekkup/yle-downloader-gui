@@ -29,6 +29,5 @@ A precompiled Windows package including the downloader is available on the downl
 
 ## Bugs ##
 
-- On Windows, killing `yle-dl` on exit still leaves its subprocess `rtmpdump-yle` running.
 - On Windows, the downloader makes file names with utf-8 umlauts.
 - Any bugs the downloader may have.
