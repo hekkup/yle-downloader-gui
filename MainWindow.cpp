@@ -134,13 +134,7 @@ void MainWindow::downloadFailed()
 void MainWindow::cancelRequested()
 {
     if (m_downloader) {
-        QMessageBox::StandardButton choice =
-                QMessageBox::question(this,
-                                      tr("YLE downloader"),
-                                      tr("Really cancel download?"),
-                                      QMessageBox::Yes | QMessageBox::No,
-                                      QMessageBox::Yes);
-        if (choice == QMessageBox::Yes) {
+        if (confirmCancel()) {
             if (m_downloader) {
                 m_downloader->cancel();
             }
@@ -148,6 +142,29 @@ void MainWindow::cancelRequested()
     } else {
         qWarning() << "Downloader didn't exist when cancel requested.";
     }
+}
+
+void MainWindow::closeEvent(QCloseEvent* event)
+{
+    if (m_downloader) {
+        if (confirmCancel()) {
+            event->accept();
+        } else {
+            event->ignore();
+        }
+    }
+}
+
+bool MainWindow::confirmCancel()
+{
+    QMessageBox::StandardButton choice =
+            QMessageBox::question(this,
+                                  tr("YLE Areena downloader"),
+                                  tr("Really cancel download?"),
+                                  QMessageBox::Yes | QMessageBox::No,
+                                  QMessageBox::Yes);
+
+    return (choice == QMessageBox::Yes);
 }
 
 void MainWindow::downloadEnded(bool success)

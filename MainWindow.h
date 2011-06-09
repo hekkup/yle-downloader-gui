@@ -32,6 +32,9 @@ private slots:
 
     void cancelRequested();
 
+protected:
+    void closeEvent(QCloseEvent* event);
+
 private:
     Ui::MainWindow *ui;
 
@@ -39,6 +42,8 @@ private:
     QDir m_destDir;
     Downloader* m_downloader;
     QString destFileName;
+
+    bool confirmCancel();
 
     void downloadEnded(bool success);
     void setDownloadWidgetsDisabled(bool disabled);
