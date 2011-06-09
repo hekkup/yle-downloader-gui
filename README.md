@@ -27,6 +27,8 @@ A precompiled Windows package including the downloader is available on the downl
   - `README.md`
   - `Tietoa Ohjelmasta.txt`
   - `yle-downloader-gui.exe`, obviously :)
+- Make a zip package of the above.
+- Use [Inno Setup](http://www.jrsoftware.org/isinfo.php) to compile `installer/innosetup_installer.iss`. You may need to edit the paths at the beginning of the script to point to where you gathered the above files.
 
 ## Bugs ##
 
