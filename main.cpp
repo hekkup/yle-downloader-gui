@@ -25,6 +25,7 @@ int main(int argc, char *argv[])
     app.installTranslator(&translator);
 
     MainWindow w;
+    w.setWindowIcon(QIcon(":/icon.ico"));
     w.show();
 
     return app.exec();

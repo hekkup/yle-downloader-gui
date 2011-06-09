@@ -21,4 +21,13 @@ FORMS    += MainWindow.ui
 
 TRANSLATIONS = fi.ts
 
-RESOURCES = translations.qrc
+RESOURCES = \
+    resources.qrc
+
+RC_FILE = windows-resources.rc
+
+OTHER_FILES += \
+    windows-resources.rc \
+    README.md \
+    "Tietoa Ohjelmasta.txt"
+
