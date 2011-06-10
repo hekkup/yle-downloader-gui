@@ -216,7 +216,8 @@ void MainWindow::setDownloadWidgetsDisabled(bool disabled)
 
 void MainWindow::updateDestDirLabel()
 {
-    ui->destDirLabel->setText(tr("Download folder: %1").arg(m_destDir.absolutePath()));
+    QString folder = QDir::toNativeSeparators(m_destDir.absolutePath());
+    ui->destDirLabel->setText(tr("Download folder: %1").arg(folder));
 }
 
 QString MainWindow::formatSecondsDownloaded(double secondsDownloaded)
