@@ -1,13 +1,15 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 
+#include "config.h"
 #include "Downloader.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     m_destDir(QDir::current()),
-    m_downloader(0)
+    m_downloader(0),
+    m_updateChecker(new UpdateChecker(this))
 {
     QDir savedDir = m_settings.value("destDir", QDir::current().absolutePath()).toString();
     if (savedDir.exists()) {
@@ -16,11 +18,14 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->setupUi(this);
 
+    this->setWindowTitle(this->windowTitle() + " " + tr("(v%1)").arg(YLE_DOWNLOADER_GUI_VERSION));
+
     updateDestDirLabel();
     ui->statusLabel->setText("");
     ui->progressBar->setVisible(false);
     ui->cancelButton->setVisible(false);
     ui->detailsWidget->setVisible(false);
+    ui->updateLabel->setVisible(false);
 
     layout()->setSizeConstraint(QLayout::SetFixedSize);
 
@@ -34,6 +39,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->urlEdit, SIGNAL(returnPressed()), ui->downloadButton, SLOT(click()));
 
     connect(ui->detailsButton, SIGNAL(toggled(bool)), ui->detailsWidget, SLOT(setVisible(bool)));
+
+    connect(m_updateChecker, SIGNAL(updateAvailable(QString,QUrl)), this, SLOT(updateAvailable(QString,QUrl)));
+    connect(ui->updateLabel, SIGNAL(linkActivated(QString)), this, SLOT(openUrl(QString)));
 }
 
 MainWindow::~MainWindow()
@@ -85,7 +93,7 @@ void MainWindow::startDownload()
 
 void MainWindow::reportDestFileName(QString name)
 {
-    destFileName = name;
+    m_destFileName = name;
     ui->statusLabel->setText(tr("Downloading to file %1").arg(name));
 }
 
@@ -103,7 +111,7 @@ void MainWindow::reportUnknownProgress(double secondsDownloaded)
     }
 
     QString status = tr("Downloading to file %1  (%2 downloaded)")
-            .arg(destFileName)
+            .arg(m_destFileName)
             .arg(formatSecondsDownloaded(secondsDownloaded));
     ui->statusLabel->setText(status);
 }
@@ -129,6 +137,7 @@ void MainWindow::downloadFailed()
 {
     ui->statusLabel->setText(tr("Download failed."));
     downloadEnded(false);
+    m_updateChecker->checkForUpdate();
 }
 
 void MainWindow::cancelRequested()
@@ -142,6 +151,20 @@ void MainWindow::cancelRequested()
     } else {
         qWarning() << "Downloader didn't exist when cancel requested.";
     }
+}
+
+void MainWindow::updateAvailable(QString version, QUrl url)
+{
+    QString text = tr("An updated downloader (v%1) is available:<br/><a href=\"%2\">%2</a>")
+            .arg(version)
+            .arg(Qt::escape(url.toString()));
+    ui->updateLabel->setText(text);
+    ui->updateLabel->setVisible(true);
+}
+
+void MainWindow::openUrl(QString url)
+{
+    QDesktopServices::openUrl(QUrl(url));
 }
 
 void MainWindow::closeEvent(QCloseEvent* event)
@@ -159,7 +182,7 @@ bool MainWindow::confirmCancel()
 {
     QMessageBox::StandardButton choice =
             QMessageBox::question(this,
-                                  tr("YLE Areena downloader"),
+                                  this->windowTitle(),
                                   tr("Really cancel download?"),
                                   QMessageBox::Yes | QMessageBox::No,
                                   QMessageBox::Yes);

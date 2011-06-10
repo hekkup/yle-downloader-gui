@@ -114,11 +114,25 @@
      <widget class="QWidget" name="statusWidget" native="true">
       <layout class="QHBoxLayout" name="horizontalLayout_4">
        <item>
-        <widget class="QLabel" name="statusLabel">
-         <property name="text">
-          <string>Status</string>
-         </property>
-        </widget>
+        <layout class="QVBoxLayout" name="statusLabelsLayout">
+         <item>
+          <widget class="QLabel" name="statusLabel">
+           <property name="text">
+            <string>Status</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="updateLabel">
+           <property name="text">
+            <string>Checking for updates...</string>
+           </property>
+           <property name="textFormat">
+            <enum>Qt::RichText</enum>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item>
         <widget class="QPushButton" name="detailsButton">

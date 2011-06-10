@@ -3,6 +3,7 @@
 
 #include <QtCore>
 #include <QtGui>
+#include "UpdateChecker.h"
 
 class Downloader;
 
@@ -32,6 +33,10 @@ private slots:
 
     void cancelRequested();
 
+    void updateAvailable(QString version, QUrl url);
+
+    void openUrl(QString url);
+
 protected:
     void closeEvent(QCloseEvent* event);
 
@@ -41,7 +46,8 @@ private:
     QSettings m_settings;
     QDir m_destDir;
     Downloader* m_downloader;
-    QString destFileName;
+    QString m_destFileName;
+    UpdateChecker* m_updateChecker;
 
     bool confirmCancel();
 

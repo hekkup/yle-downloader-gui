@@ -1,5 +1,5 @@
 
-QT       += core gui
+QT       += core gui network xml
 
 TARGET = yle-downloader-gui
 TEMPLATE = app
@@ -10,12 +10,15 @@ SOURCES += main.cpp\
     Downloader.cpp \
     ProgressParser.cpp \
     required_qt_translations.cpp \
-    ProcessUtils.cpp
+    ProcessUtils.cpp \
+    UpdateChecker.cpp
 
 HEADERS  += MainWindow.h \
     Downloader.h \
     ProgressParser.h \
-    ProcessUtils.h
+    ProcessUtils.h \
+    UpdateChecker.h \
+    config.h
 
 FORMS    += MainWindow.ui
 
@@ -29,5 +32,5 @@ RC_FILE = windows-resources.rc
 OTHER_FILES += \
     windows-resources.rc \
     README.md \
-    "Tietoa Ohjelmasta.txt"
-
+    "Tietoa Ohjelmasta.txt" \
+    update.xml
