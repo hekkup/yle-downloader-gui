@@ -1,5 +1,7 @@
 # YLE Areena downloader GUI #
 
+http://mpartel.github.com/yle-downloader-gui/
+
 https://github.com/mpartel/rtmpdump-yle-windows
 
 This is a GUI for [RTMPDump-YLE](http://users.tkk.fi/~aajanki/rtmpdump-yle/index-en.html), a modified rtmpdump program by Antti Ajanki for downloading clips from [YLE Areena](http://areena.yle.fi/).
