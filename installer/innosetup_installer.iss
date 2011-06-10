@@ -1,11 +1,12 @@
 ﻿
-; Change this to wherever you put the files to be packaged.
 ; See README.md for build and packaging instructions.
-; Also change the version below when bumping.
-#define DeploymentDir "C:\dev\deployments\yle-downloader-gui-windows-0.2"
+
+; Make sure this matches the version number in config.h:
+#define MyAppVersion "1.0"
+; Point this to wherever you gathered the distribution files:
+#define DeploymentDir "C:\dev\deployments\yle-downloader-gui-windows-" + MyAppVersion
 
 #define MyAppName "YLE Areena -lataaja"
-#define MyAppVersion "0.2"
 #define MyAppURL "https://github.com/mpartel/yle-downloader-gui"
 #define MyAppExeName "yle-downloader-gui.exe"
 
@@ -16,14 +17,14 @@
 AppId={{5CDFB502-2DDD-488F-A22A-0EB27AD4C4BA}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
-;AppVerName={#MyAppName} {#MyAppVersion}
+AppVerName={#MyAppName} {#MyAppVersion}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 InfoBeforeFile={#DeploymentDir}\Tietoa Ohjelmasta.txt
-OutputBaseFilename=setup
+OutputBaseFilename=setup-yle-downloader-gui-{#MyAppVersion}
 Compression=lzma
 SolidCompression=yes
 SetupIconFile=..\icon.ico
