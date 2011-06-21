@@ -57,6 +57,8 @@ private:
     void updateDestDirLabel();
 
     QString formatSecondsDownloaded(double secondsDownloaded);
+
+    static QDir defaultDestDir();
 };
 
 #endif // MAINWINDOW_H

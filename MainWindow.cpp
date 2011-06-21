@@ -7,11 +7,11 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    m_destDir(QDir::current()),
+    m_destDir(defaultDestDir()),
     m_downloader(0),
     m_updateChecker(new UpdateChecker(this))
 {
-    QDir savedDir = m_settings.value("destDir", QDir::current().absolutePath()).toString();
+    QDir savedDir = m_settings.value("destDir", m_destDir.absolutePath()).toString();
     if (savedDir.exists()) {
         m_destDir = savedDir;
     }
@@ -230,4 +230,25 @@ QString MainWindow::formatSecondsDownloaded(double secondsDownloaded)
     } else {
         return tr("%1 sec").arg(seconds);
     }
+}
+
+QDir MainWindow::defaultDestDir()
+{
+    QDir dir = QDir::home();
+    QStringList dlDirs = QStringList();
+    dlDirs += "Downloads";
+    dlDirs += "Download";
+    dlDirs += tr("Downloads");
+    dlDirs += tr("Download");
+    dlDirs += "downloads";
+    dlDirs += "download";
+    dlDirs += tr("downloads");
+    dlDirs += tr("download");
+    dlDirs += "Desktop";
+    foreach (QString dlDir, dlDirs) {
+        if (dir.cd(dlDir)) {
+            break;
+        }
+    }
+    return dir;
 }

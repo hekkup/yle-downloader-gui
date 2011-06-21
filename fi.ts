@@ -109,19 +109,39 @@
         <translation>Peruutetaanko lataus varmasti?</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="219"/>
+        <location filename="MainWindow.cpp" line="220"/>
         <source>Download folder: %1</source>
         <translation>Lataushakemisto: %1</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="228"/>
+        <location filename="MainWindow.cpp" line="229"/>
         <source>%1 min %2 sec</source>
         <translation>%1 min %2 s</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="230"/>
+        <location filename="MainWindow.cpp" line="231"/>
         <source>%1 sec</source>
         <translation>%1 s</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.cpp" line="243"/>
+        <source>Downloads</source>
+        <translation>Lataukset</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.cpp" line="244"/>
+        <source>Download</source>
+        <translation>Lataus</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.cpp" line="245"/>
+        <source>downloads</source>
+        <translation>lataukset</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.cpp" line="246"/>
+        <source>download</source>
+        <translation>lataus</translation>
     </message>
 </context>
 <context>
