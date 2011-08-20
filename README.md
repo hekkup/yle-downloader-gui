@@ -11,7 +11,7 @@ A precompiled Windows package including the downloader is available on the downl
 
 ## Compiling ##
 
-- `lrelease`
+- `lrelease fi.ts`
 - `qmake`
 - `make`
 
