@@ -39,3 +39,8 @@ A precompiled Windows package including the downloader is available on the downl
 
 - On Windows, the downloader makes file names with utf-8 umlauts.
 - Any bugs the downloader may have.
+
+## Thanks ##
+
+- Antti Ajanki for yle-dl
+- [Jesse Jaara](https://github.com/Huulivoide) for a better icon and suggestions.
