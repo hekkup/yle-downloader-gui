@@ -28,7 +28,7 @@ InfoBeforeFile={#DeploymentDir}\Tietoa ohjelmasta.txt
 OutputBaseFilename=setup-yle-downloader-gui-{#MyAppVersion}
 Compression=lzma
 SolidCompression=yes
-SetupIconFile=..\icon.ico
+SetupIconFile=..\icons\icon.ico
 
 [Languages]
 Name: "finnish"; MessagesFile: "compiler:Languages\Finnish.isl"
