@@ -52,8 +52,8 @@ void UpdateChecker::replyFinished(QNetworkReply* reply)
 
 bool UpdateChecker::isNewerVersion(QString remoteVersion)
 {
-    QStringList parts = QString(YLE_DOWNLOADER_GUI_VERSION).split('.');
-    QStringList remoteParts = remoteVersion.split('.');
+    QStringList parts = QString(cleanVersionNum(YLE_DOWNLOADER_GUI_VERSION)).split('.');
+    QStringList remoteParts = cleanVersionNum(remoteVersion).split('.');
 
     for (int i = 0; i < parts.length(); ++i) {
         if (i < remoteParts.size()) {
@@ -70,4 +70,9 @@ bool UpdateChecker::isNewerVersion(QString remoteVersion)
     }
 
     return false;
+}
+
+QString UpdateChecker::cleanVersionNum(QString version)
+{
+    return version.replace(QRegExp("[^0123456789.]"), "");
 }

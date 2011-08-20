@@ -23,6 +23,7 @@ private:
     QNetworkAccessManager* m_nam;
 
     bool isNewerVersion(QString remoteVersion);
+    QString cleanVersionNum(QString version);
 };
 
 #endif // UPDATECHECKER_H
