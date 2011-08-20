@@ -8,4 +8,4 @@ Tämä on käyttöliittymä Antti Ajangin RTMPDump-YLE-ohjelmalle [1], jota olisi muu
 Ohjelman uusin versio sekä lähdekoodi ja linkit käytettyihin kirjastoihin yms. löytyvät ohjelman kotisivulta [2].
 
 [1] http://users.tkk.fi/~aajanki/rtmpdump-yle/index.html
-[2] https://github.com/mpartel/yle-downloader-gui
+[2] http://mpartel.github.com/yle-downloader-gui/

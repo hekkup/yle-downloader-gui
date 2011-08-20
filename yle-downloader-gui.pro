@@ -32,5 +32,5 @@ RC_FILE = windows-resources.rc
 OTHER_FILES += \
     windows-resources.rc \
     README.md \
-    "Tietoa Ohjelmasta.txt" \
+    "Tietoa ohjelmasta.txt" \
     update.xml

@@ -18,7 +18,7 @@ A precompiled Windows package including the downloader is available on the downl
 ## Packaging for Windows ##
 
 - Use the [build script](https://github.com/mpartel/rtmpdump-yle-windows) to compile rtmpdump-yle for Windows.
-- Include the following in the distribution directory:
+- Put the following in the distribution directory:
     - The directory `rtmpdump-yle-windows-x.y.z` compiled by the build script.
     - DLLs from the MinGW shipping with the Qt SDK
         - `libgcc_s_dw2-1.dll`
@@ -30,7 +30,7 @@ A precompiled Windows package including the downloader is available on the downl
         - `QtNetwork4.dll`
         - `QtXml4.dll`
     - `README.md`
-    - `Tietoa Ohjelmasta.txt`
+    - `Tietoa ohjelmasta.txt`
     - `yle-downloader-gui.exe`, obviously :)
 - Make a zip package of the above.
 - Use [Inno Setup](http://www.jrsoftware.org/isinfo.php) to compile `installer/innosetup_installer.iss`. You may need to edit the paths at the beginning of the script to point to where you gathered the above files.
