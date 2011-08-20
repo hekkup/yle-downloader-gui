@@ -44,3 +44,8 @@ A precompiled Windows package including the downloader is available on the downl
 
 - Antti Ajanki for yle-dl
 - [Jesse Jaara](https://github.com/Huulivoide) for a better icon and suggestions.
+
+## License ##
+
+Public Domain, but note that yle-dl is under GPLv2, so treat this as GPL'ed too if you like. I don't really care :-)
+
