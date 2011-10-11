@@ -48,9 +48,9 @@ A precompiled Windows package including the downloader is available on the downl
 ## Version history ##
 
 - 1.1 (2011-10-11)
-  * Updated rtmpdump-yle to 1.4.4, which fixed El‰v‰ Arkisto and YleX on Windows.
-  * Passed the `--vfat` switch on Windows.
-  * Non-ascii characters in file names work now.
+    * Updated rtmpdump-yle to 1.4.4, which fixed El√§v√§ Arkisto and YleX on Windows.
+    * Passed the `--vfat` switch on Windows.
+    * Non-ascii characters in file names work now.
 
 ## License ##
 
