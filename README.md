@@ -50,7 +50,6 @@ A precompiled Windows package including the downloader is available on the downl
 - 1.1 (2011-10-11)
     * Updated rtmpdump-yle to 1.4.4, which fixed Elävä Arkisto and YleX on Windows.
     * Passed the `--vfat` switch on Windows.
-    * Non-ascii characters in file names work now.
 
 ## License ##
 
