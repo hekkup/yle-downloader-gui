@@ -35,8 +35,14 @@ void Downloader::start()
     binary += "-windows";
 #endif
 
+    QStringList arguments;
+#ifdef Q_WS_WIN
+    arguments << "--vfat";
+#endif
+    arguments << m_url.toString();
+
     m_process->setWorkingDirectory(m_destDir.absolutePath());
-    m_process->start(binary, QStringList() << m_url.toString());
+    m_process->start(binary, arguments);
 
     if (m_process->waitForStarted(-1)) {
         emit downloadStarted();

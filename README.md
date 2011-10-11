@@ -2,7 +2,7 @@
 
 http://mpartel.github.com/yle-downloader-gui/
 
-This is a GUI for [RTMPDump-YLE](http://users.tkk.fi/~aajanki/rtmpdump-yle/index-en.html), a modified rtmpdump program by Antti Ajanki for downloading clips from [YLE Areena](http://areena.yle.fi/).
+This is a GUI for [RTMPDump-YLE](http://users.tkk.fi/~aajanki/rtmpdump-yle/index.html), a modified rtmpdump program by Antti Ajanki for downloading clips from [YLE Areena](http://areena.yle.fi/).
 
 The GUI is written in C++/[Qt](http://qt.nokia.com/) using [QtCreator](http://qt.nokia.com/products/developer-tools/) and currently requires rtmpdump-yle to be installed.
 
@@ -34,7 +34,6 @@ A precompiled Windows package including the downloader is available on the downl
     - `yle-downloader-gui.exe`, obviously :)
 - Make a zip package of the above.
 - Use [Inno Setup](http://www.jrsoftware.org/isinfo.php) to compile `installer/innosetup_installer.iss`. You may need to edit the paths at the beginning of the script to point to where you gathered the above files.
-- (todo: UPX compression?)
 
 ## Bugs ##
 
@@ -45,6 +44,13 @@ A precompiled Windows package including the downloader is available on the downl
 
 - Antti Ajanki for yle-dl
 - [Jesse Jaara](https://github.com/Huulivoide) for a better icon and suggestions.
+
+## Version history ##
+
+- 1.1 (2011-10-11)
+  * Updated rtmpdump-yle to 1.4.4, which fixed Elävä Arkisto and YleX on Windows.
+  * Passed the `--vfat` switch on Windows.
+  * Non-ascii characters in file names work now.
 
 ## License ##
 
