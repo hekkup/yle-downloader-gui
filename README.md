@@ -47,6 +47,9 @@ A precompiled Windows package including the downloader is available on the downl
 
 ## Version history ##
 
+- 1.2 (2011-12-05)
+    * Updated rtmpdump-yle to 1.4.6, which fixed some Areena downloads.
+
 - 1.1 (2011-10-11)
     * Updated rtmpdump-yle to 1.4.4, which fixed Elävä Arkisto and YleX on Windows.
     * Passed the `--vfat` switch on Windows.
