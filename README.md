@@ -8,6 +8,7 @@ The GUI is written in C++/[Qt](http://qt.nokia.com/) using [QtCreator](http://qt
 
 A precompiled Windows package including the downloader is available on the download page.
 
+Now with support for YLE-passi
 
 ## Compiling ##
 
