@@ -26,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->cancelButton->setVisible(false);
     ui->detailsWidget->setVisible(false);
     ui->updateLabel->setVisible(false);
+    ui->ylePassiWidget->setVisible(false);
 
     layout()->setSizeConstraint(QLayout::SetFixedSize);
 
@@ -43,8 +44,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_updateChecker, SIGNAL(updateAvailable(QString,QUrl)), this, SLOT(updateAvailable(QString,QUrl)));
     connect(ui->updateLabel, SIGNAL(linkActivated(QString)), this, SLOT(openUrl(QString)));
 
-
-    connect(ui->ylePassiCookie, SIGNAL(editingFinished()), this, SLOT(setYleCookie()));
 }
 
 MainWindow::~MainWindow()
@@ -83,11 +82,13 @@ void MainWindow::startDownload()
     connect(m_downloader, SIGNAL(downloadSucceeded()), this, SLOT(downloadSucceeded()));
     connect(m_downloader, SIGNAL(downloadCanceled()), this, SLOT(downloadCanceled()));
     connect(m_downloader, SIGNAL(downloadFailed()), this, SLOT(downloadFailed()));
+    connect(m_downloader, SIGNAL(downloadNeedsYlePassi()), this, SLOT(downloadNeedsYlePassi()));
 
     connect(m_downloader, SIGNAL(downloadFileCreated(QString)), this, SLOT(reportDestFileName(QString)));
     connect(m_downloader, SIGNAL(downloadProgress(int)), this, SLOT(reportProgress(int)));
     connect(m_downloader, SIGNAL(downloadUnknownProgress(double)), this, SLOT(reportUnknownProgress(double)));
     connect(m_downloader, SIGNAL(downloaderOutputWritten(QString)), this, SLOT(downloaderOutputWritten(QString)));
+
 
     ui->statusLabel->setText(tr("Starting download..."));
 
@@ -122,6 +123,7 @@ void MainWindow::reportUnknownProgress(double secondsDownloaded)
 void MainWindow::downloaderOutputWritten(QString line)
 {
     ui->detailsTextEdit->appendPlainText(line);
+
 }
 
 void MainWindow::downloadSucceeded()
@@ -256,6 +258,42 @@ QDir MainWindow::defaultDestDir()
     return dir;
 }
 
-void MainWindow::setYleCookie(){
-    m_passi = ui->ylePassiCookie->text();
+void MainWindow::downloadNeedsYlePassi(){
+
+    qDebug()<<"PLEASE LOGIN";
+    ui->ylePassiWidget->setVisible(true);
+    ui->statusLabel->setText(tr("Login to YLE Passi."));
+
+}
+
+void MainWindow::ylePassiLogonCompleted() {
+    QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
+
+    QByteArray data = reply->readAll();
+    if(reply->hasRawHeader("Set-Cookie")){
+        QString cookie(reply->rawHeader("Set-Cookie"));
+        int from = cookie.indexOf("=")+1;
+        cookie = cookie.mid(from, cookie.indexOf(";")-from);
+        m_passi = cookie;
+        ui->ylePassiWidget->setVisible(false);
+    } else {
+        ui->ylePassiWidget->setVisible(true);
+    }
+    reply->deleteLater();
+}
+
+void MainWindow::on_yleLoginButton_clicked()
+{
+    QUrl postData;
+    postData.addQueryItem("username", ui->ylePassiUsername->text());
+    postData.addQueryItem("password", ui->ylePassiPassword->text());
+
+
+    QNetworkRequest request;
+    request.setUrl(QUrl("https://login.yle.fi/login/index.php"));
+
+    m_networkManager = new QNetworkAccessManager(this);
+    QNetworkReply *reply = m_networkManager->post(request,postData.encodedQuery());
+
+    connect(reply, SIGNAL(finished()), this, SLOT(ylePassiLogonCompleted()));
 }

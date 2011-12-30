@@ -10,6 +10,8 @@ Downloader::Downloader(QUrl url, QDir destDir, QString ylePassi, QObject* parent
     connect(&m_progressParser, SIGNAL(progressMade(int)), this, SIGNAL(downloadProgress(int)));
     connect(&m_progressParser, SIGNAL(indeterminateProgressMade(double)), this, SIGNAL(downloadUnknownProgress(double)));
     connect(&m_progressParser, SIGNAL(outputLineSeen(QString)), this, SIGNAL(downloaderOutputWritten(QString)));
+    connect(&m_progressParser, SIGNAL(downloadNeedsYlePassi()), this,SIGNAL(downloadNeedsYlePassi()));
+
 }
 
 Downloader::~Downloader()
@@ -58,6 +60,7 @@ void Downloader::start()
         emit downloadFailed();
     }
 }
+
 
 void Downloader::cancel()
 {

@@ -17,6 +17,7 @@ signals:
     void progressMade(int percentage);
     void indeterminateProgressMade(double secondsDownloaded);
     void outputLineSeen(QString line);
+    void downloadNeedsYlePassi();
 
 private:
     int m_percentage;
@@ -28,6 +29,8 @@ private:
     bool tryAsFileNameLineLine(QString line);
     bool tryAsProgressLine(QString line);
     bool tryAsUnknownProgressLine(QString line);
+    bool tryAsErrorLine(QString line);
+
 };
 
 #endif // PROGRESSPARSER_H

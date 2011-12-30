@@ -3,6 +3,8 @@
 
 #include <QtCore>
 #include <QtGui>
+#include <QtWebKit/QtWebKit>
+#include <QHttp>
 #include "UpdateChecker.h"
 
 class Downloader;
@@ -30,13 +32,16 @@ private slots:
     void downloadSucceeded();
     void downloadCanceled();
     void downloadFailed();
+    void downloadNeedsYlePassi();
 
     void cancelRequested();
 
     void updateAvailable(QString version, QUrl url);
 
     void openUrl(QString url);
-    void setYleCookie();
+
+    void on_yleLoginButton_clicked();
+    void ylePassiLogonCompleted();
 
 protected:
     void closeEvent(QCloseEvent* event);
@@ -59,7 +64,7 @@ private:
     void updateDestDirLabel();
 
     QString formatSecondsDownloaded(double secondsDownloaded);
-
+    QNetworkAccessManager *m_networkManager;
     static QDir defaultDestDir();
 };
 

@@ -28,6 +28,7 @@ signals:
     void downloadSucceeded();
     void downloadCanceled();
     void downloadFailed();
+    void downloadNeedsYlePassi();
 
 private slots:
     void processFinished(int exitCode, QProcess::ExitStatus exitStatus);
@@ -40,6 +41,7 @@ private:
     ProgressParser m_progressParser;
     bool m_cancelRequested;
     QString m_passi;
+
 };
 
 #endif // DOWNLOADER_H

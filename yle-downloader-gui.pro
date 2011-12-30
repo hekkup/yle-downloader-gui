@@ -1,5 +1,5 @@
 
-QT       += core gui network xml
+QT       += core gui network xml webkit
 
 TARGET = yle-downloader-gui
 TEMPLATE = app
