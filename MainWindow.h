@@ -36,6 +36,7 @@ private slots:
     void updateAvailable(QString version, QUrl url);
 
     void openUrl(QString url);
+    void setYleCookie();
 
 protected:
     void closeEvent(QCloseEvent* event);
@@ -48,6 +49,7 @@ private:
     Downloader* m_downloader;
     QString m_destFileName;
     UpdateChecker* m_updateChecker;
+    QString m_passi;
 
     bool confirmCancel();
 

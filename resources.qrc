@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>fi.qm</file>
         <file>icons/icon.ico</file>
+        <file>fi.ts</file>
     </qresource>
 </RCC>

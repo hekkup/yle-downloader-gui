@@ -42,6 +42,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(m_updateChecker, SIGNAL(updateAvailable(QString,QUrl)), this, SLOT(updateAvailable(QString,QUrl)));
     connect(ui->updateLabel, SIGNAL(linkActivated(QString)), this, SLOT(openUrl(QString)));
+
+
+    connect(ui->ylePassiCookie, SIGNAL(editingFinished()), this, SLOT(setYleCookie()));
 }
 
 MainWindow::~MainWindow()
@@ -68,7 +71,7 @@ void MainWindow::startDownload()
         delete m_downloader;
     }
 
-    m_downloader = new Downloader(url, m_destDir, this);
+    m_downloader = new Downloader(url, m_destDir, m_passi, this);
 
     setDownloadWidgetsDisabled(true);
     ui->progressBar->setMaximum(0);
@@ -251,4 +254,8 @@ QDir MainWindow::defaultDestDir()
         }
     }
     return dir;
+}
+
+void MainWindow::setYleCookie(){
+    m_passi = ui->ylePassiCookie->text();
 }

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>600</width>
-    <height>507</height>
+    <height>518</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -79,6 +79,22 @@
           <string>Find the video you want from YLE Areena and paste here the address from the browser's address bar.</string>
          </property>
         </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QWidget" name="ylePassiWidget" native="true">
+      <layout class="QHBoxLayout" name="ylePassi">
+       <item>
+        <widget class="QLabel" name="ylePassiLabel">
+         <property name="text">
+          <string>YLE passi cookie</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="ylePassiCookie"/>
        </item>
       </layout>
      </widget>

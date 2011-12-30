@@ -8,7 +8,7 @@ class Downloader: public QObject
 {
     Q_OBJECT
 public:
-    Downloader(QUrl url, QDir destDir, QObject* parent = 0);
+    Downloader(QUrl url, QDir destDir, QString ylePassi, QObject* parent = 0);
     virtual ~Downloader();
 
     bool isStarted() { return m_process != 0; }
@@ -39,6 +39,7 @@ private:
     QProcess* m_process;
     ProgressParser m_progressParser;
     bool m_cancelRequested;
+    QString m_passi;
 };
 
 #endif // DOWNLOADER_H

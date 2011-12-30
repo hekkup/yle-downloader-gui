@@ -3,8 +3,8 @@
 #include "ProcessUtils.h"
 #include <cstdio>
 
-Downloader::Downloader(QUrl url, QDir destDir, QObject* parent)
-    : QObject(parent), m_url(url), m_destDir(destDir), m_process(0), m_cancelRequested(false)
+Downloader::Downloader(QUrl url, QDir destDir, QString ylePassi, QObject* parent)
+    : QObject(parent), m_url(url), m_destDir(destDir), m_passi(ylePassi), m_process(0), m_cancelRequested(false)
 {
     connect(&m_progressParser, SIGNAL(fileNameDetermined(QString)), this, SIGNAL(downloadFileCreated(QString)));
     connect(&m_progressParser, SIGNAL(progressMade(int)), this, SIGNAL(downloadProgress(int)));
@@ -40,6 +40,13 @@ void Downloader::start()
     arguments << "--vfat";
 #endif
     arguments << m_url.toString();
+
+
+    // add YLE passi cookie if exists
+    if (!m_passi.isEmpty()){
+        arguments << "--ylePassi";
+        arguments << m_passi;
+    }
 
     m_process->setWorkingDirectory(m_destDir.absolutePath());
     m_process->start(binary, arguments);
