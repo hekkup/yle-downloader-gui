@@ -54,18 +54,22 @@ bool UpdateChecker::isNewerVersion(QString remoteVersion)
 {
     QStringList parts = QString(cleanVersionNum(YLE_DOWNLOADER_GUI_VERSION)).split('.');
     QStringList remoteParts = cleanVersionNum(remoteVersion).split('.');
+    int partCount = qMax(parts.length(), remoteParts.length());
 
-    for (int i = 0; i < parts.length(); ++i) {
-        if (i < remoteParts.size()) {
-            int local = parts.at(i).toInt();
-            int remote = remoteParts.at(i).toInt();
-            if (local < remote) {
-                return true;
-            } else if (local > remote) {
-                return false;
-            }
-        } else {
-            break;
+    for (int i = 0; i < partCount; ++i) {
+        if (i == parts.size()) {
+            parts.append("0");
+        }
+        if (i == remoteParts.size()) {
+            remoteParts.append("0");
+        }
+
+        int local = parts.at(i).toInt();
+        int remote = remoteParts.at(i).toInt();
+        if (local < remote) {
+            return true;
+        } else if (local > remote) {
+            return false;
         }
     }
 
