@@ -49,10 +49,11 @@ private:
 
     QSettings m_settings;
     QDir m_destDir;
-    Downloader* m_downloader; // may be null
     QString m_destFileName;
     UpdateChecker* m_updateChecker;
-    YlePassi* m_ylePassi; // may be null
+    YlePassi* m_ylePassi; // initially null
+    Downloader* m_downloader; // initially null
+    bool m_downloadInProgress;
 
     bool confirmCancel();
 

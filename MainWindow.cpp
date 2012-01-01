@@ -10,9 +10,10 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     m_destDir(defaultDestDir()),
-    m_downloader(0),
     m_updateChecker(new UpdateChecker(this)),
-    m_ylePassi(0)
+    m_ylePassi(0),
+    m_downloader(0),
+    m_downloadInProgress(false)
 {
     QDir savedDir = m_settings.value("destDir", m_destDir.absolutePath()).toString();
     if (savedDir.exists()) {
@@ -64,17 +65,18 @@ void MainWindow::chooseDestDir()
 
 void MainWindow::startDownload()
 {
-    if (m_downloader) {
-        qWarning() << "Old downloader shouldn't exist. Deleting.";
-        m_downloader->deleteLater();
-        m_downloader = 0;
-    }
-
     startDownload(QString());
 }
 
 void MainWindow::startDownload(QString ylePassiCookie)
 {
+    Q_ASSERT(!m_downloadInProgress);
+
+    if (m_downloader) {
+        m_downloader->deleteLater();
+        m_downloader = 0;
+    }
+
     QUrl url = QUrl(ui->urlEdit->text());
     m_downloader = new Downloader(url, m_destDir, ylePassiCookie, this);
 
@@ -97,6 +99,7 @@ void MainWindow::startDownload(QString ylePassiCookie)
 
     ui->statusLabel->setText(tr("Starting download..."));
 
+    m_downloadInProgress = true;
     m_downloader->start();
 }
 
@@ -177,9 +180,9 @@ void MainWindow::ylePassiLoginFailed()
 
 void MainWindow::cancelRequested()
 {
-    if (m_downloader) {
+    if (m_downloadInProgress) {
         if (confirmCancel()) {
-            if (m_downloader) {
+            if (m_downloadInProgress) {
                 m_downloader->cancel();
             }
         }
@@ -204,7 +207,7 @@ void MainWindow::openUrl(QString url)
 
 void MainWindow::closeEvent(QCloseEvent* event)
 {
-    if (m_downloader) {
+    if (m_downloadInProgress) {
         if (confirmCancel()) {
             event->accept();
         } else {
@@ -227,6 +230,8 @@ bool MainWindow::confirmCancel()
 
 void MainWindow::downloadEnded(bool success)
 {
+    m_downloadInProgress = false;
+
     setDownloadWidgetsDisabled(false);
 
     if (success) {
@@ -237,11 +242,6 @@ void MainWindow::downloadEnded(bool success)
     }
 
     ui->cancelButton->setVisible(false);
-
-    if (m_downloader) {
-        m_downloader->deleteLater();
-        m_downloader = 0;
-    }
 }
 
 void MainWindow::setDownloadWidgetsDisabled(bool disabled)
