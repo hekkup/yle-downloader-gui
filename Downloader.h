@@ -8,7 +8,7 @@ class Downloader: public QObject
 {
     Q_OBJECT
 public:
-    Downloader(QUrl url, QDir destDir, QString ylePassi, QObject* parent = 0);
+    Downloader(QUrl url, QDir destDir, QString ylePassiCookie = QString(), QObject* parent = 0);
     virtual ~Downloader();
 
     bool isStarted() { return m_process != 0; }

@@ -3,13 +3,16 @@
 
 #include "config.h"
 #include "Downloader.h"
+#include "YlePassi.h"
+#include "YlePassiDialog.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     m_destDir(defaultDestDir()),
     m_downloader(0),
-    m_updateChecker(new UpdateChecker(this))
+    m_updateChecker(new UpdateChecker(this)),
+    m_ylePassi(0)
 {
     QDir savedDir = m_settings.value("destDir", m_destDir.absolutePath()).toString();
     if (savedDir.exists()) {
@@ -26,7 +29,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->cancelButton->setVisible(false);
     ui->detailsWidget->setVisible(false);
     ui->updateLabel->setVisible(false);
-    ui->ylePassiWidget->setVisible(false);
 
     layout()->setSizeConstraint(QLayout::SetFixedSize);
 
@@ -62,14 +64,19 @@ void MainWindow::chooseDestDir()
 
 void MainWindow::startDownload()
 {
-    QUrl url = QUrl(ui->urlEdit->text());
-
     if (m_downloader) {
         qWarning() << "Old downloader shouldn't exist. Deleting.";
-        delete m_downloader;
+        m_downloader->deleteLater();
+        m_downloader = 0;
     }
 
-    m_downloader = new Downloader(url, m_destDir, m_ylePassiCookie, this);
+    startDownload(QString());
+}
+
+void MainWindow::startDownload(QString ylePassiCookie)
+{
+    QUrl url = QUrl(ui->urlEdit->text());
+    m_downloader = new Downloader(url, m_destDir, ylePassiCookie, this);
 
     setDownloadWidgetsDisabled(true);
     ui->progressBar->setMaximum(0);
@@ -121,7 +128,6 @@ void MainWindow::reportUnknownProgress(double secondsDownloaded)
 void MainWindow::downloaderOutputWritten(QString line)
 {
     ui->detailsTextEdit->appendPlainText(line);
-
 }
 
 void MainWindow::downloadSucceeded()
@@ -141,6 +147,32 @@ void MainWindow::downloadFailed()
     ui->statusLabel->setText(tr("Download failed."));
     downloadEnded(false);
     m_updateChecker->checkForUpdate();
+}
+
+void MainWindow::downloadNeedsYlePassi()
+{
+    YlePassiDialog* dialog = new YlePassiDialog(this);
+    if (dialog->exec() == QDialog::Accepted) {
+        if (m_ylePassi) {
+            delete m_ylePassi;
+        }
+        m_ylePassi = new YlePassi(dialog->username(), dialog->password(), this);
+        connect(m_ylePassi, SIGNAL(loginSuccessful(QString)), this, SLOT(startDownload(QString)));
+        connect(m_ylePassi, SIGNAL(loginFailed()), this, SLOT(ylePassiLoginFailed()));
+        m_ylePassi->startLoggingIn();
+    } else {
+        downloadEnded(false);
+    }
+    dialog->deleteLater();
+}
+
+void MainWindow::ylePassiLoginFailed()
+{
+    QMessageBox* msgBox = new QMessageBox(this);
+    msgBox->setText(tr("Username or password incorrect."));
+    msgBox->exec();
+    downloadEnded(false);
+    msgBox->deleteLater();
 }
 
 void MainWindow::cancelRequested()
@@ -206,8 +238,10 @@ void MainWindow::downloadEnded(bool success)
 
     ui->cancelButton->setVisible(false);
 
-    delete m_downloader;
-    m_downloader = 0;
+    if (m_downloader) {
+        m_downloader->deleteLater();
+        m_downloader = 0;
+    }
 }
 
 void MainWindow::setDownloadWidgetsDisabled(bool disabled)
@@ -254,42 +288,4 @@ QDir MainWindow::defaultDestDir()
         }
     }
     return dir;
-}
-
-void MainWindow::downloadNeedsYlePassi()
-{
-    ui->ylePassiWidget->setVisible(true);
-    ui->statusLabel->setText(tr("Login to YLE Passi."));
-}
-
-void MainWindow::ylePassiLogonCompleted()
-{
-    QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
-
-    reply->readAll();
-    if(reply->hasRawHeader("Set-Cookie")){
-        QString cookie(reply->rawHeader("Set-Cookie"));
-        int from = cookie.indexOf("=") + 1;
-        cookie = cookie.mid(from, cookie.indexOf(";") - from);
-        m_ylePassiCookie = cookie;
-        ui->ylePassiWidget->setVisible(false);
-    } else {
-        ui->ylePassiWidget->setVisible(true);
-    }
-    reply->deleteLater();
-}
-
-void MainWindow::on_yleLoginButton_clicked()
-{
-    QUrl postData;
-    postData.addQueryItem("username", ui->ylePassiUsername->text());
-    postData.addQueryItem("password", ui->ylePassiPassword->text());
-
-    QNetworkRequest request;
-    request.setUrl(QUrl("https://login.yle.fi/login/index.php"));
-
-    m_networkManager = new QNetworkAccessManager(this);
-    QNetworkReply *reply = m_networkManager->post(request, postData.encodedQuery());
-
-    connect(reply, SIGNAL(finished()), this, SLOT(ylePassiLogonCompleted()));
 }

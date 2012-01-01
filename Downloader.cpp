@@ -3,8 +3,8 @@
 #include "ProcessUtils.h"
 #include <cstdio>
 
-Downloader::Downloader(QUrl url, QDir destDir, QString ylePassi, QObject* parent)
-    : QObject(parent), m_url(url), m_destDir(destDir), m_ylePassiCookie(ylePassi), m_process(0), m_cancelRequested(false)
+Downloader::Downloader(QUrl url, QDir destDir, QString ylePassiCookie, QObject* parent)
+    : QObject(parent), m_url(url), m_destDir(destDir), m_ylePassiCookie(ylePassiCookie), m_process(0), m_cancelRequested(false)
 {
     connect(&m_progressParser, SIGNAL(fileNameDetermined(QString)), this, SIGNAL(downloadFileCreated(QString)));
     connect(&m_progressParser, SIGNAL(progressMade(int)), this, SIGNAL(downloadProgress(int)));

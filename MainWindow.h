@@ -3,8 +3,8 @@
 
 #include <QtCore>
 #include <QtGui>
-#include <QHttp>
 #include "UpdateChecker.h"
+#include "YlePassi.h"
 
 class Downloader;
 
@@ -12,7 +12,7 @@ namespace Ui {
     class MainWindow;
 }
 
-class MainWindow : public QMainWindow
+class MainWindow: public QMainWindow
 {
     Q_OBJECT
 
@@ -24,6 +24,7 @@ private slots:
     void chooseDestDir();
 
     void startDownload();
+    void startDownload(QString ylePassiCookie);
     void reportDestFileName(QString name);
     void reportProgress(int percentage);
     void reportUnknownProgress(double secondsDownloaded);
@@ -32,15 +33,13 @@ private slots:
     void downloadCanceled();
     void downloadFailed();
     void downloadNeedsYlePassi();
+    void ylePassiLoginFailed();
 
     void cancelRequested();
 
     void updateAvailable(QString version, QUrl url);
 
     void openUrl(QString url);
-
-    void on_yleLoginButton_clicked();
-    void ylePassiLogonCompleted();
 
 protected:
     void closeEvent(QCloseEvent* event);
@@ -50,10 +49,10 @@ private:
 
     QSettings m_settings;
     QDir m_destDir;
-    Downloader* m_downloader;
+    Downloader* m_downloader; // may be null
     QString m_destFileName;
     UpdateChecker* m_updateChecker;
-    QString m_ylePassiCookie;
+    YlePassi* m_ylePassi; // may be null
 
     bool confirmCancel();
 
