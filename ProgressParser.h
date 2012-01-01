@@ -29,7 +29,7 @@ private:
     bool tryAsFileNameLineLine(QString line);
     bool tryAsProgressLine(QString line);
     bool tryAsUnknownProgressLine(QString line);
-    bool tryAsErrorLine(QString line);
+    bool tryAsYlePassiErrorLine(QString line);
 
 };
 

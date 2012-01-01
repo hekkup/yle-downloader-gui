@@ -42,7 +42,7 @@ void ProgressParser::processLine(QString line)
     done = done || (!m_gotFileName && tryAsFileNameLineLine(line));
     done = done || tryAsProgressLine(line);
     done = done || tryAsUnknownProgressLine(line);
-    done = done || tryAsErrorLine(line);
+    done = done || tryAsYlePassiErrorLine(line);
     (void)done;
 }
 
@@ -82,10 +82,10 @@ bool ProgressParser::tryAsUnknownProgressLine(QString line)
     return false;
 }
 
-bool ProgressParser::tryAsErrorLine(QString line){
-
+bool ProgressParser::tryAsYlePassiErrorLine(QString line)
+{
     QRegExp regex("^ERROR: This stream requires YLE Passi");
-    if(regex.exactMatch(line)){
+    if (regex.exactMatch(line)) {
         emit downloadNeedsYlePassi();
         return true;
     }

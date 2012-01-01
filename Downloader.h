@@ -37,10 +37,10 @@ private slots:
 private:
     QUrl m_url;
     QDir m_destDir;
+    QString m_ylePassiCookie;
     QProcess* m_process;
     ProgressParser m_progressParser;
     bool m_cancelRequested;
-    QString m_passi;
 
 };
 

@@ -3,7 +3,6 @@
 
 #include <QtCore>
 #include <QtGui>
-#include <QtWebKit/QtWebKit>
 #include <QHttp>
 #include "UpdateChecker.h"
 
@@ -54,7 +53,7 @@ private:
     Downloader* m_downloader;
     QString m_destFileName;
     UpdateChecker* m_updateChecker;
-    QString m_passi;
+    QString m_ylePassiCookie;
 
     bool confirmCancel();
 

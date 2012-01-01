@@ -4,14 +4,13 @@
 #include <cstdio>
 
 Downloader::Downloader(QUrl url, QDir destDir, QString ylePassi, QObject* parent)
-    : QObject(parent), m_url(url), m_destDir(destDir), m_passi(ylePassi), m_process(0), m_cancelRequested(false)
+    : QObject(parent), m_url(url), m_destDir(destDir), m_ylePassiCookie(ylePassi), m_process(0), m_cancelRequested(false)
 {
     connect(&m_progressParser, SIGNAL(fileNameDetermined(QString)), this, SIGNAL(downloadFileCreated(QString)));
     connect(&m_progressParser, SIGNAL(progressMade(int)), this, SIGNAL(downloadProgress(int)));
     connect(&m_progressParser, SIGNAL(indeterminateProgressMade(double)), this, SIGNAL(downloadUnknownProgress(double)));
     connect(&m_progressParser, SIGNAL(outputLineSeen(QString)), this, SIGNAL(downloaderOutputWritten(QString)));
-    connect(&m_progressParser, SIGNAL(downloadNeedsYlePassi()), this,SIGNAL(downloadNeedsYlePassi()));
-
+    connect(&m_progressParser, SIGNAL(downloadNeedsYlePassi()), this, SIGNAL(downloadNeedsYlePassi()));
 }
 
 Downloader::~Downloader()
@@ -44,10 +43,9 @@ void Downloader::start()
     arguments << m_url.toString();
 
 
-    // add YLE passi cookie if exists
-    if (!m_passi.isEmpty()){
+    if (!m_ylePassiCookie.isEmpty()) {
         arguments << "--ylePassi";
-        arguments << m_passi;
+        arguments << m_ylePassiCookie;
     }
 
     m_process->setWorkingDirectory(m_destDir.absolutePath());
