@@ -8,8 +8,6 @@ The GUI is written in C++/[Qt](http://qt.nokia.com/) using [QtCreator](http://qt
 
 A precompiled Windows package including the downloader is available on the download page.
 
-Now with support for YLE-passi
-
 ## Compiling ##
 
 - `lrelease yle-downloader-gui.pro`
@@ -45,8 +43,12 @@ Now with support for YLE-passi
 
 - Antti Ajanki for yle-dl
 - [Jesse Jaara](https://github.com/Huulivoide) for a better icon and suggestions.
+- [Tomas Strand](https://github.com/straend) for YLE Passi support.
 
 ## Version history ##
+
+- 1.3 (2012-01-02)
+    * Added support for YLE Passi.
 
 - 1.2 (2011-12-05)
     * Updated rtmpdump-yle to 1.4.6, which fixed some Areena downloads.
