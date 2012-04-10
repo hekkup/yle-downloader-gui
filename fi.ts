@@ -72,74 +72,72 @@
         <translation>Aloitetaan lataus...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="99"/>
-        <source>Downloading to file %1</source>
-        <oldsource>Downloading %1</oldsource>
-        <translation>Ladataan tiedostoon %1</translation>
+        <location filename="MainWindow.cpp" line="101"/>
+        <source>Downloading...</source>
+        <translation>Ladataan...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="115"/>
-        <source>Downloading to file %1  (%2 downloaded)</source>
-        <oldsource>Downloading to file %1 (%2 downloaded)</oldsource>
-        <translation>Ladataan tiedostoon %1  (%2 ladattu)</translation>
+        <location filename="MainWindow.cpp" line="111"/>
+        <source>Downloading (%1 downloaded)</source>
+        <translation>Ladataan (%1 ladattu)</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="128"/>
+        <location filename="MainWindow.cpp" line="123"/>
         <source>Download finished.</source>
         <translation>Lataus valmis.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="134"/>
+        <location filename="MainWindow.cpp" line="129"/>
         <source>Download canceled.</source>
         <translation>Lataus peruutettu.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="140"/>
+        <location filename="MainWindow.cpp" line="135"/>
         <source>Download failed.</source>
         <translation>Lataus epäonnistui.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="160"/>
+        <location filename="MainWindow.cpp" line="155"/>
         <source>An updated downloader (v%1) is available:&lt;br/&gt;&lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;</source>
         <translation>Ohjelmasta on uudempi versio (%1):&lt;br/&gt;&lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="188"/>
+        <location filename="MainWindow.cpp" line="183"/>
         <source>Really cancel download?</source>
         <translation>Peruutetaanko lataus varmasti?</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="221"/>
+        <location filename="MainWindow.cpp" line="216"/>
         <source>Download folder: %1</source>
         <translation>Lataushakemisto: %1</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="230"/>
+        <location filename="MainWindow.cpp" line="225"/>
         <source>%1 min %2 sec</source>
         <translation>%1 min %2 s</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="232"/>
+        <location filename="MainWindow.cpp" line="227"/>
         <source>%1 sec</source>
         <translation>%1 s</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="242"/>
+        <location filename="MainWindow.cpp" line="237"/>
         <source>Downloads</source>
         <translation>Lataukset</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="243"/>
+        <location filename="MainWindow.cpp" line="238"/>
         <source>Download</source>
         <translation>Lataus</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="246"/>
+        <location filename="MainWindow.cpp" line="241"/>
         <source>downloads</source>
         <translation>lataukset</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="247"/>
+        <location filename="MainWindow.cpp" line="242"/>
         <source>download</source>
         <translation>lataus</translation>
     </message>

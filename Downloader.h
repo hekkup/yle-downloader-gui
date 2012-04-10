@@ -20,7 +20,6 @@ public slots:
 signals:
     void downloadStarted();
 
-    void downloadFileCreated(QString fileName);
     void downloadProgress(int progressPercentage);
     void downloadUnknownProgress(double secondsDownloaded);
     void downloaderOutputWritten(QString line);

@@ -30,14 +30,13 @@ A precompiled Windows package including the downloader is available on the downl
         - `QtXml4.dll`
     - `README.md`
     - `Tietoa ohjelmasta.txt`
-    - `yle-downloader-gui.exe`, obviously :)
+    - `yle-downloader-gui.exe`
 - Make a zip package of the above.
 - Use [Inno Setup](http://www.jrsoftware.org/isinfo.php) to compile `installer/innosetup_installer.iss`. You may need to edit the paths at the beginning of the script to point to where you gathered the above files.
 
-## Bugs ##
+## Known issues ##
 
-- On Windows, the downloader makes file names with utf-8 umlauts.
-- Any bugs the downloader may have.
+- On windows, trying to download a file that already exists, yle-dl crashes to an encoding error while printing a log message.
 
 ## Thanks ##
 
@@ -46,6 +45,9 @@ A precompiled Windows package including the downloader is available on the downl
 - [Tomas Strand](https://github.com/straend) for YLE Passi support.
 
 ## Version history ##
+
+- 1.99 (2012-04-10)
+    * Support for Areena Beta.
 
 - 1.3 (2012-01-02)
     * Added support for YLE Passi.

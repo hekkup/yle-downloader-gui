@@ -1,5 +1,6 @@
 #include <QtGui>
 #include "MainWindow.h"
+#include "config.h"
 
 #ifdef Q_WS_WIN
 #include <Windows.h>
@@ -9,7 +10,7 @@ int main(int argc, char *argv[])
 {
 #ifdef Q_WS_WIN
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-    QString toolDir = QDir::current().absoluteFilePath("rtmpdump-yle-windows-1.4.6").replace('/', '\\');
+    QString toolDir = QDir::current().absoluteFilePath(WINDOWS_YLE_DL_DIR).replace('/', '\\');
     QString newPath = toolDir + ";" + env.value("PATH");
     ::SetEnvironmentVariableA("PATH", newPath.toLocal8Bit());
 #endif

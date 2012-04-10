@@ -13,14 +13,12 @@ public:
     void addData(QByteArray buf);
 
 signals:
-    void fileNameDetermined(QString fileName);
     void progressMade(int percentage);
     void indeterminateProgressMade(double secondsDownloaded);
     void outputLineSeen(QString line);
 
 private:
     int m_percentage;
-    bool m_gotFileName;
     QByteArray m_lineBuffer;
 
     void processBufferedLines();

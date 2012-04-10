@@ -1,12 +1,12 @@
 
 #include "Downloader.h"
 #include "ProcessUtils.h"
+#include "config.h"
 #include <cstdio>
 
 Downloader::Downloader(QUrl url, QDir destDir, QObject* parent)
     : QObject(parent), m_url(url), m_destDir(destDir), m_process(0), m_cancelRequested(false)
 {
-    connect(&m_progressParser, SIGNAL(fileNameDetermined(QString)), this, SIGNAL(downloadFileCreated(QString)));
     connect(&m_progressParser, SIGNAL(progressMade(int)), this, SIGNAL(downloadProgress(int)));
     connect(&m_progressParser, SIGNAL(indeterminateProgressMade(double)), this, SIGNAL(downloadUnknownProgress(double)));
     connect(&m_progressParser, SIGNAL(outputLineSeen(QString)), this, SIGNAL(downloaderOutputWritten(QString)));
@@ -31,15 +31,21 @@ void Downloader::start()
     connect(m_process, SIGNAL(readyRead()), this, SLOT(moreInputAvailable()));
 
     QString binary = "yle-dl";
-#ifdef Q_WS_WIN
-    binary += "-windows";
-#endif
 
     QStringList arguments;
 #ifdef Q_WS_WIN
     arguments << "--vfat";
 #endif
     arguments << m_url.toString();
+
+#ifdef Q_WS_WIN
+    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+    QDir pluginDir = QDir::current();
+    pluginDir.cd(WINDOWS_YLE_DL_DIR);
+    pluginDir.cd("rtmpdump-plugins");
+    env.insert("RTMPDUMP_PLUGINDIR", pluginDir.absolutePath());
+    m_process->setProcessEnvironment(env);
+#endif
 
     m_process->setWorkingDirectory(m_destDir.absolutePath());
     m_process->start(binary, arguments);
