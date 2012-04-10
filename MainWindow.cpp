@@ -3,15 +3,12 @@
 
 #include "config.h"
 #include "Downloader.h"
-#include "YlePassi.h"
-#include "YlePassiDialog.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     m_destDir(defaultDestDir()),
     m_updateChecker(new UpdateChecker(this)),
-    m_ylePassi(0),
     m_downloader(0),
     m_downloadInProgress(false)
 {
@@ -65,11 +62,6 @@ void MainWindow::chooseDestDir()
 
 void MainWindow::startDownload()
 {
-    startDownload(QString());
-}
-
-void MainWindow::startDownload(QString ylePassiCookie)
-{
     Q_ASSERT(!m_downloadInProgress);
 
     if (m_downloader) {
@@ -78,7 +70,7 @@ void MainWindow::startDownload(QString ylePassiCookie)
     }
 
     QUrl url = QUrl(ui->urlEdit->text());
-    m_downloader = new Downloader(url, m_destDir, ylePassiCookie, this);
+    m_downloader = new Downloader(url, m_destDir, this);
 
     setDownloadWidgetsDisabled(true);
     ui->progressBar->setMaximum(0);
@@ -90,7 +82,6 @@ void MainWindow::startDownload(QString ylePassiCookie)
     connect(m_downloader, SIGNAL(downloadSucceeded()), this, SLOT(downloadSucceeded()));
     connect(m_downloader, SIGNAL(downloadCanceled()), this, SLOT(downloadCanceled()));
     connect(m_downloader, SIGNAL(downloadFailed()), this, SLOT(downloadFailed()));
-    connect(m_downloader, SIGNAL(downloadNeedsYlePassi()), this, SLOT(downloadNeedsYlePassi()));
 
     connect(m_downloader, SIGNAL(downloadFileCreated(QString)), this, SLOT(reportDestFileName(QString)));
     connect(m_downloader, SIGNAL(downloadProgress(int)), this, SLOT(reportProgress(int)));
@@ -150,32 +141,6 @@ void MainWindow::downloadFailed()
     ui->statusLabel->setText(tr("Download failed."));
     downloadEnded(false);
     m_updateChecker->checkForUpdate();
-}
-
-void MainWindow::downloadNeedsYlePassi()
-{
-    YlePassiDialog* dialog = new YlePassiDialog(this);
-    if (dialog->exec() == QDialog::Accepted) {
-        if (m_ylePassi) {
-            delete m_ylePassi;
-        }
-        m_ylePassi = new YlePassi(dialog->username(), dialog->password(), this);
-        connect(m_ylePassi, SIGNAL(loginSuccessful(QString)), this, SLOT(startDownload(QString)));
-        connect(m_ylePassi, SIGNAL(loginFailed()), this, SLOT(ylePassiLoginFailed()));
-        m_ylePassi->startLoggingIn();
-    } else {
-        downloadEnded(false);
-    }
-    dialog->deleteLater();
-}
-
-void MainWindow::ylePassiLoginFailed()
-{
-    QMessageBox* msgBox = new QMessageBox(this);
-    msgBox->setText(tr("Username or password incorrect."));
-    msgBox->exec();
-    downloadEnded(false);
-    msgBox->deleteLater();
 }
 
 void MainWindow::cancelRequested()

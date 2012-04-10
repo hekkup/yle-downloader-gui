@@ -4,7 +4,6 @@
 #include <QtCore>
 #include <QtGui>
 #include "UpdateChecker.h"
-#include "YlePassi.h"
 
 class Downloader;
 
@@ -24,7 +23,6 @@ private slots:
     void chooseDestDir();
 
     void startDownload();
-    void startDownload(QString ylePassiCookie);
     void reportDestFileName(QString name);
     void reportProgress(int percentage);
     void reportUnknownProgress(double secondsDownloaded);
@@ -32,8 +30,6 @@ private slots:
     void downloadSucceeded();
     void downloadCanceled();
     void downloadFailed();
-    void downloadNeedsYlePassi();
-    void ylePassiLoginFailed();
 
     void cancelRequested();
 
@@ -51,7 +47,6 @@ private:
     QDir m_destDir;
     QString m_destFileName;
     UpdateChecker* m_updateChecker;
-    YlePassi* m_ylePassi; // initially null
     Downloader* m_downloader; // initially null
     bool m_downloadInProgress;
 

@@ -11,21 +11,16 @@ SOURCES += main.cpp\
     ProgressParser.cpp \
     required_qt_translations.cpp \
     ProcessUtils.cpp \
-    UpdateChecker.cpp \
-    YlePassi.cpp \
-    YlePassiDialog.cpp
+    UpdateChecker.cpp
 
 HEADERS  += MainWindow.h \
     Downloader.h \
     ProgressParser.h \
     ProcessUtils.h \
     UpdateChecker.h \
-    config.h \
-    YlePassi.h \
-    YlePassiDialog.h
+    config.h
 
-FORMS    += MainWindow.ui \
-    YlePassiDialog.ui
+FORMS    += MainWindow.ui
 
 TRANSLATIONS = fi.ts
 

@@ -8,7 +8,7 @@ class Downloader: public QObject
 {
     Q_OBJECT
 public:
-    Downloader(QUrl url, QDir destDir, QString ylePassiCookie = QString(), QObject* parent = 0);
+    Downloader(QUrl url, QDir destDir, QObject* parent = 0);
     virtual ~Downloader();
 
     bool isStarted() { return m_process != 0; }
@@ -28,7 +28,6 @@ signals:
     void downloadSucceeded();
     void downloadCanceled();
     void downloadFailed();
-    void downloadNeedsYlePassi();
 
 private slots:
     void processFinished(int exitCode, QProcess::ExitStatus exitStatus);
@@ -37,7 +36,6 @@ private slots:
 private:
     QUrl m_url;
     QDir m_destDir;
-    QString m_ylePassiCookie;
     QProcess* m_process;
     ProgressParser m_progressParser;
     bool m_cancelRequested;

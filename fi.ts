@@ -57,94 +57,89 @@
         <translation>&amp;Teknistä...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="24"/>
+        <location filename="MainWindow.cpp" line="22"/>
         <source>(v%1)</source>
         <translation>(v%1)</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="57"/>
+        <location filename="MainWindow.cpp" line="55"/>
         <source>Choose download folder</source>
         <translation>Valitse lataushakemisto</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="98"/>
+        <location filename="MainWindow.cpp" line="90"/>
         <source>Starting download...</source>
         <translation>Aloitetaan lataus...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="106"/>
+        <location filename="MainWindow.cpp" line="99"/>
         <source>Downloading to file %1</source>
         <oldsource>Downloading %1</oldsource>
         <translation>Ladataan tiedostoon %1</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="122"/>
+        <location filename="MainWindow.cpp" line="115"/>
         <source>Downloading to file %1  (%2 downloaded)</source>
         <oldsource>Downloading to file %1 (%2 downloaded)</oldsource>
         <translation>Ladataan tiedostoon %1  (%2 ladattu)</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="135"/>
+        <location filename="MainWindow.cpp" line="128"/>
         <source>Download finished.</source>
         <translation>Lataus valmis.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="141"/>
+        <location filename="MainWindow.cpp" line="134"/>
         <source>Download canceled.</source>
         <translation>Lataus peruutettu.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="147"/>
+        <location filename="MainWindow.cpp" line="140"/>
         <source>Download failed.</source>
         <translation>Lataus epäonnistui.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="172"/>
-        <source>Username or password incorrect.</source>
-        <translation>Käyttäjätunnus tai salasana väärin.</translation>
-    </message>
-    <message>
-        <location filename="MainWindow.cpp" line="193"/>
+        <location filename="MainWindow.cpp" line="160"/>
         <source>An updated downloader (v%1) is available:&lt;br/&gt;&lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;</source>
         <translation>Ohjelmasta on uudempi versio (%1):&lt;br/&gt;&lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="221"/>
+        <location filename="MainWindow.cpp" line="188"/>
         <source>Really cancel download?</source>
         <translation>Peruutetaanko lataus varmasti?</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="257"/>
+        <location filename="MainWindow.cpp" line="221"/>
         <source>Download folder: %1</source>
         <translation>Lataushakemisto: %1</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="266"/>
+        <location filename="MainWindow.cpp" line="230"/>
         <source>%1 min %2 sec</source>
         <translation>%1 min %2 s</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="268"/>
+        <location filename="MainWindow.cpp" line="232"/>
         <source>%1 sec</source>
         <translation>%1 s</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="278"/>
+        <location filename="MainWindow.cpp" line="242"/>
         <source>Downloads</source>
         <translation>Lataukset</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="279"/>
+        <location filename="MainWindow.cpp" line="243"/>
         <source>Download</source>
         <translation>Lataus</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="282"/>
+        <location filename="MainWindow.cpp" line="246"/>
         <source>downloads</source>
         <translation>lataukset</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="283"/>
+        <location filename="MainWindow.cpp" line="247"/>
         <source>download</source>
         <translation>lataus</translation>
     </message>
@@ -182,30 +177,6 @@
         <location filename="required_qt_translations.cpp" line="13"/>
         <source>Cancel</source>
         <translation>Peruuta</translation>
-    </message>
-</context>
-<context>
-    <name>YlePassiDialog</name>
-    <message>
-        <location filename="YlePassiDialog.ui" line="14"/>
-        <source>YLE Passi</source>
-        <translation>YLE Passi</translation>
-    </message>
-    <message>
-        <location filename="YlePassiDialog.ui" line="27"/>
-        <source>YLE Passi required</source>
-        <oldsource>Please log in to YLE Passi</oldsource>
-        <translation>Kirjaudu YLE Passilla</translation>
-    </message>
-    <message>
-        <location filename="YlePassiDialog.ui" line="40"/>
-        <source>Username</source>
-        <translation>Käyttäjätunnus</translation>
-    </message>
-    <message>
-        <location filename="YlePassiDialog.ui" line="50"/>
-        <source>Password</source>
-        <translation>Salasana</translation>
     </message>
 </context>
 </TS>
