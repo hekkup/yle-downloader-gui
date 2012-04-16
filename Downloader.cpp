@@ -31,23 +31,27 @@ void Downloader::start()
     connect(m_process, SIGNAL(readyRead()), this, SLOT(moreInputAvailable()));
 
     QString binary = "yle-dl";
-
     QStringList arguments;
-#ifdef Q_WS_WIN
-    arguments << "--vfat";
-#endif
-    arguments << m_url.toString();
 
 #ifdef Q_WS_WIN
+    QDir yleDlDir = QDir::current();
+    yleDlDir.cd(WINDOWS_YLE_DL_DIR);
+
+    m_process->setWorkingDirectory(m_destDir.absolutePath());
+
+    arguments << "--vfat";
+
+    arguments << "--rtmpdump" << yleDlDir.absoluteFilePath("rtmpdump.exe");
+
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-    QDir pluginDir = QDir::current();
-    pluginDir.cd(WINDOWS_YLE_DL_DIR);
+    QDir pluginDir = yleDlDir;
     pluginDir.cd("rtmpdump-plugins");
     env.insert("RTMPDUMP_PLUGINDIR", pluginDir.absolutePath());
     m_process->setProcessEnvironment(env);
 #endif
 
-    m_process->setWorkingDirectory(m_destDir.absolutePath());
+    arguments << m_url.toString();
+
     m_process->start(binary, arguments);
 
     if (m_process->waitForStarted(-1)) {

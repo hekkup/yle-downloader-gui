@@ -29,7 +29,7 @@ void ProgressParser::processBufferedLines()
     m_lineBuffer = lines.last();
     lines.removeLast();
     foreach (QByteArray line, lines) {
-        processLine(QString::fromLocal8Bit(line));
+        processLine(QString::fromUtf8(line)); // yle-dl prints utf-8 when on a pipe also on Windows
     }
 }
 
