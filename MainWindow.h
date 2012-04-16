@@ -23,6 +23,7 @@ private slots:
     void chooseDestDir();
 
     void startDownload();
+    void reportDestFileName(QString name);
     void reportProgress(int percentage);
     void reportUnknownProgress(double secondsDownloaded);
     void downloaderOutputWritten(QString line);
@@ -44,6 +45,7 @@ private:
 
     QSettings m_settings;
     QDir m_destDir;
+    QString m_destFileName;
     UpdateChecker* m_updateChecker;
     Downloader* m_downloader; // initially null
     bool m_downloadInProgress;

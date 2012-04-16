@@ -2,7 +2,8 @@
 
 ProgressParser::ProgressParser(QObject* parent)
     : QObject(parent),
-    m_percentage(0)
+    m_percentage(0),
+    m_gotFileName(false)
 {
 }
 
@@ -38,9 +39,21 @@ void ProgressParser::processLine(QString line)
     line = line.trimmed();
     emit outputLineSeen(line);
     bool done = false;
+    done = done || (!m_gotFileName && tryAsFileNameLineLine(line));
     done = done || tryAsProgressLine(line);
     done = done || tryAsUnknownProgressLine(line);
     (void)done;
+}
+
+bool ProgressParser::tryAsFileNameLineLine(QString line)
+{
+    QRegExp regex("^Output file: (.*)$");
+    if (regex.exactMatch(line)) {
+        QString fileName = regex.cap(1);
+        emit fileNameDetermined(fileName);
+        return true;
+    }
+    return false;
 }
 
 bool ProgressParser::tryAsProgressLine(QString line)

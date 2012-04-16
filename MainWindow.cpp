@@ -83,6 +83,7 @@ void MainWindow::startDownload()
     connect(m_downloader, SIGNAL(downloadCanceled()), this, SLOT(downloadCanceled()));
     connect(m_downloader, SIGNAL(downloadFailed()), this, SLOT(downloadFailed()));
 
+    connect(m_downloader, SIGNAL(downloadFileCreated(QString)), this, SLOT(reportDestFileName(QString)));
     connect(m_downloader, SIGNAL(downloadProgress(int)), this, SLOT(reportProgress(int)));
     connect(m_downloader, SIGNAL(downloadUnknownProgress(double)), this, SLOT(reportUnknownProgress(double)));
     connect(m_downloader, SIGNAL(downloaderOutputWritten(QString)), this, SLOT(downloaderOutputWritten(QString)));
@@ -93,12 +94,16 @@ void MainWindow::startDownload()
     m_downloader->start();
 }
 
+void MainWindow::reportDestFileName(QString name)
+{
+    m_destFileName = name;
+    ui->statusLabel->setText(tr("Downloading to file %1").arg(name));
+}
+
 void MainWindow::reportProgress(int percentage)
 {
     ui->progressBar->setMaximum(100);
     ui->progressBar->setValue(percentage);
-
-    ui->statusLabel->setText(tr("Downloading..."));
 }
 
 void MainWindow::reportUnknownProgress(double secondsDownloaded)
@@ -108,7 +113,8 @@ void MainWindow::reportUnknownProgress(double secondsDownloaded)
         ui->progressBar->setValue(-1);
     }
 
-    QString status = tr("Downloading (%1 downloaded)")
+    QString status = tr("Downloading to file %1  (%2 downloaded)")
+            .arg(m_destFileName)
             .arg(formatSecondsDownloaded(secondsDownloaded));
     ui->statusLabel->setText(status);
 }
