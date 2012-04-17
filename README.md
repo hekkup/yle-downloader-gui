@@ -46,7 +46,7 @@ A precompiled Windows package including the downloader is available on the downl
 
 ## Version history ##
 
-- 1.99 (2012-04-10)
+- 1.99 (2012-04-17)
     * Support for Areena Beta.
 
 - 1.3 (2012-01-02)
