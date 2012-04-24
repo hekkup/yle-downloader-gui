@@ -47,7 +47,7 @@ void Downloader::start()
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
     QDir pluginDir = yleDlDir;
     pluginDir.cd("rtmpdump-plugins");
-    env.insert("RTMPDUMP_PLUGINDIR", pluginDir.absolutePath());
+    env.insert("LIBRTMP_PLUGINDIR", pluginDir.absolutePath());
     m_process->setProcessEnvironment(env);
 #endif
 
