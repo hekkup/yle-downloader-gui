@@ -2,7 +2,7 @@
 ; See README.md for build and packaging instructions.
 
 ; Make sure this matches the version number in config.h:
-#define MyAppVersion "1.99"
+#define MyAppVersion "1.99.1"
 ; Point this to wherever you gathered the distribution files:
 #define DeploymentDir "C:\dev\deployments\yle-downloader-gui-windows-" + MyAppVersion
 
