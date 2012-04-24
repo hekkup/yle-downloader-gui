@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>652</width>
-    <height>518</height>
+    <height>562</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -79,6 +79,38 @@
           <string>Find the video you want from YLE Areena and paste here the address from the browser's address bar.</string>
          </property>
         </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QWidget" name="subtitlesWidget" native="true">
+      <layout class="QHBoxLayout" name="horizontalLayout_6">
+       <item>
+        <spacer name="horizontalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>486</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QLabel" name="subtitlesLabel">
+         <property name="text">
+          <string>&amp;Subtitles:</string>
+         </property>
+         <property name="buddy">
+          <cstring>subtitlesComboBox</cstring>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="subtitlesComboBox"/>
        </item>
       </layout>
      </widget>

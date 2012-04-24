@@ -3,6 +3,7 @@
 
 #include "config.h"
 #include "Downloader.h"
+#include "SubtitleLanguage.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -20,6 +21,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     this->setWindowTitle(this->windowTitle() + " " + tr("(v%1)").arg(YLE_DOWNLOADER_GUI_VERSION));
+
+    initSubtitlesComboBox();
 
     updateDestDirLabel();
     ui->statusLabel->setText("");
@@ -60,6 +63,11 @@ void MainWindow::chooseDestDir()
     }
 }
 
+void MainWindow::saveSubtitlesChoice()
+{
+    m_settings.setValue("subtitles", ui->subtitlesComboBox->itemData(ui->subtitlesComboBox->currentIndex()));
+}
+
 void MainWindow::startDownload()
 {
     Q_ASSERT(!m_downloadInProgress);
@@ -71,6 +79,9 @@ void MainWindow::startDownload()
 
     QUrl url = QUrl(ui->urlEdit->text());
     m_downloader = new Downloader(url, m_destDir, this);
+
+    QString subtitlesOption = ui->subtitlesComboBox->itemData(ui->subtitlesComboBox->currentIndex()).toString();
+    m_downloader->setSubtitles(subtitlesOption);
 
     setDownloadWidgetsDisabled(true);
     ui->progressBar->setMaximum(0);
@@ -181,6 +192,21 @@ void MainWindow::closeEvent(QCloseEvent* event)
     }
 }
 
+void MainWindow::initSubtitlesComboBox()
+{
+    foreach (SubtitleLanguage lang, SubtitleLanguage::getAll()) {
+        ui->subtitlesComboBox->addItem(lang.displayName, lang.optionId);
+    }
+
+    QString defaultOption = m_settings.value("subtitles", SubtitleLanguage::getDefault().optionId).toString();
+    int defaultOptionIndex = ui->subtitlesComboBox->findData(defaultOption);
+    if (defaultOptionIndex != -1) {
+        ui->subtitlesComboBox->setCurrentIndex(defaultOptionIndex);
+    }
+
+    connect(ui->subtitlesComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(saveSubtitlesChoice()));
+}
+
 bool MainWindow::confirmCancel()
 {
     QMessageBox::StandardButton choice =
@@ -214,6 +240,7 @@ void MainWindow::setDownloadWidgetsDisabled(bool disabled)
     ui->destDirButton->setDisabled(disabled);
     ui->urlEdit->setDisabled(disabled);
     ui->downloadButton->setDisabled(disabled);
+    ui->subtitlesComboBox->setDisabled(disabled);
 }
 
 void MainWindow::updateDestDirLabel()

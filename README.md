@@ -18,7 +18,7 @@ A precompiled Windows package including the downloader is available on the downl
 
 - Use the [build script](https://github.com/mpartel/rtmpdump-yle-windows) to compile rtmpdump-yle for Windows.
 - Put the following in the distribution directory:
-    - The directory `rtmpdump-yle-windows-x.y.z` compiled by the build script.
+    - The directory `yle-dl-windows-x.y.z` compiled by the build script.
     - DLLs from the MinGW shipping with the Qt SDK
         - `libgcc_s_dw2-1.dll`
         - `mingwm10.dll`

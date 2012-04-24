@@ -44,6 +44,10 @@ void Downloader::start()
 
     arguments << "--rtmpdump" << yleDlDir.absoluteFilePath("rtmpdump.exe");
 
+    if (!m_subtitles.isEmpty()) {
+        arguments << "--sublang" << m_subtitles;
+    }
+
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
     QDir pluginDir = yleDlDir;
     pluginDir.cd("rtmpdump-plugins");

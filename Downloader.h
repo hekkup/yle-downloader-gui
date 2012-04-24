@@ -13,6 +13,9 @@ public:
 
     bool isStarted() { return m_process != 0; }
 
+    QString subtitles() const { return m_subtitles; }
+    void setSubtitles(QString subtitles) { m_subtitles = subtitles; }
+
 public slots:
     void start();
     void cancel();
@@ -36,6 +39,7 @@ private slots:
 private:
     QUrl m_url;
     QDir m_destDir;
+    QString m_subtitles;
     QProcess* m_process;
     ProgressParser m_progressParser;
     bool m_cancelRequested;

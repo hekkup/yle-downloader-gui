@@ -11,14 +11,16 @@ SOURCES += main.cpp\
     ProgressParser.cpp \
     required_qt_translations.cpp \
     ProcessUtils.cpp \
-    UpdateChecker.cpp
+    UpdateChecker.cpp \
+    SubtitleLanguage.cpp
 
 HEADERS  += MainWindow.h \
     Downloader.h \
     ProgressParser.h \
     ProcessUtils.h \
     UpdateChecker.h \
-    config.h
+    config.h \
+    SubtitleLanguage.h
 
 FORMS    += MainWindow.ui
 

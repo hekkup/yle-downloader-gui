@@ -22,6 +22,8 @@ public:
 private slots:
     void chooseDestDir();
 
+    void saveSubtitlesChoice();
+
     void startDownload();
     void reportDestFileName(QString name);
     void reportProgress(int percentage);
@@ -49,6 +51,8 @@ private:
     UpdateChecker* m_updateChecker;
     Downloader* m_downloader; // initially null
     bool m_downloadInProgress;
+
+    void initSubtitlesComboBox();
 
     bool confirmCancel();
 
