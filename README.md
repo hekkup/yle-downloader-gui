@@ -47,7 +47,8 @@ A precompiled Windows package including the downloader is available on the downl
 ## Version history ##
 
 - 1.99.1 (2012-04-24)
-    * Updated yle-dl to 1.99.6
+    * Updated yle-dl to 1.99.6.
+    * Added subtitle selection box.
 
 - 1.99 (2012-04-17)
     * Support for Areena Beta.
