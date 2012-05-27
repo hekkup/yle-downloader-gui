@@ -46,6 +46,9 @@ A precompiled Windows package including the downloader is available on the downl
 
 ## Version history ##
 
+- 2.0 (2012-05-28)
+    * Updated yle-dl to 1.99.7.
+
 - 1.99.1 (2012-04-24)
     * Updated yle-dl to 1.99.6.
     * Added subtitle selection box.
