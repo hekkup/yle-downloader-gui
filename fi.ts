@@ -191,26 +191,40 @@
     </message>
     <message>
         <location filename="SubtitleLanguage.cpp" line="13"/>
-        <source>Finnish (all text)</source>
-        <translation>Suomi (ohjelmatekstitys)</translation>
+        <source>Finnish</source>
+        <oldsource>Finnish (all text)</oldsource>
+        <translation>Suomi</translation>
     </message>
     <message>
         <location filename="SubtitleLanguage.cpp" line="14"/>
-        <source>Finnish (translation)</source>
-        <translation>Suomi (käännös)</translation>
+        <source>Finnish (hearing impaired)</source>
+        <oldsource>Finnish (translation)</oldsource>
+        <translation>Suomi (kuulovammaisille)</translation>
     </message>
     <message>
         <location filename="SubtitleLanguage.cpp" line="15"/>
         <source>Swedish</source>
+        <oldsource>Swedish (all text)</oldsource>
         <translation>Ruotsi</translation>
     </message>
     <message>
         <location filename="SubtitleLanguage.cpp" line="16"/>
+        <source>Swedish (hearing impaired)</source>
+        <oldsource>Swedish (translation)</oldsource>
+        <translation>Ruotsi (kuulovammaisille)</translation>
+    </message>
+    <message>
+        <location filename="SubtitleLanguage.cpp" line="17"/>
         <source>Saami</source>
         <translation>Saami</translation>
     </message>
     <message>
-        <location filename="SubtitleLanguage.cpp" line="17"/>
+        <location filename="SubtitleLanguage.cpp" line="18"/>
+        <source>English</source>
+        <translation>Englanti</translation>
+    </message>
+    <message>
+        <location filename="SubtitleLanguage.cpp" line="19"/>
         <source>All</source>
         <translation>Lataa kaikki</translation>
     </message>
