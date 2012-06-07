@@ -1,7 +1,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#define YLE_DOWNLOADER_GUI_VERSION "2.0"
+#define YLE_DOWNLOADER_GUI_VERSION "2.1"
 
 #define WINDOWS_YLE_DL_DIR "yle-dl-windows"
 

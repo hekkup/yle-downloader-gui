@@ -46,6 +46,11 @@ A precompiled Windows package including the downloader is available on the downl
 
 ## Version history ##
 
+- 2.1 (2012-06-07)
+    * Updated yle-dl to 1.99.8.
+    * Added ability to give command line options in the URL box.
+    * Added options to download swh and eng subtitles.
+
 - 2.0 (2012-05-28)
     * Updated yle-dl to 1.99.7.
 
