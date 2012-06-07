@@ -55,6 +55,8 @@ void Downloader::start()
     m_process->setProcessEnvironment(env);
 #endif
 
+    arguments << m_extraArgs;
+
     arguments << m_url.toString();
 
     m_process->start(binary, arguments);

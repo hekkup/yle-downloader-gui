@@ -16,6 +16,9 @@ public:
     QString subtitles() const { return m_subtitles; }
     void setSubtitles(QString subtitles) { m_subtitles = subtitles; }
 
+    QStringList extraArgs() const { return m_extraArgs; }
+    void setExtraArgs(QStringList extraArgs) { m_extraArgs = extraArgs; }
+
 public slots:
     void start();
     void cancel();
@@ -40,6 +43,7 @@ private:
     QUrl m_url;
     QDir m_destDir;
     QString m_subtitles;
+    QStringList m_extraArgs;
     QProcess* m_process;
     ProgressParser m_progressParser;
     bool m_cancelRequested;

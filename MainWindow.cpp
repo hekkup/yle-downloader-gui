@@ -77,8 +77,21 @@ void MainWindow::startDownload()
         m_downloader = 0;
     }
 
-    QUrl url = QUrl(ui->urlEdit->text());
+    QStringList urlEditContents = ui->urlEdit->text().trimmed().split(" ", QString::SkipEmptyParts);
+
+    QUrl url;
+    QStringList extraArgs;
+    // As an undocumented feature, permit options to be included in the
+    foreach (QString str, urlEditContents) {
+        if (str.startsWith("-")) {
+            extraArgs.append(str);
+        } else {
+            url = QUrl(str);
+        }
+    }
+
     m_downloader = new Downloader(url, m_destDir, this);
+    m_downloader->setExtraArgs(extraArgs);
 
     QString subtitlesOption = ui->subtitlesComboBox->itemData(ui->subtitlesComboBox->currentIndex()).toString();
     m_downloader->setSubtitles(subtitlesOption);
