@@ -208,10 +208,10 @@ void MainWindow::closeEvent(QCloseEvent* event)
 void MainWindow::initSubtitlesComboBox()
 {
     foreach (SubtitleLanguage lang, SubtitleLanguage::getAll()) {
-        ui->subtitlesComboBox->addItem(lang.displayName, lang.optionId);
+        ui->subtitlesComboBox->addItem(lang.displayName(), lang.optionId());
     }
 
-    QString defaultOption = m_settings.value("subtitles", SubtitleLanguage::getDefault().optionId).toString();
+    QString defaultOption = m_settings.value("subtitles", SubtitleLanguage::getDefault().optionId()).toString();
     int defaultOptionIndex = ui->subtitlesComboBox->findData(defaultOption);
     if (defaultOptionIndex != -1) {
         ui->subtitlesComboBox->setCurrentIndex(defaultOptionIndex);

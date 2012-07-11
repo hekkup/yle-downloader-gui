@@ -1,8 +1,8 @@
 #include "SubtitleLanguage.h"
 
 SubtitleLanguage::SubtitleLanguage(QString displayName, QString optionId) :
-    displayName(displayName),
-    optionId(optionId)
+    m_displayName(displayName),
+    m_optionId(optionId)
 {
 }
 
