@@ -47,12 +47,6 @@ void Downloader::start()
     if (!m_subtitles.isEmpty()) {
         arguments << "--sublang" << m_subtitles;
     }
-
-    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-    QDir pluginDir = yleDlDir;
-    pluginDir.cd("rtmpdump-plugins");
-    env.insert("LIBRTMP_PLUGINDIR", pluginDir.absolutePath());
-    m_process->setProcessEnvironment(env);
 #endif
 
     arguments << m_extraArgs;
