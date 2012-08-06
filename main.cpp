@@ -6,6 +6,16 @@
 #include <Windows.h>
 #endif
 
+namespace
+{
+
+bool looksLikeUrl(QString s)
+{
+    return s.startsWith("http://");
+}
+
+}
+
 int main(int argc, char *argv[])
 {
 #ifdef Q_WS_WIN
@@ -27,6 +37,10 @@ int main(int argc, char *argv[])
 
     MainWindow w;
     w.setWindowIcon(QIcon(":/icons/icon.ico"));
+    if (QApplication::arguments().size() > 0 && looksLikeUrl(QApplication::arguments().last())) {
+        w.setExitOnSuccess(true);
+        w.startDownloadFrom(QApplication::arguments().last());
+    }
     w.show();
 
     return app.exec();

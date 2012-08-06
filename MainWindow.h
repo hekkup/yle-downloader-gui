@@ -19,6 +19,9 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    void startDownloadFrom(QString url);
+    void setExitOnSuccess(bool value) { m_exitOnSuccess = value; }
+
 private slots:
     void chooseDestDir();
 
@@ -51,6 +54,7 @@ private:
     UpdateChecker* m_updateChecker;
     Downloader* m_downloader; // initially null
     bool m_downloadInProgress;
+    bool m_exitOnSuccess;
 
     void initSubtitlesComboBox();
 

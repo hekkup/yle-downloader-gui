@@ -11,7 +11,8 @@ MainWindow::MainWindow(QWidget *parent) :
     m_destDir(defaultDestDir()),
     m_updateChecker(new UpdateChecker(this)),
     m_downloader(0),
-    m_downloadInProgress(false)
+    m_downloadInProgress(false),
+    m_exitOnSuccess(false)
 {
     QDir savedDir = m_settings.value("destDir", m_destDir.absolutePath()).toString();
     if (savedDir.exists()) {
@@ -51,6 +52,12 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::startDownloadFrom(QString url)
+{
+    ui->urlEdit->setText(url);
+    startDownload();
 }
 
 void MainWindow::chooseDestDir()
@@ -152,6 +159,9 @@ void MainWindow::downloadSucceeded()
 {
     ui->statusLabel->setText(tr("Download finished."));
     downloadEnded(true);
+    if (m_exitOnSuccess) {
+        QApplication::exit();
+    }
 }
 
 void MainWindow::downloadCanceled()
