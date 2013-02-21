@@ -42,9 +42,13 @@ A precompiled Windows package including the downloader is available on the downl
 
 - Antti Ajanki for yle-dl
 - [Jesse Jaara](https://github.com/Huulivoide) for a better icon and suggestions.
-- [Tomas Strand](https://github.com/straend) for YLE Passi support.
+- [Tomas Strand](https://github.com/straend) for YLE Passi support (back when it existed).
 
 ## Version history ##
+
+- 2.2 (2013-02-21)
+    * Updated yle-dl to 2.0.2.
+    * Accept a URL as a command line parameter.
 
 - 2.1 (2012-06-07)
     * Updated yle-dl to 1.99.8.
