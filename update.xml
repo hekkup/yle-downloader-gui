@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <yleDownloaderGui>
     <!-- Prefer to only put a new version here if yle-dl is updated to fix a download problem. -->
-    <latestWindowsVersion version="2.1" url="https://github.com/downloads/mpartel/yle-downloader-gui/setup-yle-downloader-gui-2.1.exe" />
-    <latestSourceVersion version="2.1" url="https://github.com/mpartel/yle-downloader-gui" />
+    <latestWindowsVersion version="2.2" url="http://yle-downloader-gui.s3-website-eu-west-1.amazonaws.com/setup-yle-downloader-gui-2.2.exe" />
+    <latestSourceVersion version="2.2" url="https://github.com/mpartel/yle-downloader-gui" />
 </yleDownloaderGui>
