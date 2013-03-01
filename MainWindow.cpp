@@ -192,9 +192,10 @@ void MainWindow::cancelRequested()
 
 void MainWindow::updateAvailable(QString version, QUrl url)
 {
+    QString urlstr = url.toString(); 
     QString text = tr("An updated downloader (v%1) is available:<br/><a href=\"%2\">%2</a>")
             .arg(version)
-            .arg(Qt::escape(url.toString()));
+            .arg(urlstr.QString::toHtmlEscaped());
     ui->updateLabel->setText(text);
     ui->updateLabel->setVisible(true);
 }
