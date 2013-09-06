@@ -243,16 +243,12 @@ bool VideoTableModel::insertRows(int row, int count, const QModelIndex &parent) 
 }
 
 bool VideoTableModel::removeRows(int row, int count, const QModelIndex &parent) {
-    if (((m_videos.size() - count) < 0) || (row >= m_videos.size())) {
+    if (row < 0 || count < 0 || row + count > m_videos.size()) {
         return false;
     }
     beginRemoveRows(parent, row, row + count - 1);
     for (int i=0; i < count; i++) {
-        VideoInfo* videoInfo = m_videos.takeAt(row);
-        if (!videoInfo) {
-            return false;
-        }
-        delete videoInfo;
+        delete m_videos.takeAt(row);
     }
     endRemoveRows();
     return true;

@@ -47,6 +47,7 @@ private Q_SLOTS:
     void setData();
     void insertRows();
     void removeRows();
+    void tryToRemoveTooManyRowsFromMiddle();
 
 private:
     VideoTableModel* m_videoTableModel;
@@ -423,6 +424,16 @@ void TestVideoTableModel::removeRows() {
     QVERIFY(false == m_rowsRemovedCalled);
     QVERIFY(m_videoTableModel->rowCount() == 1);
     QVERIFY(m_videoTableModel->m_videos.size() == 0);
+}
+
+void TestVideoTableModel::tryToRemoveTooManyRowsFromMiddle() {
+    m_rowsAboutToBeRemovedCalled = false;
+    m_rowsRemovedCalled = false;
+    QVERIFY(false == m_videoTableModel->removeRows(1, 2));
+    QVERIFY(false == m_rowsAboutToBeRemovedCalled);
+    QVERIFY(false == m_rowsRemovedCalled);
+    QVERIFY(m_videoTableModel->rowCount() == 3);
+    QVERIFY(m_videoTableModel->m_videos.size() == 2);
 }
 
 QTEST_APPLESS_MAIN(TestVideoTableModel)
