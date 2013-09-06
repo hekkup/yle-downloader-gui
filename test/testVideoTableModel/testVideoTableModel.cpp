@@ -127,10 +127,6 @@ void TestVideoTableModel::init() {
 
 void TestVideoTableModel::cleanup() {
     m_videoTableModel->disconnect();
-    while (m_videoTableModel->m_videos.size()) {
-        VideoInfo* video = m_videoTableModel->m_videos.takeLast();
-        delete video;
-    }
     delete m_videoTableModel;
 }
 
