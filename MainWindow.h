@@ -3,14 +3,10 @@
 
 #include <QtCore>
 #include <QtGui>
-#include <QDebug>
-#include <QRect>
 #include "UpdateChecker.h"
 #include "VideoTableModel.h"
 #include "ProgressBarDelegate.h"
 #include "VideoTableView.h"
-
-#define RTMPDUMP_RESUME_OPTION_STR "-e"
 
 class Downloader;
 
@@ -88,6 +84,10 @@ private:
 
     void downloadEnded();
     void setDownloadWidgetsDisabled(bool disabled);
+
+    void updateCurrentProgressBar(int max, int progress, QString text);
+    bool isCurrentProgressBarIndeterminate();
+    void updateCurrentStatus(VideoInfo::VideoState);
 
     void updateDestDirLabel();
     void updateVideoTableView();
