@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     m_destDir(defaultDestDir()),
     m_updateChecker(new UpdateChecker(this)),
-    m_downloader(0),
+    m_downloader(NULL),
     m_downloadInProgress(false),
     m_exitOnSuccess(false)
 {
@@ -27,21 +27,30 @@ MainWindow::MainWindow(QWidget *parent) :
 
     updateDestDirLabel();
     ui->statusLabel->setText("");
-    ui->progressBar->setVisible(false);
     ui->cancelButton->setVisible(false);
     ui->detailsWidget->setVisible(false);
     ui->updateLabel->setVisible(false);
 
     layout()->setSizeConstraint(QLayout::SetFixedSize);
 
-    ui->urlEdit->setFocus(Qt::OtherFocusReason);
+    m_videoTableModel = new VideoTableModel();
+    if (m_videoTableModel) {
+        ui->videoTableView->setModel(m_videoTableModel);
+    }
+    m_currentlyDownloadingVideoRow = -1;
+    m_resumeDownload = false;
+
+    m_videoTableEditTriggers = (const QFlags<QAbstractItemView::EditTrigger>)(QAbstractItemView::AllEditTriggers & ~QAbstractItemView::CurrentChanged);
+    ui->videoTableView->setEditTriggers(m_videoTableEditTriggers);
+    ui->videoTableView->setFocus(Qt::OtherFocusReason);
+
+    connect(m_videoTableModel, SIGNAL(rowsRemoved(QModelIndex, int, int)),
+            ui->videoTableView, SLOT(rowsRemoved(QModelIndex, int, int)));
 
     connect(ui->destDirButton, SIGNAL(clicked()), this, SLOT(chooseDestDir()));
     connect(ui->downloadButton, SIGNAL(clicked()), this, SLOT(startDownload()));
 
     connect(ui->cancelButton, SIGNAL(clicked()), this, SLOT(cancelRequested()));
-
-    connect(ui->urlEdit, SIGNAL(returnPressed()), ui->downloadButton, SLOT(click()));
 
     connect(ui->detailsButton, SIGNAL(toggled(bool)), ui->detailsWidget, SLOT(setVisible(bool)));
 
@@ -52,11 +61,11 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete m_videoTableModel;
 }
 
 void MainWindow::startDownloadFrom(QString url)
 {
-    ui->urlEdit->setText(url);
     startDownload();
 }
 
@@ -79,22 +88,43 @@ void MainWindow::startDownload()
 {
     Q_ASSERT(!m_downloadInProgress);
 
-    if (m_downloader) {
-        m_downloader->deleteLater();
-        m_downloader = 0;
+    if (ui->videoTableView->model()->rowCount() <= 1) {
+        ui->statusLabel->setText(tr("Add videos to video list"));
+        return;
+    }
+    ui->detailsTextEdit->clear();
+    setDownloadWidgetsDisabled(true);
+    ui->cancelButton->setVisible(true);
+
+    m_currentlyDownloadingVideoRow = -1;
+    startNextDownload();
+}
+
+void MainWindow::startNextDownload() {
+    m_currentlyDownloadingVideoRow++;
+    if (m_currentlyDownloadingVideoRow >= (ui->videoTableView->model()->rowCount() - 1)) {
+        downloadEnded();
+        return;
     }
 
-    QStringList urlEditContents = ui->urlEdit->text().trimmed().split(" ", QString::SkipEmptyParts);
+    if (m_downloader) {
+        m_downloader->deleteLater();
+        m_downloader = NULL;
+    }
 
-    QUrl url;
+    QModelIndex index = ui->videoTableView->model()->index(m_currentlyDownloadingVideoRow, VideoTableModel::UrlColumn);
+    QVariant urlData = ui->videoTableView->model()->data(index);
+    QUrl url = QUrl(urlData.toString());
+
+    QStringList yleDlExtraOptions = ui->yleDlExtraOptionsLineEdit->text().trimmed().split(" ", QString::SkipEmptyParts);
     QStringList extraArgs;
-    // As an undocumented feature, permit options to be included in the
-    foreach (QString str, urlEditContents) {
+    foreach (QString str, yleDlExtraOptions) {
         if (str.startsWith("-")) {
             extraArgs.append(str);
-        } else {
-            url = QUrl(str);
         }
+    }
+    if (m_resumeDownload) {
+        extraArgs.append(QString(RTMPDUMP_RESUME_OPTION_STR));
     }
 
     m_downloader = new Downloader(url, m_destDir, this);
@@ -102,13 +132,6 @@ void MainWindow::startDownload()
 
     QString subtitlesOption = ui->subtitlesComboBox->itemData(ui->subtitlesComboBox->currentIndex()).toString();
     m_downloader->setSubtitles(subtitlesOption);
-
-    setDownloadWidgetsDisabled(true);
-    ui->progressBar->setMaximum(0);
-    ui->progressBar->setValue(-1);
-    ui->progressBar->setVisible(true);
-    ui->cancelButton->setVisible(true);
-    ui->detailsTextEdit->clear();
 
     connect(m_downloader, SIGNAL(downloadSucceeded()), this, SLOT(downloadSucceeded()));
     connect(m_downloader, SIGNAL(downloadCanceled()), this, SLOT(downloadCanceled()));
@@ -119,7 +142,17 @@ void MainWindow::startDownload()
     connect(m_downloader, SIGNAL(downloadUnknownProgress(double)), this, SLOT(reportUnknownProgress(double)));
     connect(m_downloader, SIGNAL(downloaderOutputWritten(QString)), this, SLOT(downloaderOutputWritten(QString)));
 
-    ui->statusLabel->setText(tr("Starting download..."));
+
+    index = ui->videoTableView->model()->index(m_currentlyDownloadingVideoRow,
+        VideoTableModel::ProgressColumn);
+    ui->videoTableView->model()->setData(index, QVariant(0), VideoTableModel::ProgressMinimumRole);
+    ui->videoTableView->model()->setData(index, QVariant(0), VideoTableModel::ProgressMaximumRole);
+    ui->videoTableView->model()->setData(index, QVariant(-1), Qt::UserRole);
+    ui->videoTableView->model()->setData(index, QVariant(""), VideoTableModel::ProgressTextRole);
+
+    index = ui->videoTableView->model()->index(m_currentlyDownloadingVideoRow,
+        VideoTableModel::StatusColumn);
+    ui->videoTableView->model()->setData(index, QVariant((int)VideoInfo::StateStarting), Qt::UserRole);
 
     m_downloadInProgress = true;
     m_downloader->start();
@@ -133,21 +166,33 @@ void MainWindow::reportDestFileName(QString name)
 
 void MainWindow::reportProgress(int percentage)
 {
-    ui->progressBar->setMaximum(100);
-    ui->progressBar->setValue(percentage);
+    QString pcStr = QString::number(percentage) + "%";
+    QModelIndex index = ui->videoTableView->model()->index(this->m_currentlyDownloadingVideoRow,
+        VideoTableModel::ProgressColumn);
+    ui->videoTableView->model()->setData(index, QVariant(0), VideoTableModel::ProgressMinimumRole);
+    ui->videoTableView->model()->setData(index, QVariant(100), VideoTableModel::ProgressMaximumRole);
+    ui->videoTableView->model()->setData(index, QVariant(percentage), Qt::UserRole);
+    ui->videoTableView->model()->setData(index, QVariant(pcStr), VideoTableModel::ProgressTextRole);
+
+    index = ui->videoTableView->model()->index(m_currentlyDownloadingVideoRow,
+        VideoTableModel::StatusColumn);
+    ui->videoTableView->model()->setData(index, QVariant((int)VideoInfo::StateLoading), Qt::UserRole);
 }
 
 void MainWindow::reportUnknownProgress(double secondsDownloaded)
 {
-    if (ui->progressBar->maximum() > 0) {
-        ui->progressBar->setMaximum(0);
-        ui->progressBar->setValue(-1);
-    }
 
-    QString status = tr("Downloading to file %1  (%2 downloaded)")
-            .arg(m_destFileName)
-            .arg(formatSecondsDownloaded(secondsDownloaded));
-    ui->statusLabel->setText(status);
+    QString progressStr = formatSecondsDownloaded(secondsDownloaded);
+    QModelIndex index = ui->videoTableView->model()->index(this->m_currentlyDownloadingVideoRow,
+        VideoTableModel::ProgressColumn);
+    ui->videoTableView->model()->setData(index, QVariant(0), VideoTableModel::ProgressMinimumRole);
+    ui->videoTableView->model()->setData(index, QVariant(0), VideoTableModel::ProgressMaximumRole);
+    ui->videoTableView->model()->setData(index, QVariant(-1), Qt::UserRole);
+    ui->videoTableView->model()->setData(index, QVariant(progressStr), VideoTableModel::ProgressTextRole);
+
+    index = ui->videoTableView->model()->index(m_currentlyDownloadingVideoRow,
+        VideoTableModel::StatusColumn);
+    ui->videoTableView->model()->setData(index, QVariant((int)VideoInfo::StateLoading), Qt::UserRole);
 }
 
 void MainWindow::downloaderOutputWritten(QString line)
@@ -157,24 +202,55 @@ void MainWindow::downloaderOutputWritten(QString line)
 
 void MainWindow::downloadSucceeded()
 {
-    ui->statusLabel->setText(tr("Download finished."));
-    downloadEnded(true);
-    if (m_exitOnSuccess) {
-        QApplication::exit();
-    }
+    QModelIndex index = ui->videoTableView->model()->index(this->m_currentlyDownloadingVideoRow,
+        VideoTableModel::ProgressColumn);
+    ui->videoTableView->model()->setData(index, QVariant(0), VideoTableModel::ProgressMinimumRole);
+    ui->videoTableView->model()->setData(index, QVariant(100), VideoTableModel::ProgressMaximumRole);
+    ui->videoTableView->model()->setData(index, QVariant(100), Qt::UserRole);
+    ui->videoTableView->model()->setData(index, QVariant("100%"), VideoTableModel::ProgressTextRole);
+
+    index = ui->videoTableView->model()->index(this->m_currentlyDownloadingVideoRow,
+        VideoTableModel::StatusColumn);
+    ui->videoTableView->model()->setData(index, QVariant(VideoInfo::StateLoadedOk), Qt::UserRole);
+
+    this->startNextDownload();
 }
 
 void MainWindow::downloadCanceled()
 {
-    ui->statusLabel->setText(tr("Download canceled."));
-    downloadEnded(false);
+    QModelIndex index = ui->videoTableView->model()->index(this->m_currentlyDownloadingVideoRow,
+        VideoTableModel::StatusColumn);
+    ui->videoTableView->model()->setData(index, QVariant(VideoInfo::StateCanceled), Qt::UserRole);
+
+    index = ui->videoTableView->model()->index(this->m_currentlyDownloadingVideoRow,
+        VideoTableModel::ProgressColumn);
+    if (ui->videoTableView->model()->data(index, Qt::UserRole).toInt() < 0) {
+        ui->videoTableView->model()->setData(index, QVariant(0), VideoTableModel::ProgressMinimumRole);
+        ui->videoTableView->model()->setData(index, QVariant(100), VideoTableModel::ProgressMaximumRole);
+        ui->videoTableView->model()->setData(index, QVariant(0), Qt::UserRole);
+        ui->videoTableView->model()->setData(index, QVariant(""), VideoTableModel::ProgressTextRole);
+    }
+
+    downloadEnded();
 }
 
 void MainWindow::downloadFailed()
 {
-    ui->statusLabel->setText(tr("Download failed."));
-    downloadEnded(false);
-    m_updateChecker->checkForUpdate();
+    QModelIndex index = ui->videoTableView->model()->index(this->m_currentlyDownloadingVideoRow,
+        VideoTableModel::StatusColumn);
+    ui->videoTableView->model()->setData(index, QVariant(VideoInfo::StateFailed), Qt::UserRole);
+
+    index = ui->videoTableView->model()->index(this->m_currentlyDownloadingVideoRow,
+        VideoTableModel::ProgressColumn);
+    int progress = ui->videoTableView->model()->data(index, Qt::UserRole).toInt();
+    if (progress < 0) {
+        ui->videoTableView->model()->setData(index, QVariant(0), VideoTableModel::ProgressMinimumRole);
+        ui->videoTableView->model()->setData(index, QVariant(100), VideoTableModel::ProgressMaximumRole);
+        ui->videoTableView->model()->setData(index, QVariant(0), Qt::UserRole);
+        ui->videoTableView->model()->setData(index, QVariant(""), VideoTableModel::ProgressTextRole);
+    }
+
+    this->startNextDownload();
 }
 
 void MainWindow::cancelRequested()
@@ -183,10 +259,12 @@ void MainWindow::cancelRequested()
         if (confirmCancel()) {
             if (m_downloadInProgress) {
                 m_downloader->cancel();
+            } else {
+                qWarning() << "Downloader didn't exist when cancel requested.";
             }
         }
     } else {
-        qWarning() << "Downloader didn't exist when cancel requested.";
+        qWarning() << "Cancel requested when downloading not in progress";
     }
 }
 
@@ -213,6 +291,11 @@ void MainWindow::closeEvent(QCloseEvent* event)
             event->ignore();
         }
     }
+}
+
+void MainWindow::showEvent(QShowEvent *event)
+{
+    updateVideoTableView();
 }
 
 void MainWindow::initSubtitlesComboBox()
@@ -242,34 +325,46 @@ bool MainWindow::confirmCancel()
     return (choice == QMessageBox::Yes);
 }
 
-void MainWindow::downloadEnded(bool success)
+void MainWindow::downloadEnded()
 {
     m_downloadInProgress = false;
 
     setDownloadWidgetsDisabled(false);
 
-    if (success) {
-        ui->progressBar->setMaximum(100);
-        ui->progressBar->setValue(100);
-    } else {
-        ui->progressBar->setVisible(false);
-    }
-
     ui->cancelButton->setVisible(false);
+    ui->statusLabel->setText("");
+
+    m_updateChecker->checkForUpdate();
 }
 
 void MainWindow::setDownloadWidgetsDisabled(bool disabled)
 {
     ui->destDirButton->setDisabled(disabled);
-    ui->urlEdit->setDisabled(disabled);
+    ui->yleDlExtraOptionsLineEdit->setDisabled(disabled);
     ui->downloadButton->setDisabled(disabled);
     ui->subtitlesComboBox->setDisabled(disabled);
+    ui->yleDlExtraOptionsLineEdit->setDisabled(disabled);
+    // Don't disable videoTableView because text will go gray. Instead,
+    // disable editing.
+    if (disabled) {
+        ui->videoTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    } else {
+        ui->videoTableView->setEditTriggers(m_videoTableEditTriggers);
+    }
 }
 
 void MainWindow::updateDestDirLabel()
 {
     QString folder = QDir::toNativeSeparators(m_destDir.absolutePath());
     ui->destDirLabel->setText(tr("Download folder: %1").arg(folder));
+}
+
+void MainWindow::updateVideoTableView()
+{
+    int urlTableWidth = ui->videoTableView->viewport()->width();
+    ui->videoTableView->setColumnWidth(VideoTableModel::UrlColumn, (urlTableWidth * 3)/5);
+    ui->videoTableView->setColumnWidth(VideoTableModel::ProgressColumn, urlTableWidth / 5);
+    ui->videoTableView->setColumnWidth(VideoTableModel::StatusColumn, urlTableWidth / 5);
 }
 
 QString MainWindow::formatSecondsDownloaded(double secondsDownloaded)

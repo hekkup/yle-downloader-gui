@@ -38,16 +38,16 @@ void Downloader::start()
     QDir yleDlDir = QDir::current();
     yleDlDir.cd(WINDOWS_YLE_DL_DIR);
 
-    m_process->setWorkingDirectory(m_destDir.absolutePath());
-
     arguments << "--vfat";
 
     arguments << "--rtmpdump" << yleDlDir.absoluteFilePath("rtmpdump.exe");
+#endif
+
+    m_process->setWorkingDirectory(m_destDir.absolutePath());
 
     if (!m_subtitles.isEmpty()) {
         arguments << "--sublang" << m_subtitles;
     }
-#endif
 
     arguments << m_extraArgs;
 

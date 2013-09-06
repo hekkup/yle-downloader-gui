@@ -12,7 +12,11 @@ SOURCES += main.cpp\
     required_qt_translations.cpp \
     ProcessUtils.cpp \
     UpdateChecker.cpp \
-    SubtitleLanguage.cpp
+    SubtitleLanguage.cpp \
+    ProgressBarDelegate.cpp \
+    VideoTableModel.cpp \
+    VideoInfo.cpp \
+    VideoTableView.cpp
 
 HEADERS  += MainWindow.h \
     Downloader.h \
@@ -20,7 +24,11 @@ HEADERS  += MainWindow.h \
     ProcessUtils.h \
     UpdateChecker.h \
     config.h \
-    SubtitleLanguage.h
+    SubtitleLanguage.h \
+    ProgressBarDelegate.h \
+    VideoTableModel.h \
+    VideoInfo.h \
+    VideoTableView.h
 
 FORMS    += MainWindow.ui
 
