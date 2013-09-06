@@ -66,6 +66,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::startDownloadFrom(QString url)
 {
+    Q_UNUSED(url)
     startDownload();
 }
 
@@ -295,6 +296,7 @@ void MainWindow::closeEvent(QCloseEvent* event)
 
 void MainWindow::showEvent(QShowEvent *event)
 {
+    Q_UNUSED(event)
     updateVideoTableView();
 }
 

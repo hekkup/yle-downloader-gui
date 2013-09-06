@@ -44,6 +44,8 @@ void VideoTableView::currentChanged(const QModelIndex &current, const QModelInde
 }
 
 void VideoTableView::rowsRemoved(const QModelIndex &parent, int start, int end) {
+    Q_UNUSED(parent)
+    Q_UNUSED(end)
     int newActiveRowAfterRemoval = start;
     if (newActiveRowAfterRemoval >= this->model()->rowCount()) {
         newActiveRowAfterRemoval = this->model()->rowCount() - 1;
@@ -53,7 +55,7 @@ void VideoTableView::rowsRemoved(const QModelIndex &parent, int start, int end) 
 }
 
 void VideoTableView::rowsInserted(const QModelIndex &parent, int start, int end) {
-    QAbstractItemView::rowsInserted(parent, start, end);
+    QTableView::rowsInserted(parent, start, end);
     this->scrollToBottom();
 }
 
@@ -75,6 +77,8 @@ void VideoTableView::scrollTo(const QModelIndex &index, ScrollHint hint) {
             }
         }
         break;
+    default:
+        QTableView::scrollTo(index, hint);
     }
 }
 

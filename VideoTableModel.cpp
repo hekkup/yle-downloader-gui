@@ -20,10 +20,12 @@ VideoTableModel::~VideoTableModel() {
 }
 
 int VideoTableModel::rowCount(const QModelIndex &parent) const {
+    Q_UNUSED(parent)
     return m_videos.size() + 1;   // +1 for empty URL placeholder
 }
 
 int VideoTableModel::columnCount(const QModelIndex &parent) const {
+    Q_UNUSED(parent)
     return COLUMN_COUNT;
 }
 

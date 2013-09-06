@@ -68,22 +68,36 @@ TestVideoTableModel::TestVideoTableModel()
 }
 
 void TestVideoTableModel::rowsAboutToBeInsertedHandler(const QModelIndex &index, int start, int end) {
+    Q_UNUSED(index)
+    Q_UNUSED(start)
+    Q_UNUSED(end)
     this->m_rowsAboutToBeInsertedCalled = true;
 }
 
 void TestVideoTableModel::rowsInsertedHandler(const QModelIndex &index, int start, int end) {
+    Q_UNUSED(index)
+    Q_UNUSED(start)
+    Q_UNUSED(end)
     this->m_rowsInsertedCalled = true;
 }
 
 void TestVideoTableModel::rowsAboutToBeRemovedHandler(const QModelIndex &index, int start, int end) {
+    Q_UNUSED(index)
+    Q_UNUSED(start)
+    Q_UNUSED(end)
     this->m_rowsAboutToBeRemovedCalled = true;
 }
 
 void TestVideoTableModel::rowsRemovedHandler(const QModelIndex &index, int start, int end) {
+    Q_UNUSED(index)
+    Q_UNUSED(start)
+    Q_UNUSED(end)
     this->m_rowsRemovedCalled = true;
 }
 
 void TestVideoTableModel::dataChangedHandler(const QModelIndex &topLeft, const QModelIndex &bottomRight) {
+    Q_UNUSED(topLeft)
+    Q_UNUSED(bottomRight)
     this->m_dataChangedEmitted = true;
 }
 
