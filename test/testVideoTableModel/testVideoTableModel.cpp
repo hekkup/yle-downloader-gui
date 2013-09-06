@@ -145,7 +145,7 @@ void TestVideoTableModel::constructor() {
 void TestVideoTableModel::flags() {
     QModelIndex index;
     index = m_videoTableModel->index(0, VideoTableModel::UrlColumn);
-    QVERIFY(Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable == m_videoTableModel->flags(index));
+    QVERIFY((Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable) == m_videoTableModel->flags(index));
     index = m_videoTableModel->index(0, VideoTableModel::ProgressColumn);
     QVERIFY(Qt::ItemIsEnabled == m_videoTableModel->flags(index));
     index = m_videoTableModel->index(0, VideoTableModel::StatusColumn);
