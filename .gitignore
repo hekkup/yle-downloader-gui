@@ -8,4 +8,9 @@ moc_*
 qrc_*
 ui_*
 *.o
+*.moc
+
 /yle-downloader-gui
+test/testVideoInfo/testVideoInfo
+test/testVideoTableModel/testVideoTableModel
+
