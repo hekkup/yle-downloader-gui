@@ -99,14 +99,12 @@ void TestVideoTableModel::init() {
     QVERIFY(NULL != m_videoTableModel);
 
     VideoInfo* v1 = new VideoInfo();
-    QVERIFY(NULL != v1);
     v1->setUrl(QString("http://localhost/1"));
     v1->setProgress(10);
     v1->setState(VideoInfo::StateLoading);
     m_videoTableModel->m_videos.append(v1);
 
     v1 = new VideoInfo();
-    QVERIFY(NULL != v1);
     v1->setUrl(QString("http://localhost/2"));
     v1->setProgress(20);
     v1->setState(VideoInfo::StateLoadedOk);

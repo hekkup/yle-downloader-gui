@@ -233,9 +233,6 @@ bool VideoTableModel::insertRows(int row, int count, const QModelIndex &parent) 
     beginInsertRows(parent, row, row + count - 1);
     for (int i=0; i < count; i++) {
         VideoInfo* videoInfo = new VideoInfo();
-        if (!videoInfo) {
-            return false;
-        }
         m_videos.insert(row + i, videoInfo);
     }
     endInsertRows();

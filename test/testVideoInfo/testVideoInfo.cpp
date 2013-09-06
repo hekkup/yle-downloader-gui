@@ -31,7 +31,6 @@ TestVideoInfo::TestVideoInfo() {
 
 void TestVideoInfo::init() {
     m_videoInfo = new VideoInfo();
-    QVERIFY(NULL != m_videoInfo);
 }
 
 void TestVideoInfo::cleanup() {
