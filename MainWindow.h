@@ -45,6 +45,8 @@ private slots:
 
     void saveSubtitlesChoice();
 
+    void videoTableChanged();
+
     void startDownload();
     void startNextDownload();
 

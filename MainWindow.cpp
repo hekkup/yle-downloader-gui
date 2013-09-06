@@ -27,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     updateDestDirLabel();
     ui->statusLabel->setText("");
+    ui->downloadButton->setEnabled(false);
     ui->cancelButton->setVisible(false);
     ui->detailsWidget->setVisible(false);
     ui->updateLabel->setVisible(false);
@@ -46,6 +47,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(m_videoTableModel, SIGNAL(rowsRemoved(QModelIndex, int, int)),
             ui->videoTableView, SLOT(rowsRemoved(QModelIndex, int, int)));
+
+    connect(m_videoTableModel, SIGNAL(rowsInserted(QModelIndex, int, int)), this, SLOT(videoTableChanged()));
+    connect(m_videoTableModel, SIGNAL(rowsRemoved(QModelIndex, int, int)), this, SLOT(videoTableChanged()));
 
     connect(ui->destDirButton, SIGNAL(clicked()), this, SLOT(chooseDestDir()));
     connect(ui->downloadButton, SIGNAL(clicked()), this, SLOT(startDownload()));
@@ -89,12 +93,17 @@ void MainWindow::saveSubtitlesChoice()
     m_settings.setValue("subtitles", ui->subtitlesComboBox->itemData(ui->subtitlesComboBox->currentIndex()));
 }
 
+void MainWindow::videoTableChanged()
+{
+    ui->downloadButton->setEnabled(m_videoTableModel->rowCount() > 1);
+}
+
 void MainWindow::startDownload()
 {
     Q_ASSERT(!m_downloadInProgress);
 
     if (m_videoTableModel->rowCount() <= 1) {
-        ui->statusLabel->setText(tr("Add videos to video list"));
+        qWarning() << "Attempt to start download with nothing to download.";
         return;
     }
     ui->detailsTextEdit->clear();
