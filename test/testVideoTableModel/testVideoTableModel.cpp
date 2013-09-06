@@ -157,11 +157,11 @@ void TestVideoTableModel::rowCount() {
     QVERIFY(m_videoTableModel->m_videos.size() == 2);
     QVERIFY(m_videoTableModel->rowCount() == 3);
 
-    m_videoTableModel->m_videos.takeLast();
+    delete m_videoTableModel->m_videos.takeLast();
     QVERIFY(m_videoTableModel->m_videos.size() == 1);
     QVERIFY(m_videoTableModel->rowCount() == 2);
 
-    m_videoTableModel->m_videos.takeLast();
+    delete m_videoTableModel->m_videos.takeLast();
     QVERIFY(m_videoTableModel->m_videos.size() == 0);
     QVERIFY(m_videoTableModel->rowCount() == 1);
 }
