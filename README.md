@@ -14,6 +14,12 @@ A precompiled Windows package including the downloader is available on the downl
 - `qmake`
 - `make`
 
+### Running tests ###
+
+- `cd test`
+- `qmake`
+- `make all check`
+
 ## Packaging for Windows ##
 
 - Use the [build script](https://github.com/mpartel/rtmpdump-yle-windows) to compile rtmpdump-yle for Windows.

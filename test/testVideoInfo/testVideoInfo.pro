@@ -9,7 +9,7 @@ QT       += testlib
 #QT       -= gui
 
 TARGET = testVideoInfo
-CONFIG   += console
+CONFIG   += console testcase
 CONFIG   -= app_bundle
 
 TEMPLATE = app
