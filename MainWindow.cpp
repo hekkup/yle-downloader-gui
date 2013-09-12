@@ -50,6 +50,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->videoTableView->setEditTriggers(m_videoTableEditTriggers);
     ui->videoTableView->setFocus(Qt::OtherFocusReason);
 
+    setAcceptDrops(true);
+
     connect(m_videoTableModel, SIGNAL(rowsRemoved(QModelIndex, int, int)),
             ui->videoTableView, SLOT(rowsRemoved(QModelIndex, int, int)));
 
@@ -100,7 +102,9 @@ void MainWindow::saveSubtitlesChoice()
 
 void MainWindow::videoTableChanged()
 {
-    ui->downloadButton->setEnabled(m_videoTableModel->rowCount() > 1);
+    if (!m_downloadInProgress) {
+        ui->downloadButton->setEnabled(m_videoTableModel->rowCount() > 1);
+    }
 }
 
 void MainWindow::startDownload()
@@ -267,6 +271,17 @@ void MainWindow::showEvent(QShowEvent *event)
     updateVideoTableView();
 }
 
+void MainWindow::dragEnterEvent(QDragEnterEvent* event) {
+    if (event->mimeData()->hasText()) {
+        event->acceptProposedAction();
+    }
+}
+
+void MainWindow::dropEvent(QDropEvent* event) {
+    addUrl(event->mimeData()->text());
+    event->acceptProposedAction();
+}
+
 void MainWindow::initSubtitlesComboBox()
 {
     foreach (SubtitleLanguage lang, SubtitleLanguage::getAll()) {
@@ -346,6 +361,12 @@ void MainWindow::updateCurrentStatus(VideoInfo::VideoState state)
     QModelIndex index = m_videoTableModel->index(this->m_currentlyDownloadingVideoRow,
         VideoTableModel::StatusColumn);
     m_videoTableModel->setData(index, QVariant(state), Qt::UserRole);
+}
+
+void MainWindow::addUrl(QString url) {
+    QModelIndex index = m_videoTableModel->index(m_videoTableModel->rowCount() - 1,
+        VideoTableModel::UrlColumn);
+    m_videoTableModel->setData(index, QVariant(url), Qt::EditRole);
 }
 
 void MainWindow::updateDestDirLabel()

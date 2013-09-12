@@ -18,7 +18,6 @@ namespace Ui {
  * @todo add target file name to video table (multi-line item)
  * @todo paste multi-line text: get URLs from each line
  * @todo open a text file: get URLs from each line
- * @todo add drop action: drop URL -> add to list
  * @todo save session (video list) so can resume downloading next time
  * @todo add clear list button
  * @todo set automatic translation of text edit context menu (is this available?)
@@ -63,6 +62,16 @@ protected:
     void closeEvent(QCloseEvent* event);
     void showEvent(QShowEvent* event);
 
+    /**
+     * Tell URL dropping is possible
+     */
+    void dragEnterEvent(QDragEnterEvent* event);
+
+    /**
+     * Add URL to video list
+     */
+    void dropEvent(QDropEvent* event);
+
 private:
     Ui::MainWindow *ui;
 
@@ -85,6 +94,7 @@ private:
     void updateCurrentProgressBar(int max, int progress, QString text);
     bool isCurrentProgressBarIndeterminate();
     void updateCurrentStatus(VideoInfo::VideoState);
+    void addUrl(QString url);
 
     void updateDestDirLabel();
     void updateVideoTableView();
