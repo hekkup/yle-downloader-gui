@@ -15,11 +15,6 @@ namespace Ui {
 }
 
 /**
- * @todo cancel download process with SIGINT(2) in Linux because then video is left in resumable state (currently corrupts file)
- * @todo resume download by default by enabling m_resumeDownload (after the above task)
- * @todo enable window resize: resize list, not others
- * @todo add file path direct edit area
- * @todo put status text to status bar? Maybe not because of details area.
  * @todo add target file name to video table (multi-line item)
  * @todo paste multi-line text: get URLs from each line
  * @todo open a text file: get URLs from each line

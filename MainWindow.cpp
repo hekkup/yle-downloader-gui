@@ -39,7 +39,12 @@ MainWindow::MainWindow(QWidget *parent) :
         ui->videoTableView->setModel(m_videoTableModel);
     }
     m_currentlyDownloadingVideoRow = -1;
+
+#ifdef Q_WS_WIN
     m_resumeDownload = false;
+#else
+    m_resumeDownload = true;
+#endif
 
     m_videoTableEditTriggers = (const QFlags<QAbstractItemView::EditTrigger>)(QAbstractItemView::AllEditTriggers & ~QAbstractItemView::CurrentChanged);
     ui->videoTableView->setEditTriggers(m_videoTableEditTriggers);

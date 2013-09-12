@@ -5,6 +5,9 @@
 #ifdef Q_WS_WIN
 #include <Windows.h>
 #include <Tlhelp32.h>
+#else
+#include <sys/types.h>
+#include <signal.h>
 #endif
 
 namespace ProcessUtils
@@ -105,7 +108,8 @@ void killProcessTree(QProcess& parentProcess)
 #ifdef Q_WS_WIN
     killProcessTree_Windows(parentProcess.pid());
 #else
-    parentProcess.kill(); // Suffices on unixes
+    // yle-dl on Unix (Linux) only terminates cleanly on SIGINT
+    kill(parentProcess.pid(), SIGINT);
 #endif
 }
 
