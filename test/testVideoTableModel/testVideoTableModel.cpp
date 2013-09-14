@@ -40,6 +40,7 @@ private Q_SLOTS:
 
     void constructor();
     void flags();
+    void videoAt();
     void videoCount();
     void rowCount();
     void columnCount();
@@ -172,6 +173,14 @@ void TestVideoTableModel::flags() {
     QVERIFY(Qt::ItemIsEnabled == m_videoTableModel->flags(index));
     index = m_videoTableModel->index(0, VideoTableModel::StatusColumn);
     QVERIFY(Qt::ItemIsEnabled == m_videoTableModel->flags(index));
+}
+
+void TestVideoTableModel::videoAt() {
+    for (int row = 0; row < 2; row++) {
+        QVERIFY(m_videoTableModel->m_videos.at(row) == m_videoTableModel->videoAt(row));
+    }
+    QVERIFY(NULL == m_videoTableModel->videoAt(2));
+    QVERIFY(NULL == m_videoTableModel->videoAt(-1));
 }
 
 void TestVideoTableModel::videoCount() {

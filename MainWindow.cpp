@@ -27,7 +27,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     updateDestDirLabel();
     ui->statusLabel->setText("");
-    ui->downloadButton->setEnabled(false);
     ui->cancelButton->setVisible(false);
     ui->detailsWidget->setVisible(false);
     ui->updateLabel->setVisible(false);
@@ -45,6 +44,16 @@ MainWindow::MainWindow(QWidget *parent) :
 #else
     m_resumeDownload = true;
 #endif
+
+    m_saveSession = true;
+    if (m_saveSession) {
+        this->restoreSession();
+    }
+    if (m_videoTableModel->videoCount() > 0) {
+        ui->downloadButton->setEnabled(true);
+    } else {
+        ui->downloadButton->setEnabled(false);
+    }
 
     m_videoTableEditTriggers = (const QFlags<QAbstractItemView::EditTrigger>)(QAbstractItemView::AllEditTriggers & ~QAbstractItemView::CurrentChanged);
     ui->videoTableView->setEditTriggers(m_videoTableEditTriggers);
@@ -98,6 +107,43 @@ void MainWindow::chooseDestDir()
 void MainWindow::saveSubtitlesChoice()
 {
     m_settings.setValue("subtitles", ui->subtitlesComboBox->itemData(ui->subtitlesComboBox->currentIndex()));
+}
+
+void MainWindow::saveSession()
+{
+    m_settings.beginGroup("LastSession");
+    m_settings.remove("session");
+    m_settings.beginWriteArray("session");
+    for (int row = 0; row < m_videoTableModel->videoCount(); row++) {
+        m_settings.setArrayIndex(row);
+        m_settings.setValue("URL", QVariant(m_videoTableModel->videoAt(row)->url()));
+        m_settings.setValue("progress", QVariant(m_videoTableModel->videoAt(row)->progress()));
+        m_settings.setValue("state", QVariant((int)m_videoTableModel->videoAt(row)->state()));
+    }
+    m_settings.endArray();
+    m_settings.endGroup();
+}
+
+void MainWindow::restoreSession()
+{
+    m_settings.beginGroup("LastSession");
+    int videoCount = m_settings.beginReadArray("session");
+    for (int i = 0; i < videoCount; i++) {
+        m_settings.setArrayIndex(i);
+        int videoRow = m_videoTableModel->addUrl(m_settings.value("URL").toString());
+        if (videoRow != i) {
+            qWarning() << "restored video has strange index";
+        }
+        int progress = m_settings.value("progress").toInt();
+        if (progress < 0) {
+            m_videoTableModel->setKnownDownloadProgress(videoRow, 0, false);
+        } else {
+            m_videoTableModel->setKnownDownloadProgress(videoRow, progress);
+        }
+        m_videoTableModel->setDownloadState(videoRow, VideoInfo::StateNotStarted);
+    }
+    m_settings.endArray();
+    m_settings.endGroup();
 }
 
 void MainWindow::videoTableChanged()
@@ -271,6 +317,9 @@ void MainWindow::closeEvent(QCloseEvent* event)
         } else {
             event->ignore();
         }
+    }
+    if (event->isAccepted() && m_saveSession) {
+        this->saveSession();
     }
 }
 

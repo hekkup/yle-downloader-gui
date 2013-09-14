@@ -38,6 +38,8 @@ private slots:
     void chooseDestDir();
 
     void saveSubtitlesChoice();
+    void saveSession();
+    void restoreSession();
 
     void videoTableChanged();
 
@@ -83,6 +85,7 @@ private:
     bool m_downloadInProgress;
     bool m_resumeDownload;  ///< whether to always resume download (yle-dl --resume|-e option)
     bool m_exitOnSuccess;
+    bool m_saveSession;   ///< whether to save & restore session (video list + states)
 
     void initSubtitlesComboBox();
 

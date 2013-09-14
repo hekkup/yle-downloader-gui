@@ -89,6 +89,13 @@ bool VideoTableModel::setDownloadState(int row, VideoInfo::VideoState state) {
     return true;
 }
 
+VideoInfo* VideoTableModel::videoAt(int row) {
+    if ((row < 0) || (row >= m_videos.size())) {
+        return NULL;
+    }
+    return m_videos.at(row);
+}
+
 int VideoTableModel::videoCount() {
     return m_videos.size();
 }

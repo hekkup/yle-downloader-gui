@@ -78,6 +78,12 @@ public:
     bool setDownloadState(int row, VideoInfo::VideoState state);
 
     /**
+     * Get pointer to video at row position
+     * @return valid pointer if exists, NULL if not
+     */
+    VideoInfo* videoAt(int row);
+
+    /**
      * Get video count. Note that this is rowCount() - 1.
      */
     int videoCount();
