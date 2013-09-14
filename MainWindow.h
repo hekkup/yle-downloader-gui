@@ -15,11 +15,8 @@ namespace Ui {
 }
 
 /**
- * @todo add target file name to video table (multi-line item)
  * @todo paste multi-line text: get URLs from each line
  * @todo open a text file: get URLs from each line
- * @todo save session (video list) so can resume downloading next time
- * @todo add clear list button
  * @todo set automatic translation of text edit context menu (is this available?)
  * @todo at some point, add options dialog (then can remove extra options line edit)
  */
@@ -30,6 +27,9 @@ class MainWindow: public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
+    void setSaveAndRestoreSession(bool saveAndRestore);
+    bool init();
 
     void startDownloadFrom(QString url);
     void setExitOnSuccess(bool value) { m_exitOnSuccess = value; }
@@ -77,6 +77,8 @@ protected:
 private:
     Ui::MainWindow *ui;
 
+    bool m_initialized; ///< whether this object has been initialized or not
+
     QSettings m_settings;
     QDir m_destDir;
     QString m_destFileName;
@@ -85,7 +87,7 @@ private:
     bool m_downloadInProgress;
     bool m_resumeDownload;  ///< whether to always resume download (yle-dl --resume|-e option)
     bool m_exitOnSuccess;
-    bool m_saveSession;   ///< whether to save & restore session (video list + states)
+    bool m_saveAndRestoreSession;   ///< whether to save & restore session (video list + states)
 
     void initSubtitlesComboBox();
 

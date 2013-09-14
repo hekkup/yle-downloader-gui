@@ -12,7 +12,8 @@ MainWindow::MainWindow(QWidget *parent) :
     m_updateChecker(new UpdateChecker(this)),
     m_downloader(NULL),
     m_downloadInProgress(false),
-    m_exitOnSuccess(false)
+    m_exitOnSuccess(false),
+    m_initialized(false)
 {
     QDir savedDir = m_settings.value("destDir", m_destDir.absolutePath()).toString();
     if (savedDir.exists()) {
@@ -45,15 +46,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_resumeDownload = true;
 #endif
 
-    m_saveSession = true;
-    if (m_saveSession) {
-        this->restoreSession();
-    }
-    if (m_videoTableModel->videoCount() > 0) {
-        ui->downloadButton->setEnabled(true);
-    } else {
-        ui->downloadButton->setEnabled(false);
-    }
+    m_saveAndRestoreSession = false;
 
     m_videoTableEditTriggers = (const QFlags<QAbstractItemView::EditTrigger>)(QAbstractItemView::AllEditTriggers & ~QAbstractItemView::CurrentChanged);
     ui->videoTableView->setEditTriggers(m_videoTableEditTriggers);
@@ -82,6 +75,27 @@ MainWindow::~MainWindow()
 {
     delete ui;
     delete m_videoTableModel;
+}
+
+void MainWindow::setSaveAndRestoreSession(bool saveAndRestore) {
+    this->m_saveAndRestoreSession = saveAndRestore;
+}
+
+bool MainWindow::init() {
+    if (m_initialized) {
+        return false;
+    }
+
+    if (m_saveAndRestoreSession) {
+        this->restoreSession();
+    }
+    if (m_videoTableModel->videoCount() > 0) {
+        ui->downloadButton->setEnabled(true);
+    } else {
+        ui->downloadButton->setEnabled(false);
+    }
+    m_initialized = true;
+    return true;
 }
 
 void MainWindow::startDownloadFrom(QString url)
@@ -318,7 +332,7 @@ void MainWindow::closeEvent(QCloseEvent* event)
             event->ignore();
         }
     }
-    if (event->isAccepted() && m_saveSession) {
+    if (event->isAccepted() && m_saveAndRestoreSession) {
         this->saveSession();
     }
 }

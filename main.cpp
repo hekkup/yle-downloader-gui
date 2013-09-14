@@ -39,7 +39,12 @@ int main(int argc, char *argv[])
     w.setWindowIcon(QIcon(":/icons/icon.ico"));
     if (QApplication::arguments().size() > 0 && looksLikeUrl(QApplication::arguments().last())) {
         w.setExitOnSuccess(true);
+        w.setSaveAndRestoreSession(false);
+        w.init();
         w.startDownloadFrom(QApplication::arguments().last());
+    } else {
+        w.setSaveAndRestoreSession(true);
+        w.init();
     }
     w.show();
 
