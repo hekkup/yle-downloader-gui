@@ -264,6 +264,9 @@ void MainWindow::closeEvent(QCloseEvent* event)
 {
     if (m_downloadInProgress) {
         if (confirmCancel()) {
+            if (m_downloadInProgress) {
+                m_downloader->cancel();
+            }
             event->accept();
         } else {
             event->ignore();
