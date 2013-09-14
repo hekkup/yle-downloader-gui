@@ -40,6 +40,7 @@ private Q_SLOTS:
 
     void constructor();
     void flags();
+    void videoCount();
     void rowCount();
     void columnCount();
     void headerData();
@@ -48,6 +49,13 @@ private Q_SLOTS:
     void insertRows();
     void removeRows();
     void tryToRemoveTooManyRowsFromMiddle();
+
+    void addUrl();
+    void url();
+    void setKnownDownloadProgress();
+    void setUnknownDownloadProgress();
+    void downloadProgress();
+    void setDownloadState();
 
 private:
     VideoTableModel* m_videoTableModel;
@@ -164,6 +172,19 @@ void TestVideoTableModel::flags() {
     QVERIFY(Qt::ItemIsEnabled == m_videoTableModel->flags(index));
     index = m_videoTableModel->index(0, VideoTableModel::StatusColumn);
     QVERIFY(Qt::ItemIsEnabled == m_videoTableModel->flags(index));
+}
+
+void TestVideoTableModel::videoCount() {
+    QVERIFY(m_videoTableModel->m_videos.size() == 2);
+    QVERIFY(m_videoTableModel->videoCount() == 2);
+
+    delete m_videoTableModel->m_videos.takeLast();
+    QVERIFY(m_videoTableModel->m_videos.size() == 1);
+    QVERIFY(m_videoTableModel->videoCount() == 1);
+
+    delete m_videoTableModel->m_videos.takeLast();
+    QVERIFY(m_videoTableModel->m_videos.size() == 0);
+    QVERIFY(m_videoTableModel->videoCount() == 0);
 }
 
 void TestVideoTableModel::rowCount() {
@@ -446,6 +467,122 @@ void TestVideoTableModel::tryToRemoveTooManyRowsFromMiddle() {
     QVERIFY(false == m_rowsRemovedCalled);
     QVERIFY(m_videoTableModel->rowCount() == 3);
     QVERIFY(m_videoTableModel->m_videos.size() == 2);
+}
+
+void TestVideoTableModel::addUrl() {
+    QString newUrl = "newUrl";
+    QVERIFY(2 == m_videoTableModel->addUrl(newUrl));
+    QVERIFY(m_videoTableModel->m_videos.size() == 3);
+    QModelIndex index = m_videoTableModel->index(2, VideoTableModel::UrlColumn);
+    QVERIFY("newUrl" == m_videoTableModel->data(index, Qt::DisplayRole));
+
+    // shouldn't be able to add empty / whitespace only strings
+    newUrl = "";
+    QVERIFY(-1 == m_videoTableModel->addUrl(newUrl));
+    QVERIFY(m_videoTableModel->m_videos.size() == 3);
+
+    newUrl = "    ";
+    QVERIFY(-1 == m_videoTableModel->addUrl(newUrl));
+    QVERIFY(m_videoTableModel->m_videos.size() == 3);
+}
+
+void TestVideoTableModel::url() {
+    QVERIFY("http://localhost/1" == m_videoTableModel->url(0));
+    QVERIFY("http://localhost/2" == m_videoTableModel->url(1));
+    QVERIFY("" == m_videoTableModel->url(2));
+    QVERIFY("" == m_videoTableModel->url(-1));
+}
+
+void TestVideoTableModel::setKnownDownloadProgress() {
+    // set progress text (default)
+    for (int i=0; i < 2; i++) {
+        QVERIFY(m_videoTableModel->setKnownDownloadProgress(i, 15 + i));
+
+        QString expectedText = QString::number(15 + i) + "%";
+        QModelIndex index = m_videoTableModel->index(i, VideoTableModel::ProgressColumn);
+        QVERIFY((15 + i) == m_videoTableModel->data(index, VideoTableModel::ProgressRole).toInt());
+        QVERIFY(0 == m_videoTableModel->data(index, VideoTableModel::ProgressMinimumRole).toInt());
+        QVERIFY(100 == m_videoTableModel->data(index, VideoTableModel::ProgressMaximumRole).toInt());
+        QVERIFY(expectedText == m_videoTableModel->data(index, VideoTableModel::ProgressTextRole).toString());
+    }
+
+    // don't set progress text
+    for (int i=0; i < 2; i++) {
+        QVERIFY(m_videoTableModel->setKnownDownloadProgress(i, 20 + i, false));
+
+        QModelIndex index = m_videoTableModel->index(i, VideoTableModel::ProgressColumn);
+        QVERIFY((20 + i) == m_videoTableModel->data(index, VideoTableModel::ProgressRole).toInt());
+        QVERIFY(0 == m_videoTableModel->data(index, VideoTableModel::ProgressMinimumRole).toInt());
+        QVERIFY(100 == m_videoTableModel->data(index, VideoTableModel::ProgressMaximumRole).toInt());
+        QVERIFY("" == m_videoTableModel->data(index, VideoTableModel::ProgressTextRole).toString());
+    }
+
+    // row number too high
+    QVERIFY(!m_videoTableModel->setKnownDownloadProgress(2, 16));
+    QVERIFY(m_videoTableModel->rowCount() == 3);
+}
+
+void TestVideoTableModel::setUnknownDownloadProgress() {
+    // set some progress text
+    for (int i=0; i < 2; i++) {
+        QString progress = QString::number(i+10) + " hours";
+        QVERIFY(m_videoTableModel->setUnknownDownloadProgress(i, progress));
+
+        QModelIndex index = m_videoTableModel->index(i, VideoTableModel::ProgressColumn);
+        QVERIFY(-1 == m_videoTableModel->data(index, VideoTableModel::ProgressRole).toInt());
+        QVERIFY(0 == m_videoTableModel->data(index, VideoTableModel::ProgressMinimumRole).toInt());
+        QVERIFY(0 == m_videoTableModel->data(index, VideoTableModel::ProgressMaximumRole).toInt());
+        QVERIFY(progress == m_videoTableModel->data(index, VideoTableModel::ProgressTextRole).toString());
+    }
+
+    // set empty string as text
+    for (int i=0; i < 2; i++) {
+        QString progress = "";
+        QVERIFY(m_videoTableModel->setUnknownDownloadProgress(i, progress));
+
+        QModelIndex index = m_videoTableModel->index(i, VideoTableModel::ProgressColumn);
+        QVERIFY(-1 == m_videoTableModel->data(index, VideoTableModel::ProgressRole).toInt());
+        QVERIFY(0 == m_videoTableModel->data(index, VideoTableModel::ProgressMinimumRole).toInt());
+        QVERIFY(0 == m_videoTableModel->data(index, VideoTableModel::ProgressMaximumRole).toInt());
+        QVERIFY(progress == m_videoTableModel->data(index, VideoTableModel::ProgressTextRole).toString());
+    }
+
+    // row number too high
+    QVERIFY(!m_videoTableModel->setUnknownDownloadProgress(2, QString("5 hours")));
+    QVERIFY(m_videoTableModel->rowCount() == 3);
+}
+
+void TestVideoTableModel::downloadProgress() {
+    for (int row=0; row < 2; row++) {
+        for (int knownProgress=0; knownProgress < 2; knownProgress++) {
+            for (int progress=-10; progress < 110; progress++) {
+                if (knownProgress) {
+                    m_videoTableModel->setKnownDownloadProgress(row, progress);
+                    QVERIFY(progress == m_videoTableModel->downloadProgress(row));
+                } else {
+                    m_videoTableModel->setUnknownDownloadProgress(row, QString("sometext"));
+                    QVERIFY(-1 == m_videoTableModel->downloadProgress(row));
+                }
+            }
+        }
+    }
+    // row number too high
+    for (int row=0; row < 2; row++) {
+        m_videoTableModel->setKnownDownloadProgress(row, 10 + row);
+    }
+    QVERIFY(0 == m_videoTableModel->downloadProgress(2));
+}
+
+void TestVideoTableModel::setDownloadState() {
+    for (int i=0; i < 2; i++) {
+        QVERIFY(m_videoTableModel->setDownloadState(i, VideoInfo::StateStarting));
+
+        QModelIndex index = m_videoTableModel->index(i, VideoTableModel::StatusColumn);
+        QVERIFY(VideoInfo::StateStarting == (VideoInfo::VideoState)(m_videoTableModel->data(index, Qt::UserRole).toInt()));
+    }
+
+    // row number too high
+    QVERIFY(!m_videoTableModel->setDownloadState(2, VideoInfo::StateStarting));
 }
 
 QTEST_APPLESS_MAIN(TestVideoTableModel)

@@ -21,7 +21,7 @@ VideoInfo::~VideoInfo() {
     m_url = "";
     m_progress = 0;
     m_progressMinimum = 0;
-    m_progressMaximum = 0;
+    m_progressMaximum = 100;
     m_progressText = "";
     m_videoState = StateNotStarted;
 }

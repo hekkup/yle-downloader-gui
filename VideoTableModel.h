@@ -30,7 +30,8 @@ public:
      * Progress column related data roles for data() & setData()
      */
     enum VideoInfoItemRoles {
-        ProgressMinimumRole = Qt::UserRole + 1,
+        ProgressRole = Qt::UserRole,
+        ProgressMinimumRole,
         ProgressMaximumRole,
         ProgressTextRole,
         VideoInfoItemRoles_COUNT
@@ -39,6 +40,48 @@ public:
     explicit VideoTableModel(QObject *parent = 0);
     ~VideoTableModel();
     
+    /**
+     * Add URL to model.
+     * @return row number if success, -1 if failed (empty or placeholder string)
+     */
+    int addUrl(QString url);
+
+    /**
+     * Get URL from row. Placeholder text from the bottom-most row is not
+     * returned.
+     * @return URL/text if row exists, or empty string if row doesn't exist
+     */
+    QString url(int row);
+
+    /**
+     * Set a known download progress (percentage).
+     * @param showText Whether to set progress text for progress bar
+     */
+    bool setKnownDownloadProgress(int row, int progress, bool showText = true);
+
+    /**
+     * Set an unknown download progress with text.
+     */
+    bool setUnknownDownloadProgress(int row, QString text);
+
+    /**
+     * Get download progress. If the progress was recently set with
+     * setUnknownDownloadProgress(), the progress is -1, otherwise it's the
+     * set progress.
+     * @return progress if it's known, -1 if it's unknown
+     */
+    int downloadProgress(int row);
+
+    /**
+     * Set download state.
+     */
+    bool setDownloadState(int row, VideoInfo::VideoState state);
+
+    /**
+     * Get video count. Note that this is rowCount() - 1.
+     */
+    int videoCount();
+
     /**
      * Get table row count + 1. The one extra row is for internal purposes:
      * to show the "<add URL>" text in the bottom-most row.

@@ -91,11 +91,6 @@ private:
     void downloadEnded();
     void setDownloadWidgetsDisabled(bool disabled);
 
-    void updateCurrentProgressBar(int max, int progress, QString text);
-    bool isCurrentProgressBarIndeterminate();
-    void updateCurrentStatus(VideoInfo::VideoState);
-    void addUrl(QString url);
-
     void updateDestDirLabel();
     void updateVideoTableView();
 

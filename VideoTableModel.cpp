@@ -19,6 +19,80 @@ VideoTableModel::~VideoTableModel() {
     }
 }
 
+int VideoTableModel::addUrl(QString url) {
+    QString trimmedStr = url.trimmed();
+    if (trimmedStr.isEmpty()) {
+        return -1;
+    }
+    int row = rowCount() - 1;
+    QModelIndex index = this->index(row, VideoTableModel::UrlColumn);
+    if (setData(index, QVariant(url), Qt::EditRole)) {
+        return row;
+    } else {
+        return -1;
+    }
+}
+
+QString VideoTableModel::url(int row) {
+    if (row >= this->m_videos.size()) {
+        return QString("");
+    }
+    QModelIndex index = this->index(row, VideoTableModel::UrlColumn);
+    QVariant dataItem = this->data(index, Qt::DisplayRole);
+    if (dataItem.isValid()) {
+        return dataItem.toString();
+    } else {
+        return QString("");
+    }
+}
+
+bool VideoTableModel::setKnownDownloadProgress(int row, int progress, bool showText) {
+    QModelIndex index = this->index(row, VideoTableModel::ProgressColumn);
+    QString text;
+    if (showText) {
+        text = QString::number(progress) + "%";
+    } else {
+        text = "";
+    }
+    bool ok = true;
+    if (!setData(index, QVariant(0), VideoTableModel::ProgressMinimumRole)) { ok = false; }
+    if (!setData(index, QVariant(100), VideoTableModel::ProgressMaximumRole)) { ok = false; }
+    if (!setData(index, QVariant(progress), VideoTableModel::ProgressRole)) { ok = false; }
+    if (!setData(index, QVariant(text), VideoTableModel::ProgressTextRole)) { ok = false; }
+    return ok;
+}
+
+bool VideoTableModel::setUnknownDownloadProgress(int row, QString text) {
+    QModelIndex index = this->index(row, VideoTableModel::ProgressColumn);
+    bool ok = true;
+    if (!setData(index, QVariant(0), VideoTableModel::ProgressMinimumRole)) { ok=false; }
+    if (!setData(index, QVariant(0), VideoTableModel::ProgressMaximumRole)) { ok=false; }
+    if (!setData(index, QVariant(-1), VideoTableModel::ProgressRole)) { ok=false; }
+    if (!setData(index, QVariant(text), VideoTableModel::ProgressTextRole)) { ok=false; }
+    return ok;
+}
+
+int VideoTableModel::downloadProgress(int row) {
+    QModelIndex index = this->index(row, VideoTableModel::ProgressColumn);
+    QVariant dataItem = this->data(index, VideoTableModel::ProgressRole);
+    if (dataItem.isValid()) {
+        return dataItem.toInt();
+    }
+    return 0;
+}
+
+bool VideoTableModel::setDownloadState(int row, VideoInfo::VideoState state) {
+    QModelIndex index = this->index(row, VideoTableModel::StatusColumn);
+    if (!setData(index, QVariant((int)state), Qt::UserRole)) {
+        return false;
+    }
+    return true;
+}
+
+int VideoTableModel::videoCount() {
+    return m_videos.size();
+}
+
 int VideoTableModel::rowCount(const QModelIndex &parent) const {
     Q_UNUSED(parent)
     return m_videos.size() + 1;   // +1 for empty URL placeholder
@@ -84,7 +158,7 @@ QVariant VideoTableModel::data(const QModelIndex &index, int role) const {
         }
     }
 
-    if (Qt::UserRole == role) {
+    if ((Qt::UserRole == role) || (VideoTableModel::ProgressRole == role)) {
         if (index.row() < m_videos.size()) {
             videoInfo = m_videos.at(index.row());
             if (videoInfo) {
@@ -173,7 +247,7 @@ bool VideoTableModel::setData(const QModelIndex &index, const QVariant &value, i
         return false;
     }
 
-    if (Qt::UserRole == role) {
+    if ((Qt::UserRole == role) || (VideoTableModel::ProgressRole == role)) {
         switch (index.column()) {
             case ProgressColumn: {
                 int progress = value.toInt();

@@ -103,7 +103,7 @@ void MainWindow::saveSubtitlesChoice()
 void MainWindow::videoTableChanged()
 {
     if (!m_downloadInProgress) {
-        ui->downloadButton->setEnabled(m_videoTableModel->rowCount() > 1);
+        ui->downloadButton->setEnabled(m_videoTableModel->videoCount() > 0);
     }
 }
 
@@ -111,7 +111,7 @@ void MainWindow::startDownload()
 {
     Q_ASSERT(!m_downloadInProgress);
 
-    if (m_videoTableModel->rowCount() <= 1) {
+    if (m_videoTableModel->videoCount() <= 0) {
         qWarning() << "Attempt to start download with nothing to download.";
         return;
     }
@@ -125,7 +125,7 @@ void MainWindow::startDownload()
 
 void MainWindow::startNextDownload() {
     m_currentlyDownloadingVideoRow++;
-    if (m_currentlyDownloadingVideoRow >= (m_videoTableModel->rowCount() - 1)) {
+    if (m_currentlyDownloadingVideoRow >= (m_videoTableModel->videoCount())) {
         downloadEnded();
         return;
     }
@@ -135,9 +135,7 @@ void MainWindow::startNextDownload() {
         m_downloader = NULL;
     }
 
-    QModelIndex index = m_videoTableModel->index(m_currentlyDownloadingVideoRow, VideoTableModel::UrlColumn);
-    QVariant urlData = m_videoTableModel->data(index);
-    QUrl url = QUrl(urlData.toString());
+    QUrl url = QUrl(m_videoTableModel->url(this->m_currentlyDownloadingVideoRow));
 
     QStringList yleDlExtraOptions = ui->yleDlExtraOptionsLineEdit->text().trimmed().split(" ", QString::SkipEmptyParts);
     QStringList extraArgs;
@@ -166,8 +164,9 @@ void MainWindow::startNextDownload() {
     connect(m_downloader, SIGNAL(downloaderOutputWritten(QString)), this, SLOT(downloaderOutputWritten(QString)));
 
 
-    updateCurrentProgressBar(0, -1, "");
-    updateCurrentStatus(VideoInfo::StateStarting);
+    m_videoTableModel->setUnknownDownloadProgress(this->m_currentlyDownloadingVideoRow, "");
+    m_videoTableModel->setDownloadState(this->m_currentlyDownloadingVideoRow,
+        VideoInfo::StateStarting);
 
     m_downloadInProgress = true;
     m_downloader->start();
@@ -181,16 +180,19 @@ void MainWindow::reportDestFileName(QString name)
 
 void MainWindow::reportProgress(int percentage)
 {
-    QString percentageStr = QString::number(percentage) + "%";
-    updateCurrentProgressBar(100, percentage, percentageStr);
-    updateCurrentStatus(VideoInfo::StateLoading);
+    m_videoTableModel->setKnownDownloadProgress(this->m_currentlyDownloadingVideoRow,
+        percentage);
+    m_videoTableModel->setDownloadState(this->m_currentlyDownloadingVideoRow,
+        VideoInfo::StateLoading);
 }
 
 void MainWindow::reportUnknownProgress(double secondsDownloaded)
 {
     QString progressStr = formatSecondsDownloaded(secondsDownloaded);
-    updateCurrentProgressBar(0, -1, progressStr);
-    updateCurrentStatus(VideoInfo::StateLoading);
+    m_videoTableModel->setUnknownDownloadProgress(this->m_currentlyDownloadingVideoRow,
+        progressStr);
+    m_videoTableModel->setDownloadState(this->m_currentlyDownloadingVideoRow,
+        VideoInfo::StateLoading);
 }
 
 void MainWindow::downloaderOutputWritten(QString line)
@@ -200,27 +202,31 @@ void MainWindow::downloaderOutputWritten(QString line)
 
 void MainWindow::downloadSucceeded()
 {
-    updateCurrentProgressBar(100, 100, "100%");
-    updateCurrentStatus(VideoInfo::StateLoadedOk);
+    m_videoTableModel->setKnownDownloadProgress(this->m_currentlyDownloadingVideoRow, 100);
+    m_videoTableModel->setDownloadState(this->m_currentlyDownloadingVideoRow,
+        VideoInfo::StateLoadedOk);
+
     this->startNextDownload();
 }
 
 void MainWindow::downloadCanceled()
 {
-    if (!isCurrentProgressBarIndeterminate()) {
-        updateCurrentProgressBar(100, 0, "");
+    if (m_videoTableModel->downloadProgress(this->m_currentlyDownloadingVideoRow) == -1) {
+        m_videoTableModel->setKnownDownloadProgress(this->m_currentlyDownloadingVideoRow, 0, false);
     }
-    updateCurrentStatus(VideoInfo::StateCanceled);
+    m_videoTableModel->setDownloadState(this->m_currentlyDownloadingVideoRow,
+        VideoInfo::StateCanceled);
 
-    downloadEnded();
+    this->downloadEnded();
 }
 
 void MainWindow::downloadFailed()
 {
-    if (!isCurrentProgressBarIndeterminate()) {
-        updateCurrentProgressBar(100, 0, "");
+    if (m_videoTableModel->downloadProgress(this->m_currentlyDownloadingVideoRow) == -1) {
+        m_videoTableModel->setKnownDownloadProgress(this->m_currentlyDownloadingVideoRow, 0, false);
     }
-    updateCurrentStatus(VideoInfo::StateFailed);
+    m_videoTableModel->setDownloadState(this->m_currentlyDownloadingVideoRow,
+        VideoInfo::StateFailed);
 
     this->startNextDownload();
 }
@@ -278,7 +284,7 @@ void MainWindow::dragEnterEvent(QDragEnterEvent* event) {
 }
 
 void MainWindow::dropEvent(QDropEvent* event) {
-    addUrl(event->mimeData()->text());
+    m_videoTableModel->addUrl(event->mimeData()->text());
     event->acceptProposedAction();
 }
 
@@ -335,38 +341,6 @@ void MainWindow::setDownloadWidgetsDisabled(bool disabled)
     } else {
         ui->videoTableView->setEditTriggers(m_videoTableEditTriggers);
     }
-}
-
-void MainWindow::updateCurrentProgressBar(int max, int progress, QString text)
-{
-    Q_ASSERT(this->m_currentlyDownloadingVideoRow >= 0);
-    QModelIndex index = m_videoTableModel->index(this->m_currentlyDownloadingVideoRow,
-        VideoTableModel::ProgressColumn);
-    m_videoTableModel->setData(index, QVariant(0), VideoTableModel::ProgressMinimumRole);
-    m_videoTableModel->setData(index, QVariant(max), VideoTableModel::ProgressMaximumRole);
-    m_videoTableModel->setData(index, QVariant(progress), Qt::UserRole);
-    m_videoTableModel->setData(index, QVariant(text), VideoTableModel::ProgressTextRole);
-}
-
-bool MainWindow::isCurrentProgressBarIndeterminate()
-{
-    QModelIndex index = m_videoTableModel->index(this->m_currentlyDownloadingVideoRow,
-        VideoTableModel::ProgressColumn);
-    return m_videoTableModel->data(index, Qt::UserRole).toInt() < 0;
-}
-
-void MainWindow::updateCurrentStatus(VideoInfo::VideoState state)
-{
-    Q_ASSERT(this->m_currentlyDownloadingVideoRow >= 0);
-    QModelIndex index = m_videoTableModel->index(this->m_currentlyDownloadingVideoRow,
-        VideoTableModel::StatusColumn);
-    m_videoTableModel->setData(index, QVariant(state), Qt::UserRole);
-}
-
-void MainWindow::addUrl(QString url) {
-    QModelIndex index = m_videoTableModel->index(m_videoTableModel->rowCount() - 1,
-        VideoTableModel::UrlColumn);
-    m_videoTableModel->setData(index, QVariant(url), Qt::EditRole);
 }
 
 void MainWindow::updateDestDirLabel()
