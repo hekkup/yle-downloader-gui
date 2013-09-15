@@ -19,102 +19,101 @@
         <translation>&amp;Valitse...</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="105"/>
+        <location filename="MainWindow.ui" line="242"/>
         <source>Extra options for yle-dl</source>
         <translation>yle-dl:n lisäoptiot</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="142"/>
+        <location filename="MainWindow.ui" line="116"/>
         <source>&amp;Subtitles</source>
         <translation>Te&amp;kstitys</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="170"/>
+        <location filename="MainWindow.ui" line="144"/>
         <source>Start &amp;download</source>
         <translation>&amp;Lataa</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="177"/>
+        <location filename="MainWindow.ui" line="151"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Peruuta</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="198"/>
+        <location filename="MainWindow.ui" line="172"/>
         <source>Status</source>
         <translation>Tila</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="205"/>
+        <location filename="MainWindow.ui" line="179"/>
         <source>Checking for updates...</source>
         <translation>Etsitään päivityksiä...</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="226"/>
+        <location filename="MainWindow.ui" line="200"/>
         <source>&amp;Show details...</source>
         <translation>Näytä &amp;yksityiskohdat...</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="24"/>
+        <location filename="MainWindow.cpp" line="25"/>
         <source>(v%1)</source>
         <translation>(v%1)</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="74"/>
+        <location filename="MainWindow.cpp" line="113"/>
         <source>Choose download folder</source>
         <translation>Valitse lataushakemisto</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="164"/>
+        <location filename="MainWindow.cpp" line="240"/>
         <source>Downloading to file %1</source>
         <translation>Ladataan tiedostoon %1</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="92"/>
         <source>Add videos to video list</source>
-        <translation>Lisää videoita listalle</translation>
+        <translation type="obsolete">Lisää videoita listalle</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="273"/>
+        <location filename="MainWindow.cpp" line="314"/>
         <source>An updated downloader (v%1) is available:&lt;br/&gt;&lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;</source>
         <translation>Ohjelmasta on uudempi versio (%1):&lt;br/&gt;&lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="321"/>
+        <location filename="MainWindow.cpp" line="380"/>
         <source>Really cancel download?</source>
         <translation>Peruutetaanko lataus varmasti?</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="359"/>
+        <location filename="MainWindow.cpp" line="418"/>
         <source>Download folder: %1</source>
         <translation>Lataushakemisto: %1</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="376"/>
+        <location filename="MainWindow.cpp" line="435"/>
         <source>%1 min %2 sec</source>
         <translation>%1 min %2 s</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="378"/>
+        <location filename="MainWindow.cpp" line="437"/>
         <source>%1 sec</source>
         <translation>%1 s</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="388"/>
+        <location filename="MainWindow.cpp" line="447"/>
         <source>Downloads</source>
         <translation>Lataukset</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="389"/>
+        <location filename="MainWindow.cpp" line="448"/>
         <source>Download</source>
         <translation>Lataus</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="392"/>
+        <location filename="MainWindow.cpp" line="451"/>
         <source>downloads</source>
         <translation>lataukset</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="393"/>
+        <location filename="MainWindow.cpp" line="452"/>
         <source>download</source>
         <translation>lataus</translation>
     </message>
@@ -249,6 +248,16 @@
         <location filename="VideoTableModel.cpp" line="9"/>
         <source>&lt;add URL&gt;</source>
         <translation>&lt;lisää osoite&gt;</translation>
+    </message>
+    <message>
+        <location filename="VideoTableModel.cpp" line="173"/>
+        <source>Video file name</source>
+        <translation>Videon tiedostonimi</translation>
+    </message>
+    <message>
+        <location filename="VideoTableModel.cpp" line="175"/>
+        <source>&lt;unknown&gt;</source>
+        <translation>&lt;tuntematon&gt;</translation>
     </message>
 </context>
 <context>

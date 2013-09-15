@@ -21,6 +21,7 @@ private Q_SLOTS:
     void getAndSetProgressText();
     void getAndSetState();
     void stateString();
+    void getAndSetFileName();
 
 private:
     VideoInfo* m_videoInfo;
@@ -47,6 +48,7 @@ void TestVideoInfo::constructor() {
     QVERIFY(100 == m_videoInfo->m_progressMaximum);
     QVERIFY("" == m_videoInfo->m_progressText);
     QVERIFY(0 == m_videoInfo->m_videoState);
+    QVERIFY("" == m_videoInfo->m_fileName);
 
     QVERIFY("Not started" == m_videoInfo->m_videoStateStrings[VideoInfo::StateNotStarted]);
     QVERIFY("Starting..." == m_videoInfo->m_videoStateStrings[VideoInfo::StateStarting]);
@@ -131,6 +133,14 @@ void TestVideoInfo::stateString() {
 
     QVERIFY("" == m_videoInfo->stateString((VideoInfo::VideoState)-1));
     QVERIFY("" == m_videoInfo->stateString(VideoInfo::STATE_COUNT));
+}
+
+void TestVideoInfo::getAndSetFileName() {
+    QVERIFY("" == m_videoInfo->fileName());
+    m_videoInfo->setFileName(QString("video.flv"));
+    QVERIFY("video.flv" == m_videoInfo->fileName());
+    m_videoInfo->setFileName(QString(""));
+    QVERIFY("" == m_videoInfo->fileName());
 }
 
 QTEST_APPLESS_MAIN(TestVideoInfo)

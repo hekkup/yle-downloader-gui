@@ -50,6 +50,11 @@ public:
     QString stateString(VideoInfo::VideoState);
 
     /**
+     * Get target file name
+     */
+    QString fileName();
+
+    /**
      * Set video URL
      */
     void setUrl(QString url);
@@ -80,6 +85,11 @@ public:
      */
     void setState(VideoInfo::VideoState state);
 
+    /**
+     * Set target file name
+     */
+    void setFileName(QString fileName);
+
 #ifndef UNIT_TEST
 private:
 #endif
@@ -90,6 +100,7 @@ private:
     QString m_progressText;
     VideoState m_videoState;
     QString m_videoStateStrings[VideoInfo::STATE_COUNT];
+    QString m_fileName;
 };
 
 #endif // VIDEOINFO_H

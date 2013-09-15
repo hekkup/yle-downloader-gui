@@ -57,6 +57,7 @@ private Q_SLOTS:
     void setUnknownDownloadProgress();
     void downloadProgress();
     void setDownloadState();
+    void setVideoFileName();
 
 private:
     VideoTableModel* m_videoTableModel;
@@ -125,12 +126,14 @@ void TestVideoTableModel::init() {
     v1->setUrl(QString("http://localhost/1"));
     v1->setProgress(10);
     v1->setState(VideoInfo::StateLoading);
+    v1->setFileName(QString("video1.flv"));
     m_videoTableModel->m_videos.append(v1);
 
     v1 = new VideoInfo();
     v1->setUrl(QString("http://localhost/2"));
     v1->setProgress(20);
     v1->setState(VideoInfo::StateLoadedOk);
+    v1->setFileName(QString("video2.flv"));
     m_videoTableModel->m_videos.append(v1);
 
     QVERIFY(m_videoTableModel->m_videos.size() == 2);
@@ -239,6 +242,9 @@ void TestVideoTableModel::data() {
     index = m_videoTableModel->index(0, VideoTableModel::StatusColumn);
     data = index.data(Qt::DisplayRole);
     QVERIFY(data.toString() == videoInfo.stateString(VideoInfo::StateLoading));
+    index = m_videoTableModel->index(0, VideoTableModel::FileNameColumn);
+    data = index.data(Qt::DisplayRole);
+    QVERIFY(data.toString() == "video1.flv");
 
     index = m_videoTableModel->index(1, VideoTableModel::UrlColumn);
     data = index.data(Qt::DisplayRole);
@@ -249,6 +255,9 @@ void TestVideoTableModel::data() {
     index = m_videoTableModel->index(1, VideoTableModel::StatusColumn);
     data = index.data(Qt::DisplayRole);
     QVERIFY(data.toString() == videoInfo.stateString(VideoInfo::StateLoadedOk));
+    index = m_videoTableModel->index(1, VideoTableModel::FileNameColumn);
+    data = index.data(Qt::DisplayRole);
+    QVERIFY(data.toString() == "video2.flv");
 
     index = m_videoTableModel->index(2, VideoTableModel::UrlColumn);
     data = index.data(Qt::DisplayRole);
@@ -257,6 +266,9 @@ void TestVideoTableModel::data() {
     data = index.data(Qt::DisplayRole);
     QVERIFY(!data.isValid());
     index = m_videoTableModel->index(2, VideoTableModel::StatusColumn);
+    data = index.data(Qt::DisplayRole);
+    QVERIFY(!data.isValid());
+    index = m_videoTableModel->index(2, VideoTableModel::FileNameColumn);
     data = index.data(Qt::DisplayRole);
     QVERIFY(!data.isValid());
 
@@ -271,6 +283,9 @@ void TestVideoTableModel::data() {
     index = m_videoTableModel->index(0, VideoTableModel::StatusColumn);
     data = index.data(Qt::EditRole);
     QVERIFY(!data.isValid());
+    index = m_videoTableModel->index(0, VideoTableModel::FileNameColumn);
+    data = index.data(Qt::EditRole);
+    QVERIFY(!data.isValid());
 
     index = m_videoTableModel->index(1, VideoTableModel::UrlColumn);
     data = index.data(Qt::EditRole);
@@ -281,6 +296,9 @@ void TestVideoTableModel::data() {
     index = m_videoTableModel->index(1, VideoTableModel::StatusColumn);
     data = index.data(Qt::EditRole);
     QVERIFY(!data.isValid());
+    index = m_videoTableModel->index(1, VideoTableModel::FileNameColumn);
+    data = index.data(Qt::EditRole);
+    QVERIFY(!data.isValid());
 
     index = m_videoTableModel->index(2, VideoTableModel::UrlColumn);
     data = index.data(Qt::EditRole);
@@ -289,6 +307,9 @@ void TestVideoTableModel::data() {
     data = index.data(Qt::EditRole);
     QVERIFY(!data.isValid());
     index = m_videoTableModel->index(2, VideoTableModel::StatusColumn);
+    data = index.data(Qt::EditRole);
+    QVERIFY(!data.isValid());
+    index = m_videoTableModel->index(2, VideoTableModel::FileNameColumn);
     data = index.data(Qt::EditRole);
     QVERIFY(!data.isValid());
 
@@ -303,6 +324,9 @@ void TestVideoTableModel::data() {
     index = m_videoTableModel->index(0, VideoTableModel::StatusColumn);
     data = index.data(Qt::UserRole);
     QVERIFY(data.toInt() == (int)VideoInfo::StateLoading);
+    index = m_videoTableModel->index(0, VideoTableModel::FileNameColumn);
+    data = index.data(Qt::UserRole);
+    QVERIFY(!data.isValid());
 
     index = m_videoTableModel->index(1, VideoTableModel::UrlColumn);
     data = index.data(Qt::UserRole);
@@ -313,6 +337,9 @@ void TestVideoTableModel::data() {
     index = m_videoTableModel->index(1, VideoTableModel::StatusColumn);
     data = index.data(Qt::UserRole);
     QVERIFY(data.toInt() == (int)VideoInfo::StateLoadedOk);
+    index = m_videoTableModel->index(1, VideoTableModel::FileNameColumn);
+    data = index.data(Qt::UserRole);
+    QVERIFY(!data.isValid());
 
     index = m_videoTableModel->index(2, VideoTableModel::UrlColumn);
     data = index.data(Qt::UserRole);
@@ -321,6 +348,9 @@ void TestVideoTableModel::data() {
     data = index.data(Qt::UserRole);
     QVERIFY(!data.isValid());
     index = m_videoTableModel->index(2, VideoTableModel::StatusColumn);
+    data = index.data(Qt::UserRole);
+    QVERIFY(!data.isValid());
+    index = m_videoTableModel->index(2, VideoTableModel::FileNameColumn);
     data = index.data(Qt::UserRole);
     QVERIFY(!data.isValid());
 
@@ -343,6 +373,14 @@ void TestVideoTableModel::data() {
     QVERIFY(false == m_videoTableModel->data(index, VideoTableModel::ProgressMinimumRole).isValid());
     QVERIFY(false == m_videoTableModel->data(index, VideoTableModel::ProgressMaximumRole).isValid());
     QVERIFY(false == m_videoTableModel->data(index, VideoTableModel::ProgressTextRole).isValid());
+
+    // Qt::ToolTipRole
+    index = m_videoTableModel->index(0, VideoTableModel::UrlColumn);
+    QVERIFY("Video file name\nvideo1.flv" == m_videoTableModel->data(index, Qt::ToolTipRole).toString());
+    index = m_videoTableModel->index(1, VideoTableModel::UrlColumn);
+    QVERIFY("Video file name\nvideo2.flv" == m_videoTableModel->data(index, Qt::ToolTipRole).toString());
+    index = m_videoTableModel->index(2, VideoTableModel::UrlColumn);
+    QVERIFY(false == m_videoTableModel->data(index, Qt::ToolTipRole).isValid());
 }
 
 void TestVideoTableModel::setData() {
@@ -362,6 +400,10 @@ void TestVideoTableModel::setData() {
     QVERIFY(m_videoTableModel->setData(index, QVariant(VideoInfo::StateCanceled), Qt::UserRole));
     QVERIFY(VideoInfo::StateCanceled == m_videoTableModel->m_videos.at(0)->state());
 
+    index = m_videoTableModel->index(0, VideoTableModel::FileNameColumn);
+    QVERIFY(m_videoTableModel->setData(index, QVariant("hei.mpg"), Qt::EditRole));
+    QVERIFY("hei.mpg" == m_videoTableModel->m_videos.at(0)->fileName());
+
     // try setting invalid QVariant: data shouldn't change
     index = m_videoTableModel->index(0, VideoTableModel::UrlColumn);
     QVERIFY(false == m_videoTableModel->setData(index, QVariant::Invalid, Qt::EditRole));
@@ -375,6 +417,10 @@ void TestVideoTableModel::setData() {
     QVERIFY(false == m_videoTableModel->setData(index, QVariant::Invalid, Qt::UserRole));
     QVERIFY(VideoInfo::StateCanceled == m_videoTableModel->m_videos.at(0)->state());
 
+    index = m_videoTableModel->index(0, VideoTableModel::FileNameColumn);
+    QVERIFY(false == m_videoTableModel->setData(index, QVariant::Invalid, Qt::EditRole));
+    QVERIFY("hei.mpg" == m_videoTableModel->m_videos.at(0)->fileName());
+
     // try setting into the empty placeholder row: should add when
     // setting new URL, not in other cases
     m_rowsAboutToBeInsertedCalled = false;
@@ -386,6 +432,11 @@ void TestVideoTableModel::setData() {
 
     index = m_videoTableModel->index(2, VideoTableModel::ProgressColumn);
     QVERIFY(false == m_videoTableModel->setData(index, QVariant(3), Qt::UserRole));
+    QVERIFY(false == m_rowsAboutToBeInsertedCalled);
+    QVERIFY(false == m_rowsInsertedCalled);
+
+    index = m_videoTableModel->index(2, VideoTableModel::FileNameColumn);
+    QVERIFY(false == m_videoTableModel->setData(index, QVariant("heippa.flv"), Qt::EditRole));
     QVERIFY(false == m_rowsAboutToBeInsertedCalled);
     QVERIFY(false == m_rowsInsertedCalled);
 
@@ -592,6 +643,16 @@ void TestVideoTableModel::setDownloadState() {
 
     // row number too high
     QVERIFY(!m_videoTableModel->setDownloadState(2, VideoInfo::StateStarting));
+}
+
+void TestVideoTableModel::setVideoFileName() {
+    for (int i=0; i < 2; i++) {
+        QString fileName = "video" + QString::number(i) + ".flv";
+        QVERIFY(m_videoTableModel->setVideoFileName(i, fileName));
+
+        QModelIndex index = m_videoTableModel->index(i, VideoTableModel::FileNameColumn);
+        QVERIFY(fileName == m_videoTableModel->data(index).toString());
+    }
 }
 
 QTEST_APPLESS_MAIN(TestVideoTableModel)

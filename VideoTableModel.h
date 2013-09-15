@@ -23,6 +23,7 @@ public:
         UrlColumn = 0,
         ProgressColumn,
         StatusColumn,
+        FileNameColumn,
         COLUMN_COUNT
     };
 
@@ -76,6 +77,8 @@ public:
      * Set download state.
      */
     bool setDownloadState(int row, VideoInfo::VideoState state);
+
+    bool setVideoFileName(int row, QString fileName);
 
     /**
      * Get pointer to video at row position

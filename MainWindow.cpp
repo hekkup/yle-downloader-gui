@@ -133,6 +133,7 @@ void MainWindow::saveSession()
         m_settings.setValue("URL", QVariant(m_videoTableModel->videoAt(row)->url()));
         m_settings.setValue("progress", QVariant(m_videoTableModel->videoAt(row)->progress()));
         m_settings.setValue("state", QVariant((int)m_videoTableModel->videoAt(row)->state()));
+        m_settings.setValue("filename", QVariant(m_videoTableModel->videoAt(row)->fileName()));
     }
     m_settings.endArray();
     m_settings.endGroup();
@@ -155,6 +156,7 @@ void MainWindow::restoreSession()
             m_videoTableModel->setKnownDownloadProgress(videoRow, progress);
         }
         m_videoTableModel->setDownloadState(videoRow, VideoInfo::StateNotStarted);
+        m_videoTableModel->setVideoFileName(videoRow, m_settings.value("filename").toString());
     }
     m_settings.endArray();
     m_settings.endGroup();
@@ -236,6 +238,7 @@ void MainWindow::reportDestFileName(QString name)
 {
     m_destFileName = name;
     ui->statusLabel->setText(tr("Downloading to file %1").arg(name));
+    m_videoTableModel->setVideoFileName(this->m_currentlyDownloadingVideoRow, name);
 }
 
 void MainWindow::reportProgress(int percentage)

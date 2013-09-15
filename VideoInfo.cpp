@@ -15,6 +15,7 @@ VideoInfo::VideoInfo(QObject *parent) :
     m_videoStateStrings[VideoInfo::StateLoadedOk] = tr("Loaded");
     m_videoStateStrings[VideoInfo::StateCanceled] = tr("Canceled");
     m_videoStateStrings[VideoInfo::StateFailed] = tr("Failed");
+    m_fileName = QString("");
 }
 
 VideoInfo::~VideoInfo() {
@@ -56,6 +57,10 @@ QString VideoInfo::stateString(VideoInfo::VideoState state) {
     } else return QString("");
 }
 
+QString VideoInfo::fileName() {
+    return m_fileName;
+}
+
 void VideoInfo::setUrl(QString url) {
     m_url = url;
 }
@@ -80,4 +85,8 @@ void VideoInfo::setState(VideoInfo::VideoState state) {
     if ((state >= VideoInfo::StateNotStarted) && (state < VideoInfo::STATE_COUNT)) {
         m_videoState = state;
     }
+}
+
+void VideoInfo::setFileName(QString fileName) {
+    m_fileName = fileName;
 }

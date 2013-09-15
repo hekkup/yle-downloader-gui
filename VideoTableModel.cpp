@@ -89,6 +89,14 @@ bool VideoTableModel::setDownloadState(int row, VideoInfo::VideoState state) {
     return true;
 }
 
+bool VideoTableModel::setVideoFileName(int row, QString fileName) {
+    QModelIndex index = this->index(row, VideoTableModel::FileNameColumn);
+    if (!setData(index, QVariant(fileName), Qt::EditRole)) {
+        return false;
+    }
+    return true;
+}
+
 VideoInfo* VideoTableModel::videoAt(int row) {
     if ((row < 0) || (row >= m_videos.size())) {
         return NULL;
@@ -130,6 +138,9 @@ QVariant VideoTableModel::data(const QModelIndex &index, int role) const {
                 case StatusColumn:
                     return QVariant(videoInfo->stateString(videoInfo->state()));
                     break;
+                case FileNameColumn:
+                    return QVariant(videoInfo->fileName());
+                    break;
                 default:
                     return QVariant();
                     break;
@@ -147,6 +158,27 @@ QVariant VideoTableModel::data(const QModelIndex &index, int role) const {
                 break;
             }
         }
+    }
+
+    if (Qt::ToolTipRole == role) {
+        if (index.row() >= m_videos.size()) {
+            return QVariant();
+        }
+        if (index.column() == UrlColumn) {
+            videoInfo = m_videos.at(index.row());
+            if (!videoInfo) {
+                return QVariant();
+            }
+            QString videoFileName = videoInfo->fileName().trimmed();
+            QString tooltipString = tr("Video file name") + QString("\n");
+            if (videoFileName.isEmpty()) {
+                tooltipString += tr("<unknown>");
+            } else {
+                tooltipString += videoFileName;
+            }
+            return QVariant(tooltipString);
+        }
+        return QVariant();
     }
 
     if (Qt::EditRole == role) {
@@ -180,7 +212,6 @@ QVariant VideoTableModel::data(const QModelIndex &index, int role) const {
                     return QVariant();
                     break;
                 }
-
             }
         }
     }
@@ -224,26 +255,37 @@ bool VideoTableModel::setData(const QModelIndex &index, const QVariant &value, i
     VideoInfo* videoInfo = NULL;
 
     if (Qt::EditRole == role) {
-        if (index.row() == m_videos.size()) {
-            insertRow(index.row());
-        }
-        videoInfo = m_videos.at(index.row());
-        if (videoInfo) {
-            switch (index.column()) {
-                case UrlColumn: {
-                    QString url = value.toString();
-                    videoInfo->setUrl(url);
-                    emit dataChanged(index, index);
+        switch (index.column()) {
+            case UrlColumn: {
+                if (index.row() == m_videos.size()) {
+                    insertRow(index.row());
                 }
-                break;
-                default:
+                videoInfo = m_videos.at(index.row());
+                if (!videoInfo) {
                     return false;
-                    break;
-            } // switch
-            return true;
-        } else {
-            return false;
-        }
+                }
+                QString url = value.toString();
+                videoInfo->setUrl(url);
+                emit dataChanged(index, index);
+            }
+            break;
+            case FileNameColumn: {
+            if (index.row() >= m_videos.size()) {
+                    return false;
+                }
+                videoInfo = m_videos.at(index.row());
+                if (!videoInfo) {
+                    return false;
+                }
+                videoInfo->setFileName(value.toString());
+                emit dataChanged(index, index);
+            }
+            break;
+            default:
+                return false;
+                break;
+        } // switch
+        return true;
     }
 
     if (index.row() >= m_videos.size()) {
