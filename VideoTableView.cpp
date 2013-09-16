@@ -14,8 +14,6 @@ VideoTableView::VideoTableView(QWidget *parent) :
     QAction* deleteSelectedAction = m_contextMenu->addAction(tr("Delete"));
     deleteSelectedAction->setShortcut(QKeySequence::Delete);
 
-    this->setColumnHidden(VideoTableModel::FileNameColumn, true);
-
     connect(this, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
     connect(deleteSelectedAction, SIGNAL(triggered()), this, SLOT(removeSelectedRows()));
 }

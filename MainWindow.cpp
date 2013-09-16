@@ -37,6 +37,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_videoTableModel = new VideoTableModel();
     if (m_videoTableModel) {
         ui->videoTableView->setModel(m_videoTableModel);
+        ui->videoTableView->setColumnHidden(VideoTableModel::FileNameColumn, true);
     }
     m_currentlyDownloadingVideoRow = -1;
 
@@ -421,9 +422,13 @@ void MainWindow::updateDestDirLabel()
 void MainWindow::updateVideoTableView()
 {
     int urlTableWidth = ui->videoTableView->viewport()->width();
-    ui->videoTableView->setColumnWidth(VideoTableModel::UrlColumn, (urlTableWidth * 3)/5);
-    ui->videoTableView->setColumnWidth(VideoTableModel::ProgressColumn, urlTableWidth / 5);
-    ui->videoTableView->setColumnWidth(VideoTableModel::StatusColumn, urlTableWidth / 5);
+    QHeaderView* header = ui->videoTableView->horizontalHeader();
+    header->resizeSection(VideoTableModel::UrlColumn, urlTableWidth * 3 / 5);
+    header->resizeSection(VideoTableModel::ProgressColumn, urlTableWidth / 5);
+    header->resizeSection(VideoTableModel::StatusColumn, urlTableWidth / 5);
+    header->setResizeMode(VideoTableModel::UrlColumn, QHeaderView::Fixed);
+    header->setResizeMode(VideoTableModel::ProgressColumn, QHeaderView::Fixed);
+    header->setResizeMode(VideoTableModel::StatusColumn, QHeaderView::Fixed);
 }
 
 QString MainWindow::formatSecondsDownloaded(double secondsDownloaded)
