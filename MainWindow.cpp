@@ -404,13 +404,6 @@ void MainWindow::setDownloadWidgetsDisabled(bool disabled)
     ui->downloadButton->setDisabled(disabled);
     ui->subtitlesComboBox->setDisabled(disabled);
     ui->yleDlExtraOptionsLineEdit->setDisabled(disabled);
-    // Don't disable videoTableView because text will go gray. Instead,
-    // disable editing.
-    if (disabled) {
-        ui->videoTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    } else {
-        ui->videoTableView->setEditTriggers(m_videoTableEditTriggers);
-    }
 }
 
 void MainWindow::updateDestDirLabel()

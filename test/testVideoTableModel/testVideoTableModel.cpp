@@ -170,12 +170,25 @@ void TestVideoTableModel::constructor() {
 
 void TestVideoTableModel::flags() {
     QModelIndex index;
-    index = m_videoTableModel->index(0, VideoTableModel::UrlColumn);
-    QVERIFY((Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable) == m_videoTableModel->flags(index));
-    index = m_videoTableModel->index(0, VideoTableModel::ProgressColumn);
-    QVERIFY(Qt::ItemIsEnabled == m_videoTableModel->flags(index));
-    index = m_videoTableModel->index(0, VideoTableModel::StatusColumn);
-    QVERIFY(Qt::ItemIsEnabled == m_videoTableModel->flags(index));
+    for (int state=0; state < VideoInfo::STATE_COUNT; state++) {
+        m_videoTableModel->m_videos.at(0)->setState((VideoInfo::VideoState)state);
+
+        if ((state == VideoInfo::StateNotStarted) || (state == VideoInfo::StateFailed)) {
+            index = m_videoTableModel->index(0, VideoTableModel::UrlColumn);
+            QVERIFY((Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable) == m_videoTableModel->flags(index));
+            index = m_videoTableModel->index(0, VideoTableModel::ProgressColumn);
+            QVERIFY(Qt::ItemIsEnabled == m_videoTableModel->flags(index));
+            index = m_videoTableModel->index(0, VideoTableModel::StatusColumn);
+            QVERIFY(Qt::ItemIsEnabled == m_videoTableModel->flags(index));
+        } else {
+            index = m_videoTableModel->index(0, VideoTableModel::UrlColumn);
+            QVERIFY((Qt::ItemIsEnabled | Qt::ItemIsSelectable) == m_videoTableModel->flags(index));
+            index = m_videoTableModel->index(0, VideoTableModel::ProgressColumn);
+            QVERIFY(Qt::ItemIsEnabled == m_videoTableModel->flags(index));
+            index = m_videoTableModel->index(0, VideoTableModel::StatusColumn);
+            QVERIFY(Qt::ItemIsEnabled == m_videoTableModel->flags(index));
+        }
+    }
 }
 
 void TestVideoTableModel::videoAt() {

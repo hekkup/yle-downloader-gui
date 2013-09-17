@@ -379,7 +379,13 @@ bool VideoTableModel::removeRows(int row, int count, const QModelIndex &parent) 
 Qt::ItemFlags VideoTableModel::flags(const QModelIndex &index) const {
     Qt::ItemFlags flags = Qt::ItemIsEnabled;
     if (UrlColumn == index.column()) {
-        flags |= Qt::ItemIsSelectable | Qt::ItemIsEditable;
+        flags |= Qt::ItemIsSelectable;
+        QModelIndex stateIndex = this->index(index.row(), VideoTableModel::StatusColumn);
+        VideoInfo::VideoState state = (VideoInfo::VideoState)this->data(stateIndex, Qt::UserRole).toInt();
+        // enable editing when video download is not yet started or it failed
+        if ((VideoInfo::StateNotStarted == state) || (VideoInfo::StateFailed == state)) {
+            flags |= Qt::ItemIsEditable;
+        }
     }
     return flags;
 }
