@@ -42,7 +42,8 @@ private slots:
     void saveSession();
     void restoreSession();
 
-    void videoTableChanged();
+    void videoTableRowsAdded(QModelIndex parent, int startRow, int endRow);
+    void videoTableRowsRemoved(QModelIndex parent, int startRow, int endRow);
 
     void startDownload();
     void startNextDownload();

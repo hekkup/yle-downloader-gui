@@ -94,7 +94,13 @@ void VideoTableView::removeSelectedRows() {
     while (listIterator.hasNext()) {
         QModelIndex index = listIterator.next();
         int row = index.row();
-        if (row < (this->model()->rowCount() - 1)) {
+        QModelIndex stateIndex = this->model()->index(row, VideoTableModel::StatusColumn);
+        VideoInfo::VideoState state = (VideoInfo::VideoState)this->model()->data(stateIndex, Qt::UserRole).toInt();
+        // allow removing if not downloading
+        if ((row < ((VideoTableModel*)this->model())->videoCount()) &&
+            (VideoInfo::StateStarting != state) &&
+            (VideoInfo::StateLoading != state))
+        {
             rowsToBeRemoved << index.row();
         }
     }

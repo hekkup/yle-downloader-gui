@@ -58,8 +58,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_videoTableModel, SIGNAL(rowsRemoved(QModelIndex, int, int)),
             ui->videoTableView, SLOT(rowsRemoved(QModelIndex, int, int)));
 
-    connect(m_videoTableModel, SIGNAL(rowsInserted(QModelIndex, int, int)), this, SLOT(videoTableChanged()));
-    connect(m_videoTableModel, SIGNAL(rowsRemoved(QModelIndex, int, int)), this, SLOT(videoTableChanged()));
+    connect(m_videoTableModel, SIGNAL(rowsInserted(QModelIndex, int, int)), this, SLOT(videoTableRowsAdded(QModelIndex,int,int)));
+    connect(m_videoTableModel, SIGNAL(rowsRemoved(QModelIndex, int, int)), this, SLOT(videoTableRowsRemoved(QModelIndex, int, int)));
 
     connect(ui->destDirButton, SIGNAL(clicked()), this, SLOT(chooseDestDir()));
     connect(ui->downloadButton, SIGNAL(clicked()), this, SLOT(startDownload()));
@@ -163,10 +163,26 @@ void MainWindow::restoreSession()
     m_settings.endGroup();
 }
 
-void MainWindow::videoTableChanged()
+void MainWindow::videoTableRowsAdded(QModelIndex parent, int startRow, int endRow)
 {
+    Q_UNUSED(parent);
     if (!m_downloadInProgress) {
         ui->downloadButton->setEnabled(m_videoTableModel->videoCount() > 0);
+    }
+}
+
+void MainWindow::videoTableRowsRemoved(QModelIndex parent, int startRow, int endRow)
+{
+    Q_UNUSED(parent);
+    if (!m_downloadInProgress) {
+        ui->downloadButton->setEnabled(m_videoTableModel->videoCount() > 0);
+    } else {
+        // NOTE: assuming only one row is removed at a time
+        if ((startRow == endRow) &&
+            (this->m_currentlyDownloadingVideoRow > startRow))
+        {
+            this->m_currentlyDownloadingVideoRow--;
+        }
     }
 }
 
