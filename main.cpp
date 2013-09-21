@@ -1,4 +1,8 @@
+#ifdef QT_5_0
+#include <QtWidgets>
+#else
 #include <QtGui>
+#endif
 #include "MainWindow.h"
 #include "config.h"
 

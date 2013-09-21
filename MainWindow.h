@@ -2,7 +2,11 @@
 #define MAINWINDOW_H
 
 #include <QtCore>
+#ifdef QT_5_0
+#include <QtWidgets>
+#else
 #include <QtGui>
+#endif
 #include "UpdateChecker.h"
 #include "VideoTableModel.h"
 #include "ProgressBarDelegate.h"
