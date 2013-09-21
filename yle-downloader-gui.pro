@@ -12,9 +12,17 @@ contains(QT_VERSION, ^5) {
 TARGET = yle-downloader-gui
 TEMPLATE = app
 
+unix {
+    target.path = /usr/bin
+    icon.files = icons/yle-downloader-gui.svg
+    icon.path = /usr/share/pixmaps
+    desktopFile.files = yle-downloader-gui.desktop
+    desktopFile.path = /usr/share/applications
+    INSTALLS += target icon desktopFile
+}
 
 SOURCES += main.cpp\
-        MainWindow.cpp \
+    MainWindow.cpp \
     Downloader.cpp \
     ProgressParser.cpp \
     required_qt_translations.cpp \
