@@ -166,6 +166,8 @@ void MainWindow::restoreSession()
 void MainWindow::videoTableRowsAdded(QModelIndex parent, int startRow, int endRow)
 {
     Q_UNUSED(parent);
+    Q_UNUSED(startRow);
+    Q_UNUSED(endRow);
     if (!m_downloadInProgress) {
         ui->downloadButton->setEnabled(m_videoTableModel->videoCount() > 0);
     }
