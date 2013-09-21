@@ -20,6 +20,16 @@ A precompiled Windows package including the downloader is available on the downl
 - `qmake`
 - `make all check`
 
+## Installation in Linux ##
+
+In order to install the application in Linux you can run the following command. If it doesn't work, please check the installation paths of files in `yle-downloader-gui.pro` project file. The file paths have been tested on Kubuntu 13.04 and they should be more or less the same in other distributions, too.
+
+- `sudo make install`
+
+Uninstallation:
+
+- `sudo make uninstall`
+
 ## Packaging for Windows ##
 
 - Use the [build script](https://github.com/mpartel/rtmpdump-yle-windows) to compile rtmpdump-yle for Windows.
@@ -39,14 +49,6 @@ A precompiled Windows package including the downloader is available on the downl
     - `yle-downloader-gui.exe`
 - Make a zip package of the above.
 - Use [Inno Setup](http://www.jrsoftware.org/isinfo.php) to compile `installer/innosetup_installer.iss`. You may need to edit the paths at the beginning of the script to point to where you gathered the above files.
-
-## More about Installing in Linux ##
-
-- Compile the app as described above
-- Copy the resulting executable `yle-downloader-gui` into selected binary path, such as /usr/bin/, /usr/local/bin/ or ~/bin/
-- Copy icon file into your icon path, e.g. /usr/share/pixmaps/. You can use for example 48x48 icon, it will scale as necessary. Rename it to `yle-downloader-gui.png`.
-- Copy the file `yle-downloader-gui.desktop` into /usr/share/applications/.
-- The application should now appear in your menu. If it doesn't then you'll have to restart your window manager or update the menu.
 
 ## Known Issues ##
 
