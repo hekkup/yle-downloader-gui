@@ -1,10 +1,10 @@
-# YLE Areena downloader GUI #
+# YLE Areena Downloader GUI #
 
 http://mpartel.github.com/yle-downloader-gui/
 
 This is a GUI for [yle-dl](http://aajanki.github.com/yle-dl/index.html), a modified rtmpdump program by Antti Ajanki for downloading clips from [YLE Areena](http://areena.yle.fi/).
 
-The GUI is written in C++/[Qt](http://qt.nokia.com/) using [QtCreator](http://qt.nokia.com/products/developer-tools/) and currently requires rtmpdump-yle to be installed.
+The GUI is written in C++/[Qt](http://qt.nokia.com/) using [QtCreator](http://qt.nokia.com/products/developer-tools/) and currently requires rtmpdump-yle (or yle-dl) to be installed.
 
 A precompiled Windows package including the downloader is available on the download page.
 
@@ -14,7 +14,7 @@ A precompiled Windows package including the downloader is available on the downl
 - `qmake`
 - `make`
 
-### Running tests ###
+### Running Tests ###
 
 - `cd test`
 - `qmake`
@@ -40,9 +40,17 @@ A precompiled Windows package including the downloader is available on the downl
 - Make a zip package of the above.
 - Use [Inno Setup](http://www.jrsoftware.org/isinfo.php) to compile `installer/innosetup_installer.iss`. You may need to edit the paths at the beginning of the script to point to where you gathered the above files.
 
-## Known issues ##
+## More about Installing in Linux ##
 
-- On windows, trying to download a file that already exists, yle-dl crashes to an encoding error while printing a log message.
+- Compile the app as described above
+- Copy the resulting executable `yle-downloader-gui` into selected binary path, such as /usr/bin/, /usr/local/bin/ or ~/bin/
+- Copy icon file into your icon path, e.g. /usr/share/pixmaps/. You can use for example 48x48 icon, it will scale as necessary. Rename it to `yle-downloader-gui.png`.
+- Copy the file `yle-downloader-gui.desktop` into /usr/share/applications/.
+- The application should now appear in your menu. If it doesn't then you'll have to restart your window manager or update the menu.
+
+## Known Issues ##
+
+- On Windows, trying to download a file that already exists, yle-dl crashes to an encoding error while printing a log message.
 
 ## Thanks ##
 
@@ -50,7 +58,7 @@ A precompiled Windows package including the downloader is available on the downl
 - [Jesse Jaara](https://github.com/Huulivoide) for a better icon and suggestions.
 - [Tomas Strand](https://github.com/straend) for YLE Passi support (back when it existed).
 
-## Version history ##
+## Version History ##
 
 - 2.2 (2013-02-21)
     * Updated yle-dl to 2.0.2.
