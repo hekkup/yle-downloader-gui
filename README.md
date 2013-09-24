@@ -8,6 +8,8 @@ The GUI is written in C++/[Qt](http://qt.nokia.com/) using [QtCreator](http://qt
 
 A precompiled Windows package including the downloader is available on the download page.
 
+Snapshot packages for Ubuntu are available from https://launchpad.net/~hekkup/+archive/yle-downloader-gui-snapshots.
+
 ## Compiling ##
 
 - `lrelease yle-downloader-gui.pro`
