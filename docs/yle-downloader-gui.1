@@ -1,0 +1,36 @@
+.\"                                      Hey, EMACS: -*- nroff -*-
+.TH YLE-DOWNLOADER-GUI 1 "Sep 23, 2013"
+.\" Please adjust this date whenever revising the manpage.
+.SH NAME
+yle-downloader-gui \- GUI for yle-dl
+.SH SYNOPSIS
+.B yle-downloader-gui
+.RI [ URL ]
+.SH DESCRIPTION
+This manual page documents briefly the command line usage of
+\fByle-downloader-gui\fP.
+.PP
+\fByle-downloader-gui\fP is a graphical front-end for \fByle-dl\fP, a command line
+application to download video and audio programs from the Finnish public
+broadcast service Yle, more specifically its on-line services such as Yle Areena.
+.SH PARAMETERS
+.TP
+.B URL
+URL of the web page of video or audio in Yle Areena etc.
+.sp 1
+If URL is given, only the video/audio at the URL is downloaded, plus those URLs
+the user possibly adds to the download queue. Previous session is not loaded and
+it is not affected at all. After download has finished, the application quits.
+The session is not stored.
+.sp 1
+If no URL is given, the application restores the previous session, or starts
+with empty video list if there was no session previously. In this case, the
+session is stored on application quit.
+.SH SEE ALSO
+/usr/share/docs/yle-downloader-gui/README*
+.SH AUTHORS
+yle-downloader-gui is being developed by Martin Pärtel, Jesse Jaara, Tomas
+Strand, and Henrik Pitkälä; see https://github.com/mpartel/yle-downloader-gui.
+.PP
+This manual page was written by Henrik Pitkälä <hpitkala@hotmail.com>
+for the Debian project (and may be used by others).

@@ -1,0 +1,4 @@
+?package(yle-downloader-gui): needs=X11 \
+	section="Applications/Video" \
+	title="Yle\ Downloader\ GUI" \
+	command="yle-downloader-gui"

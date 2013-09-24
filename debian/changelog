@@ -1,0 +1,6 @@
+yle-downloader-gui (2.2~SNAPSHOT130923~git-e121df5b) precise; urgency=low
+
+  * Initial release
+  * Based on commit e121df5b at https://github.com/mpartel/yle-downloader-gui
+
+ -- Henrik Pitkälä <hpitkala@hotmail.com>  Mon, 23 Sep 2013 23:50:00 +0300

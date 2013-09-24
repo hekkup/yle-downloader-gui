@@ -1,0 +1,23 @@
+Source: yle-downloader-gui
+Section: net
+Priority: extra
+Maintainer: Henrik Pitkala <hpitkala@hotmail.com>
+Build-Depends: debhelper (>= 8.0.0), qt4-qmake, libqt4-dev
+Standards-Version: 3.9.3
+Homepage: http://mpartel.github.io/yle-downloader-gui/
+Vcs-Git: https://github.com/mpartel/yle-downloader-gui.git
+Vcs-Browser: https://github.com/mpartel/yle-downloader-gui
+
+Package: yle-downloader-gui
+Architecture: any
+Depends: libqt4-xml, libqtgui4, libqt4-network, libqtcore4, libstdc++6, libgcc1, libc6, rtmpdump-yle
+Description: GUI for yle-dl to download videos from Yle Areena
+ yle-dl is a command line application to download videos, sound files, and
+ streams from Yle Areena and other Yle on-line services.
+ .
+ This application is a graphical front-end for yle-dl, made with Qt.
+ .
+ NOTE: the version of yle-dl provided by rtmpdump-yle is quite outdated, so it is
+ strongly recommended you install the newest yle-dl. For details, please refer
+ to http://aajanki.github.io/yle-dl/ (in Finnish) and
+ https://github.com/aajanki/yle-dl (in English).

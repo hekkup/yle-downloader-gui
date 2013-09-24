@@ -1,0 +1,16 @@
+Some documentation available at the homepage (in Finnish):
+http://mpartel.github.io/yle-downloader-gui/
+
+and GitHub project site which also has an issue tracker to report problems
+(in English):
+https://github.com/mpartel/yle-downloader-gui
+
+IMPORTANT:
+This package depends on rtmpdump-yle package, which contains an old version
+of yle-dl. It is strongly recommended you install the newest yle-dl from source.
+For details, please refer to http://aajanki.github.io/yle-dl/ (in Finnish)
+and https://github.com/aajanki/yle-dl (in English).
+
+See also: README.md, README.Debian, yle-downloader-gui(1) manual page
+
+ -- Henrik Pitkala <hpitkala@hotmail.com>  Sun, 22 Sep 2013 22:40:15 +0300

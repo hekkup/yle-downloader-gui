@@ -1,0 +1,9 @@
+yle-downloader-gui for Debian
+-----------------------------
+
+This package depends on rtmpdump-yle package, which contains an old version
+of yle-dl. It is strongly recommended you install the newest yle-dl from source.
+For details, please refer to http://aajanki.github.io/yle-dl/ (in Finnish)
+and https://github.com/aajanki/yle-dl (in English).
+
+ -- Henrik Pitkälä <hpitkala@hotmail.com>  Mon, 23 Sep 2013 23:50:00 +0300
