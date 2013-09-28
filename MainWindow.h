@@ -64,7 +64,12 @@ private slots:
 
     void updateAvailable(QString version, QUrl url);
 
+    /**
+     * Open URL in a suitable application. Opening application is detected automatically.
+     */
     void openUrl(QString url);
+
+    void on_openDownloadFolderPushButton_clicked(bool checked = false);
 
 protected:
     void closeEvent(QCloseEvent* event);

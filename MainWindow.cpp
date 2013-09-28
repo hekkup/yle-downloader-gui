@@ -347,6 +347,11 @@ void MainWindow::openUrl(QString url)
     QDesktopServices::openUrl(QUrl(url));
 }
 
+void MainWindow::on_openDownloadFolderPushButton_clicked(bool checked) {
+    Q_UNUSED(checked);
+    this->openUrl(m_destDir.path());
+}
+
 void MainWindow::closeEvent(QCloseEvent* event)
 {
     if (m_downloadInProgress) {

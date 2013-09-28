@@ -61,8 +61,27 @@
            <height>16777215</height>
           </size>
          </property>
+         <property name="toolTip">
+          <string>Select download folder</string>
+         </property>
          <property name="text">
           <string>&amp;Select...</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="openDownloadFolderPushButton">
+         <property name="maximumSize">
+          <size>
+           <width>100</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Open download folder in file manager</string>
+         </property>
+         <property name="text">
+          <string>&amp;Open</string>
          </property>
         </widget>
        </item>
