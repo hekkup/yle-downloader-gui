@@ -5,7 +5,8 @@
 #include <cstdio>
 
 Downloader::Downloader(QUrl url, QDir destDir, QObject* parent)
-    : QObject(parent), m_url(url), m_destDir(destDir), m_process(0), m_cancelRequested(false)
+    : QObject(parent), m_url(url), m_destDir(destDir), m_process(0), m_cancelRequested(false),
+    m_downloading(false), m_downloaderMode(Downloader::ModeDownload)
 {
     connect(&m_progressParser, SIGNAL(fileNameDetermined(QString)), this, SIGNAL(downloadFileCreated(QString)));
     connect(&m_progressParser, SIGNAL(progressMade(int)), this, SIGNAL(downloadProgress(int)));
@@ -21,12 +22,27 @@ Downloader::~Downloader()
     }
 }
 
-void Downloader::start()
+void Downloader::start(Downloader::DownloaderMode mode)
 {
-    Q_ASSERT(!isStarted());
+    if (isStarted()) {
+        return;
+    }
+    if (Downloader::MODE_COUNT <= mode) {
+        return;
+    }
+    m_downloaderMode = mode;
 
     m_process = new QProcess(this);
-    m_process->setProcessChannelMode(QProcess::MergedChannels);
+    if (Downloader::ModeDownload == m_downloaderMode) {
+        // yle-dl outputs log messages (progress, file names) to stderr
+        m_process->setProcessChannelMode(QProcess::MergedChannels);
+        m_progressParser.setParsingEnabled(true);
+    } else {
+        // URL's and media titles are printed to stdout (good!)
+        m_process->setProcessChannelMode(QProcess::SeparateChannels);
+        m_process->setReadChannel(QProcess::StandardOutput);
+        m_progressParser.setParsingEnabled(false);
+    }
 
     connect(m_process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(processFinished(int,QProcess::ExitStatus)));
     connect(m_process, SIGNAL(readyRead()), this, SLOT(moreInputAvailable()));
@@ -49,16 +65,27 @@ void Downloader::start()
         arguments << "--sublang" << m_subtitles;
     }
 
-    arguments << m_extraArgs;
+    if (Downloader::ModeDownload == m_downloaderMode) {
+        // hopefully m_extraArgs doesn't contain --showurl or --showtitle
+        arguments << m_extraArgs;
+    }
+    else if (Downloader::ModePeekUrl == m_downloaderMode) {
+        arguments << "--showurl";
+    }
+    else if (Downloader::ModePeekTitle == m_downloaderMode) {
+        arguments << "--showtitle";
+    }
 
     arguments << m_url.toString();
 
     m_process->start(binary, arguments);
 
     if (m_process->waitForStarted(-1)) {
+        m_downloading = true;
         emit downloadStarted();
     } else {
         qDebug() << m_process->errorString();
+        m_downloading = false;
         emit downloadFailed();
     }
 }
@@ -66,13 +93,16 @@ void Downloader::start()
 
 void Downloader::cancel()
 {
-    Q_ASSERT(isStarted());
+    if (!isStarted()) {
+        return;
+    }
     m_cancelRequested = true;
     ProcessUtils::killProcessTree(*m_process);
 }
 
 void Downloader::processFinished(int exitCode, QProcess::ExitStatus exitStatus)
 {
+    m_downloading = false;
     if (exitStatus == QProcess::NormalExit && exitCode == 0) {
         emit downloadSucceeded();
     } else if (m_cancelRequested) {

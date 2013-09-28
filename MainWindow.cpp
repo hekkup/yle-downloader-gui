@@ -251,6 +251,7 @@ void MainWindow::startNextDownload() {
 
     m_downloadInProgress = true;
     m_downloader->start();
+    //m_downloader->start(Downloader::ModePeekTitle);
 }
 
 void MainWindow::reportDestFileName(QString name)

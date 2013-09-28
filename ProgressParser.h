@@ -11,6 +11,7 @@ public:
     virtual ~ProgressParser();
 
     void addData(QByteArray buf);
+    void setParsingEnabled(bool parse);
 
 signals:
     void fileNameDetermined(QString fileName);
@@ -21,6 +22,7 @@ signals:
 private:
     int m_percentage;
     bool m_gotFileName;
+    bool m_parsingEnabled;
     QByteArray m_lineBuffer;
 
     void processBufferedLines();
@@ -28,7 +30,6 @@ private:
     bool tryAsFileNameLineLine(QString line);
     bool tryAsProgressLine(QString line);
     bool tryAsUnknownProgressLine(QString line);
-
 };
 
 #endif // PROGRESSPARSER_H

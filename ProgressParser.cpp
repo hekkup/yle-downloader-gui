@@ -3,7 +3,8 @@
 ProgressParser::ProgressParser(QObject* parent)
     : QObject(parent),
     m_percentage(0),
-    m_gotFileName(false)
+    m_gotFileName(false),
+    m_parsingEnabled(true)
 {
 }
 
@@ -15,6 +16,11 @@ void ProgressParser::addData(QByteArray buf)
 {
     m_lineBuffer.append(buf);
     processBufferedLines();
+}
+
+void ProgressParser::setParsingEnabled(bool parse)
+{
+    this->m_parsingEnabled = parse;
 }
 
 void ProgressParser::processBufferedLines()
@@ -39,6 +45,9 @@ void ProgressParser::processLine(QString line)
     line = line.trimmed();
     emit outputLineSeen(line);
     bool done = false;
+    if (!m_parsingEnabled) {
+        return (void)true;
+    }
     done = done || (!m_gotFileName && tryAsFileNameLineLine(line));
     done = done || tryAsProgressLine(line);
     done = done || tryAsUnknownProgressLine(line);

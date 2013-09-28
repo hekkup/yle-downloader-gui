@@ -8,6 +8,13 @@ class Downloader: public QObject
 {
     Q_OBJECT
 public:
+    enum DownloaderMode {
+        ModeDownload = 0,   ///< normal download
+        ModePeekUrl,        ///< get download URL(s)
+        ModePeekTitle,      ///< get titles of media clips
+        MODE_COUNT
+    };
+
     Downloader(QUrl url, QDir destDir, QObject* parent = 0);
     virtual ~Downloader();
 
@@ -19,13 +26,14 @@ public:
     QStringList extraArgs() const { return m_extraArgs; }
     void setExtraArgs(QStringList extraArgs) { m_extraArgs = extraArgs; }
 
+    Downloader::DownloaderMode mode() { return m_downloaderMode; }
+
 public slots:
-    void start();
+    void start(Downloader::DownloaderMode mode = Downloader::ModeDownload);
     void cancel();
 
 signals:
     void downloadStarted();
-
     void downloadFileCreated(QString fileName);
     void downloadProgress(int progressPercentage);
     void downloadUnknownProgress(double secondsDownloaded);
@@ -46,8 +54,11 @@ private:
     QStringList m_extraArgs;
     QProcess* m_process;
     ProgressParser m_progressParser;
+
+    bool m_downloading;
     bool m_cancelRequested;
 
+    Downloader::DownloaderMode m_downloaderMode;
 };
 
 #endif // DOWNLOADER_H
