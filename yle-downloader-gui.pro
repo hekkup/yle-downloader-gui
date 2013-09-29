@@ -48,7 +48,7 @@ HEADERS  += MainWindow.h \
 
 FORMS    += MainWindow.ui
 
-TRANSLATIONS = fi_FI.ts
+TRANSLATIONS = fi.ts
 
 RESOURCES = \
     resources.qrc
