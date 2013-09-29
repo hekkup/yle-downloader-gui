@@ -35,8 +35,13 @@ int main(int argc, char *argv[])
 
     QLocale::setDefault(QLocale::Finnish);
 
+    QTranslator builtInTranslator;
+    builtInTranslator.load("qt_" + QLocale().name(),
+                      QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    app.installTranslator(&builtInTranslator);
+
     QTranslator translator;
-    translator.load(":/fi");
+    translator.load(":/" + QLocale().name());
     app.installTranslator(&translator);
 
     MainWindow w;

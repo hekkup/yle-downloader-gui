@@ -171,7 +171,7 @@
     <message>
         <location filename="required_qt_translations.cpp" line="15"/>
         <source>&amp;Undo</source>
-        <translation>Per&amp;uuta</translation>
+        <translation>&amp;Peruuta</translation>
     </message>
     <message>
         <location filename="required_qt_translations.cpp" line="16"/>
@@ -196,7 +196,7 @@
     <message>
         <location filename="required_qt_translations.cpp" line="20"/>
         <source>Delete</source>
-        <translation>&amp;Poista</translation>
+        <translation>P&amp;oista</translation>
     </message>
     <message>
         <location filename="required_qt_translations.cpp" line="21"/>
