@@ -6,6 +6,7 @@
 #include <QStyledItemDelegate>
 #include <QStyleOptionProgressBar>
 #include <QApplication>
+#include <QPainter>
 
 /**
  * @brief Progress bar delegate to be used in VideoTableView progress column.
