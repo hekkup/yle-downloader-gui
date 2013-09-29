@@ -93,42 +93,42 @@
         <translation>Ohjelmasta on uudempi versio (%1):&lt;br/&gt;&lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="412"/>
+        <location filename="MainWindow.cpp" line="409"/>
         <source>Really cancel download?</source>
         <translation>Peruutetaanko lataus varmasti?</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="443"/>
+        <location filename="MainWindow.cpp" line="440"/>
         <source>Download folder: %1</source>
         <translation>Lataushakemisto: %1</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="464"/>
+        <location filename="MainWindow.cpp" line="461"/>
         <source>%1 min %2 sec</source>
         <translation>%1 min %2 s</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="466"/>
+        <location filename="MainWindow.cpp" line="463"/>
         <source>%1 sec</source>
         <translation>%1 s</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="476"/>
+        <location filename="MainWindow.cpp" line="473"/>
         <source>Downloads</source>
         <translation>Lataukset</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="477"/>
+        <location filename="MainWindow.cpp" line="474"/>
         <source>Download</source>
         <translation>Lataus</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="480"/>
+        <location filename="MainWindow.cpp" line="477"/>
         <source>downloads</source>
         <translation>lataukset</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="481"/>
+        <location filename="MainWindow.cpp" line="478"/>
         <source>download</source>
         <translation>lataus</translation>
     </message>
@@ -164,6 +164,44 @@
         <location filename="required_qt_translations.cpp" line="13"/>
         <source>Cancel</source>
         <translation>Peruuta</translation>
+    </message>
+</context>
+<context>
+    <name>QLineEdit</name>
+    <message>
+        <location filename="required_qt_translations.cpp" line="15"/>
+        <source>&amp;Undo</source>
+        <translation>Per&amp;uuta</translation>
+    </message>
+    <message>
+        <location filename="required_qt_translations.cpp" line="16"/>
+        <source>&amp;Redo</source>
+        <translation>&amp;Toista</translation>
+    </message>
+    <message>
+        <location filename="required_qt_translations.cpp" line="17"/>
+        <source>Cu&amp;t</source>
+        <translation>L&amp;eikkaa</translation>
+    </message>
+    <message>
+        <location filename="required_qt_translations.cpp" line="18"/>
+        <source>&amp;Copy</source>
+        <translation>&amp;Kopioi</translation>
+    </message>
+    <message>
+        <location filename="required_qt_translations.cpp" line="19"/>
+        <source>&amp;Paste</source>
+        <translation>&amp;Liitä</translation>
+    </message>
+    <message>
+        <location filename="required_qt_translations.cpp" line="20"/>
+        <source>Delete</source>
+        <translation>&amp;Poista</translation>
+    </message>
+    <message>
+        <location filename="required_qt_translations.cpp" line="21"/>
+        <source>Select All</source>
+        <translation>Valitse k&amp;aikki</translation>
     </message>
 </context>
 <context>
@@ -207,6 +245,34 @@
         <location filename="SubtitleLanguage.cpp" line="19"/>
         <source>All</source>
         <translation>Lataa kaikki</translation>
+    </message>
+    <message>
+        <source>&amp;Undo</source>
+        <translation type="obsolete">&amp;Peruuta</translation>
+    </message>
+    <message>
+        <source>&amp;Redo</source>
+        <translation type="obsolete">&amp;Toista</translation>
+    </message>
+    <message>
+        <source>Cu&amp;t</source>
+        <translation type="obsolete">L&amp;eikkaa</translation>
+    </message>
+    <message>
+        <source>&amp;Copy</source>
+        <translation type="obsolete">&amp;Kopioi</translation>
+    </message>
+    <message>
+        <source>&amp;Paste</source>
+        <translation type="obsolete">&amp;Liitä</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="obsolete">&amp;Poista</translation>
+    </message>
+    <message>
+        <source>Select All</source>
+        <translation type="obsolete">Valitse k&amp;aikki</translation>
     </message>
 </context>
 <context>

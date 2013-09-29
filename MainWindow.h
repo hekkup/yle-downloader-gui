@@ -22,7 +22,6 @@ namespace Ui {
  * @todo save/restore also extra options
  * @todo paste multi-line text: get URLs from each line
  * @todo open a text file: get URLs from each line
- * @todo set automatic translation of text edit context menu (is this available?)
  * @todo at some point, add options dialog (then can remove extra options line edit)
  */
 class MainWindow: public QMainWindow
