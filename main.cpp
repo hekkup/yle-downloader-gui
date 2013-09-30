@@ -18,6 +18,21 @@ bool looksLikeUrl(QString s)
     return s.startsWith("http://");
 }
 
+void setApplicationLanguage(QApplication* app, QLocale language)
+{
+    if (!app) {
+        return;
+    }
+    QTranslator* builtInTranslator = new QTranslator();
+    builtInTranslator->load("qt_" + language.name(),
+                      QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    app->installTranslator(builtInTranslator);
+
+    QTranslator* translator = new QTranslator();
+    translator->load(":/" + language.name());
+    app->installTranslator(translator);
+}
+
 }
 
 int main(int argc, char *argv[])
@@ -33,19 +48,21 @@ int main(int argc, char *argv[])
     QApplication::setOrganizationName("nobody");
     QApplication::setApplicationName("yle-downloader-gui");
 
-    QLocale::setDefault(QLocale::Finnish);
+    QSettings settings;
+    QVariant localeNameVar = settings.value("language", QVariant());
+    QLocale locale;
+    if (!localeNameVar.isValid()) {
+        locale = QLocale::Finnish;
+        settings.setValue("language", locale.name());
+    } else {
+        locale = QLocale(localeNameVar.toString());
+    }
 
-    QTranslator builtInTranslator;
-    builtInTranslator.load("qt_" + QLocale().name(),
-                      QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-    app.installTranslator(&builtInTranslator);
-
-    QTranslator translator;
-    translator.load(":/" + QLocale().name());
-    app.installTranslator(&translator);
+    setApplicationLanguage(&app, locale);
 
     MainWindow w;
     w.setWindowIcon(QIcon(":/icons/icon.ico"));
+    w.setLocale(locale);
     if (QApplication::arguments().size() > 0 && looksLikeUrl(QApplication::arguments().last())) {
         w.setExitOnSuccess(true);
         w.setSaveAndRestoreSession(false);

@@ -32,6 +32,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->detailsWidget->setVisible(false);
     ui->updateLabel->setVisible(false);
 
+    m_languageActionGroup = new QActionGroup(this);
+    m_languageActionGroup->addAction(ui->actionFinnish);
+    m_languageActionGroup->addAction(ui->actionEnglish);
+
     layout()->setSizeConstraint(QLayout::SetFixedSize);
 
     m_videoTableModel = new VideoTableModel();
@@ -95,6 +99,18 @@ bool MainWindow::init() {
     } else {
         ui->downloadButton->setEnabled(false);
     }
+
+    switch (this->locale().language()) {
+    case QLocale::Finnish:
+        ui->actionFinnish->setChecked(true);
+        break;
+    case QLocale::English:
+        ui->actionEnglish->setChecked(true);
+        break;
+    default:
+        break;
+    }
+
     m_initialized = true;
     return true;
 }
@@ -126,6 +142,8 @@ void MainWindow::saveSubtitlesChoice()
 
 void MainWindow::saveSession()
 {
+    m_settings.setValue("language", QVariant(this->locale().name()));
+
     m_settings.beginGroup("LastSession");
     m_settings.remove("session");
     m_settings.beginWriteArray("session");
@@ -347,9 +365,24 @@ void MainWindow::openUrl(QString url)
     QDesktopServices::openUrl(QUrl(url));
 }
 
+void MainWindow::on_actionQuit_triggered(bool checked) {
+    Q_UNUSED(checked);
+    this->close();
+}
+
 void MainWindow::on_openDownloadFolderPushButton_clicked(bool checked) {
     Q_UNUSED(checked);
     this->openUrl(m_destDir.path());
+}
+
+void MainWindow::on_actionFinnish_triggered(bool checked) {
+    Q_UNUSED(checked);
+    this->setLocale(QLocale::Finnish);
+}
+
+void MainWindow::on_actionEnglish_triggered(bool checked) {
+    Q_UNUSED(checked);
+    this->setLocale(QLocale::English);
 }
 
 void MainWindow::closeEvent(QCloseEvent* event)
@@ -373,6 +406,19 @@ void MainWindow::showEvent(QShowEvent *event)
 {
     Q_UNUSED(event)
     updateVideoTableView();
+}
+
+void MainWindow::changeEvent(QEvent *event)
+{
+    if (event->type() == QEvent::LocaleChange) {
+        if (this->m_initialized) {
+            QMessageBox message;
+            message.setText(tr("Language will change after application restart"));
+            message.exec();
+        }
+    } else {
+        QMainWindow::changeEvent(event);
+    }
 }
 
 void MainWindow::dragEnterEvent(QDragEnterEvent* event) {

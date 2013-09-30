@@ -68,11 +68,15 @@ private slots:
      */
     void openUrl(QString url);
 
+    void on_actionQuit_triggered(bool checked = false);
     void on_openDownloadFolderPushButton_clicked(bool checked = false);
+    void on_actionFinnish_triggered(bool checked = false);
+    void on_actionEnglish_triggered(bool checked = false);
 
 protected:
     void closeEvent(QCloseEvent* event);
     void showEvent(QShowEvent* event);
+    void changeEvent(QEvent* event);
 
     /**
      * Tell URL dropping is possible
@@ -94,6 +98,7 @@ private:
     QString m_destFileName;
     UpdateChecker* m_updateChecker;
     Downloader* m_downloader; // initially null
+    QActionGroup* m_languageActionGroup;
     bool m_downloadInProgress;
     bool m_resumeDownload;  ///< whether to always resume download (yle-dl --resume|-e option)
     bool m_exitOnSuccess;
