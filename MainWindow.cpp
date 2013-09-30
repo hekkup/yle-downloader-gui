@@ -8,12 +8,12 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
+    m_initialized(false),
     m_destDir(defaultDestDir()),
     m_updateChecker(new UpdateChecker(this)),
     m_downloader(NULL),
     m_downloadInProgress(false),
-    m_exitOnSuccess(false),
-    m_initialized(false)
+    m_exitOnSuccess(false)
 {
     QDir savedDir = m_settings.value("destDir", m_destDir.absolutePath()).toString();
     if (savedDir.exists()) {
