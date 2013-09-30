@@ -34,7 +34,7 @@ void Downloader::start()
     QString binary = "yle-dl";
     QStringList arguments;
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
     QDir yleDlDir = QDir::current();
     yleDlDir.cd(WINDOWS_YLE_DL_DIR);
 

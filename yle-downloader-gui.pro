@@ -1,7 +1,7 @@
 
 QT       += core gui network xml
 
-contains(QT_VERSION, ^5) {
+contains(QT_MAJOR_VERSION, 5) {
     message("Qt version >= 5.0")
     QT += widgets
     DEFINES += QT_5_0

@@ -19,7 +19,7 @@ void UpdateChecker::checkForUpdate()
 void UpdateChecker::replyFinished(QNetworkReply* reply)
 {
     QString versionTag =
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
             "latestWindowsVersion";
 #else
             "latestSourceVersion";

@@ -45,7 +45,7 @@ MainWindow::MainWindow(QWidget *parent) :
     }
     m_currentlyDownloadingVideoRow = -1;
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
     m_resumeDownload = false;
 #else
     m_resumeDownload = true;
@@ -489,9 +489,15 @@ void MainWindow::updateVideoTableView()
     header->resizeSection(VideoTableModel::UrlColumn, urlTableWidth * 3 / 5);
     header->resizeSection(VideoTableModel::ProgressColumn, urlTableWidth / 5);
     header->resizeSection(VideoTableModel::StatusColumn, urlTableWidth / 5);
+#ifdef QT_5_0
+    header->setSectionResizeMode(VideoTableModel::UrlColumn, QHeaderView::Fixed);
+    header->setSectionResizeMode(VideoTableModel::ProgressColumn, QHeaderView::Fixed);
+    header->setSectionResizeMode(VideoTableModel::StatusColumn, QHeaderView::Fixed);
+#else
     header->setResizeMode(VideoTableModel::UrlColumn, QHeaderView::Fixed);
     header->setResizeMode(VideoTableModel::ProgressColumn, QHeaderView::Fixed);
     header->setResizeMode(VideoTableModel::StatusColumn, QHeaderView::Fixed);
+#endif
 }
 
 QString MainWindow::formatSecondsDownloaded(double secondsDownloaded)

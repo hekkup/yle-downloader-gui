@@ -20,7 +20,7 @@ void ProgressParser::addData(QByteArray buf)
 
 void ProgressParser::processBufferedLines()
 {
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
     // On windows, avoid double-newlines when we replace '\r'->'\n' next.
     // If the buffer happens to end between and '\r' and an '\n',
     // we get an extra newline, which only makes the output slightly uglier.

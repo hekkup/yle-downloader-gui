@@ -2,7 +2,7 @@
 
 #include <QtCore>
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN32
 #include <Windows.h>
 #include <Tlhelp32.h>
 #else
@@ -16,7 +16,7 @@ namespace ProcessUtils
 namespace
 {
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN32
 void killProcessTree_Windows(Q_PID pid);
 void killProcessTree_Windows(DWORD targetProcess, const QMap<DWORD, DWORD>& processParents);
 void killSingleProcess_Windows(DWORD targetProcess);
@@ -105,7 +105,7 @@ void killSingleProcess_Windows(DWORD processId)
 
 void killProcessTree(QProcess& parentProcess)
 {
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN32
     killProcessTree_Windows(parentProcess.pid());
 #else
     // yle-dl on Unix (Linux) only terminates cleanly on SIGINT

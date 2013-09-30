@@ -6,7 +6,7 @@
 #include "MainWindow.h"
 #include "config.h"
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 #include <Windows.h>
 #endif
 
@@ -37,7 +37,7 @@ void setApplicationLanguage(QApplication* app, QLocale language)
 
 int main(int argc, char *argv[])
 {
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
     QString toolDir = QDir::current().absoluteFilePath(WINDOWS_YLE_DL_DIR).replace('/', '\\');
     QString newPath = toolDir + ";" + env.value("PATH");
