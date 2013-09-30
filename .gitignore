@@ -9,6 +9,8 @@ qrc_*
 ui_*
 *.o
 *.moc
+object_script.*
+*.exe
 
 /yle-downloader-gui
 test/testVideoInfo/testVideoInfo
