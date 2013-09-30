@@ -117,12 +117,8 @@ bool MainWindow::init() {
 
 void MainWindow::startDownloadFrom(QString url)
 {
-    if (m_videoTableModel->insertRow(0)) {
-        QModelIndex index = m_videoTableModel->index(0, VideoTableModel::UrlColumn);
-        if (m_videoTableModel->setData(index, url, Qt::EditRole)) {
-            startDownload();
-        }
-    }
+    m_videoTableModel->addUrl(url);
+    startDownload();
 }
 
 void MainWindow::chooseDestDir()
