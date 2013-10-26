@@ -19,10 +19,12 @@ namespace Ui {
 }
 
 /**
+ * @todo use Enter to enter edit mode (keyboard-only usage)
  * @todo save/restore also extra options
  * @todo paste multi-line text: get URLs from each line
  * @todo open a text file: get URLs from each line
  * @todo at some point, add options dialog (then can remove extra options line edit)
+ * @todo many rows loading, deleting all, then stopping dl -> doesn't quit properly
  */
 class MainWindow: public QMainWindow
 {
@@ -37,6 +39,9 @@ public:
 
     void startDownloadFrom(QString url);
     void setExitOnSuccess(bool value) { m_exitOnSuccess = value; }
+
+signals:
+    void currentlyDownloadingRowChanged(int currentRow);
 
 private slots:
     void chooseDestDir();
@@ -115,11 +120,14 @@ private:
     void updateVideoTableView();
 
     QString formatSecondsDownloaded(double secondsDownloaded);
-    QNetworkAccessManager *m_networkManager;
     static QDir defaultDestDir();
 
+    int currentlyDownloadingVideoRow();
+    void setCurrentlyDownloadingVideoRow(int currentRow);
+
+    QNetworkAccessManager *m_networkManager;
+
     VideoTableModel* m_videoTableModel;
-    VideoTableView* m_videoTableView;
     QAbstractItemView::EditTriggers m_videoTableEditTriggers;
 
     int m_currentlyDownloadingVideoRow; ///< current video index in m_videoTableModel

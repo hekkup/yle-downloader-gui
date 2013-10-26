@@ -112,12 +112,12 @@
         <translation>(v%1)</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="130"/>
+        <location filename="MainWindow.cpp" line="129"/>
         <source>Choose download folder</source>
         <translation>Valitse lataushakemisto</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="277"/>
+        <location filename="MainWindow.cpp" line="276"/>
         <source>Downloading to file %1</source>
         <translation>Ladataan tiedostoon %1</translation>
     </message>
@@ -126,52 +126,52 @@
         <translation type="obsolete">Lisää videoita listalle</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="352"/>
+        <location filename="MainWindow.cpp" line="351"/>
         <source>An updated downloader (v%1) is available:&lt;br/&gt;&lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;</source>
         <translation>Ohjelmasta on uudempi versio (%1):&lt;br/&gt;&lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="417"/>
+        <location filename="MainWindow.cpp" line="415"/>
         <source>Language will change after application restart</source>
         <translation>Kieli vaihtuu uudelleenkäynnistyksen jälkeen</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="456"/>
+        <location filename="MainWindow.cpp" line="454"/>
         <source>Really cancel download?</source>
         <translation>Peruutetaanko lataus varmasti?</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="487"/>
+        <location filename="MainWindow.cpp" line="485"/>
         <source>Download folder: %1</source>
         <translation>Lataushakemisto: %1</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="508"/>
+        <location filename="MainWindow.cpp" line="512"/>
         <source>%1 min %2 sec</source>
         <translation>%1 min %2 s</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="510"/>
+        <location filename="MainWindow.cpp" line="514"/>
         <source>%1 sec</source>
         <translation>%1 s</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="520"/>
+        <location filename="MainWindow.cpp" line="524"/>
         <source>Downloads</source>
         <translation>Lataukset</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="521"/>
+        <location filename="MainWindow.cpp" line="525"/>
         <source>Download</source>
         <translation>Lataus</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="524"/>
+        <location filename="MainWindow.cpp" line="528"/>
         <source>downloads</source>
         <translation>lataukset</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="525"/>
+        <location filename="MainWindow.cpp" line="529"/>
         <source>download</source>
         <translation>lataus</translation>
     </message>
@@ -387,9 +387,14 @@
 <context>
     <name>VideoTableView</name>
     <message>
-        <location filename="VideoTableView.cpp" line="14"/>
+        <location filename="VideoTableView.cpp" line="15"/>
         <source>Delete</source>
         <translation>Poista</translation>
+    </message>
+    <message>
+        <location filename="VideoTableView.cpp" line="17"/>
+        <source>Select all</source>
+        <translation>Valitse kaikki</translation>
     </message>
 </context>
 </TS>

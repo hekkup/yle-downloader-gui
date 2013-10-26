@@ -72,9 +72,18 @@ public slots:
      */
     void removeSelectedRows();
 
+    /**
+     * Change currently downloading row
+     * @param currentRow currently downloading row
+     */
+    void changeDownloadingRow(int currentRow);
+
 private:
     ProgressBarDelegate* m_progressBarDelegate; ///< delegate for progress column
     QMenu* m_contextMenu; ///< table context menu
+    QAction* m_deleteSelectedAction; ///< delete selected row action in m_contextMenu
+    QAction* m_selectAllAction; ///< select all rows action in m_contextMenu
+    int m_currentlyDownloadingRow;  ///< currently downloading row; -1 if not downloading
 };
 
 #endif // VIDEOTABLEVIEW_H

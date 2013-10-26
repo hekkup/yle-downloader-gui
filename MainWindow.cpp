@@ -74,6 +74,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(m_updateChecker, SIGNAL(updateAvailable(QString,QUrl)), this, SLOT(updateAvailable(QString,QUrl)));
     connect(ui->updateLabel, SIGNAL(linkActivated(QString)), this, SLOT(openUrl(QString)));
+
+    connect(this, SIGNAL(currentlyDownloadingRowChanged(int)), ui->videoTableView, SLOT(changeDownloadingRow(int)));
 }
 
 MainWindow::~MainWindow()
@@ -195,9 +197,9 @@ void MainWindow::videoTableRowsRemoved(QModelIndex parent, int startRow, int end
     } else {
         // NOTE: assuming only one row is removed at a time
         if ((startRow == endRow) &&
-            (this->m_currentlyDownloadingVideoRow > startRow))
+            (currentlyDownloadingVideoRow() > startRow))
         {
-            this->m_currentlyDownloadingVideoRow--;
+            setCurrentlyDownloadingVideoRow(currentlyDownloadingVideoRow() - 1);
         }
     }
 }
@@ -214,13 +216,13 @@ void MainWindow::startDownload()
     setDownloadWidgetsDisabled(true);
     ui->cancelButton->setVisible(true);
 
-    m_currentlyDownloadingVideoRow = -1;
+    setCurrentlyDownloadingVideoRow(-1);
     startNextDownload();
 }
 
 void MainWindow::startNextDownload() {
-    m_currentlyDownloadingVideoRow++;
-    if (m_currentlyDownloadingVideoRow >= (m_videoTableModel->videoCount())) {
+    setCurrentlyDownloadingVideoRow(currentlyDownloadingVideoRow() + 1);
+    if (currentlyDownloadingVideoRow() >= (m_videoTableModel->videoCount())) {
         downloadEnded();
         return;
     }
@@ -230,7 +232,7 @@ void MainWindow::startNextDownload() {
         m_downloader = NULL;
     }
 
-    QUrl url = QUrl(m_videoTableModel->url(this->m_currentlyDownloadingVideoRow));
+    QUrl url = QUrl(m_videoTableModel->url(currentlyDownloadingVideoRow()));
 
     QStringList yleDlExtraOptions = ui->yleDlExtraOptionsLineEdit->text().trimmed().split(" ", QString::SkipEmptyParts);
     QStringList extraArgs;
@@ -259,9 +261,8 @@ void MainWindow::startNextDownload() {
     connect(m_downloader, SIGNAL(downloaderOutputWritten(QString)), this, SLOT(downloaderOutputWritten(QString)));
 
 
-    m_videoTableModel->setUnknownDownloadProgress(this->m_currentlyDownloadingVideoRow, "");
-    m_videoTableModel->setDownloadState(this->m_currentlyDownloadingVideoRow,
-        VideoInfo::StateStarting);
+    m_videoTableModel->setUnknownDownloadProgress(currentlyDownloadingVideoRow(), "");
+    m_videoTableModel->setDownloadState(currentlyDownloadingVideoRow(), VideoInfo::StateStarting);
 
     m_downloadInProgress = true;
     m_downloader->start();
@@ -271,24 +272,20 @@ void MainWindow::reportDestFileName(QString name)
 {
     m_destFileName = name;
     ui->statusLabel->setText(tr("Downloading to file %1").arg(name));
-    m_videoTableModel->setVideoFileName(this->m_currentlyDownloadingVideoRow, name);
+    m_videoTableModel->setVideoFileName(currentlyDownloadingVideoRow(), name);
 }
 
 void MainWindow::reportProgress(int percentage)
 {
-    m_videoTableModel->setKnownDownloadProgress(this->m_currentlyDownloadingVideoRow,
-        percentage);
-    m_videoTableModel->setDownloadState(this->m_currentlyDownloadingVideoRow,
-        VideoInfo::StateLoading);
+    m_videoTableModel->setKnownDownloadProgress(currentlyDownloadingVideoRow(), percentage);
+    m_videoTableModel->setDownloadState(currentlyDownloadingVideoRow(), VideoInfo::StateLoading);
 }
 
 void MainWindow::reportUnknownProgress(double secondsDownloaded)
 {
     QString progressStr = formatSecondsDownloaded(secondsDownloaded);
-    m_videoTableModel->setUnknownDownloadProgress(this->m_currentlyDownloadingVideoRow,
-        progressStr);
-    m_videoTableModel->setDownloadState(this->m_currentlyDownloadingVideoRow,
-        VideoInfo::StateLoading);
+    m_videoTableModel->setUnknownDownloadProgress(currentlyDownloadingVideoRow(), progressStr);
+    m_videoTableModel->setDownloadState(currentlyDownloadingVideoRow(), VideoInfo::StateLoading);
 }
 
 void MainWindow::downloaderOutputWritten(QString line)
@@ -298,31 +295,28 @@ void MainWindow::downloaderOutputWritten(QString line)
 
 void MainWindow::downloadSucceeded()
 {
-    m_videoTableModel->setKnownDownloadProgress(this->m_currentlyDownloadingVideoRow, 100);
-    m_videoTableModel->setDownloadState(this->m_currentlyDownloadingVideoRow,
-        VideoInfo::StateLoadedOk);
+    m_videoTableModel->setKnownDownloadProgress(currentlyDownloadingVideoRow(), 100);
+    m_videoTableModel->setDownloadState(currentlyDownloadingVideoRow(), VideoInfo::StateLoadedOk);
 
     this->startNextDownload();
 }
 
 void MainWindow::downloadCanceled()
 {
-    if (m_videoTableModel->downloadProgress(this->m_currentlyDownloadingVideoRow) == -1) {
-        m_videoTableModel->setKnownDownloadProgress(this->m_currentlyDownloadingVideoRow, 0, false);
+    if (m_videoTableModel->downloadProgress(currentlyDownloadingVideoRow()) == -1) {
+        m_videoTableModel->setKnownDownloadProgress(currentlyDownloadingVideoRow(), 0, false);
     }
-    m_videoTableModel->setDownloadState(this->m_currentlyDownloadingVideoRow,
-        VideoInfo::StateCanceled);
+    m_videoTableModel->setDownloadState(currentlyDownloadingVideoRow(), VideoInfo::StateCanceled);
 
     this->downloadEnded();
 }
 
 void MainWindow::downloadFailed()
 {
-    if (m_videoTableModel->downloadProgress(this->m_currentlyDownloadingVideoRow) == -1) {
-        m_videoTableModel->setKnownDownloadProgress(this->m_currentlyDownloadingVideoRow, 0, false);
+    if (m_videoTableModel->downloadProgress(currentlyDownloadingVideoRow()) == -1) {
+        m_videoTableModel->setKnownDownloadProgress(currentlyDownloadingVideoRow(), 0, false);
     }
-    m_videoTableModel->setDownloadState(this->m_currentlyDownloadingVideoRow,
-        VideoInfo::StateFailed);
+    m_videoTableModel->setDownloadState(currentlyDownloadingVideoRow(), VideoInfo::StateFailed);
 
     this->startNextDownload();
 }
@@ -458,6 +452,7 @@ bool MainWindow::confirmCancel()
 void MainWindow::downloadEnded()
 {
     m_downloadInProgress = false;
+    setCurrentlyDownloadingVideoRow(-1);
 
     setDownloadWidgetsDisabled(false);
 
@@ -531,4 +526,13 @@ QDir MainWindow::defaultDestDir()
         }
     }
     return dir;
+}
+
+int MainWindow::currentlyDownloadingVideoRow() {
+    return m_currentlyDownloadingVideoRow;
+}
+
+void MainWindow::setCurrentlyDownloadingVideoRow(int currentRow) {
+    m_currentlyDownloadingVideoRow = currentRow;
+    emit currentlyDownloadingRowChanged(m_currentlyDownloadingVideoRow);
 }

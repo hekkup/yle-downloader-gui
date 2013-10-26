@@ -3,6 +3,7 @@
 VideoTableView::VideoTableView(QWidget *parent) :
     QTableView(parent)
 {
+    m_currentlyDownloadingRow = -1;
     m_progressBarDelegate = new ProgressBarDelegate();
     if (m_progressBarDelegate) {
         setItemDelegateForColumn(VideoTableModel::ProgressColumn,
@@ -11,11 +12,14 @@ VideoTableView::VideoTableView(QWidget *parent) :
 
     setContextMenuPolicy(Qt::CustomContextMenu);
     m_contextMenu = new QMenu();
-    QAction* deleteSelectedAction = m_contextMenu->addAction(tr("Delete"));
-    deleteSelectedAction->setShortcut(QKeySequence::Delete);
+    m_deleteSelectedAction = m_contextMenu->addAction(tr("Delete"));
+    m_deleteSelectedAction->setShortcut(QKeySequence::Delete);
+    m_selectAllAction = m_contextMenu->addAction(tr("Select all"));
+    m_selectAllAction->setShortcut(QKeySequence::SelectAll);
 
     connect(this, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
-    connect(deleteSelectedAction, SIGNAL(triggered()), this, SLOT(removeSelectedRows()));
+    connect(m_deleteSelectedAction, SIGNAL(triggered()), this, SLOT(removeSelectedRows()));
+    connect(m_selectAllAction, SIGNAL(triggered()), this, SLOT(selectAll()));
 }
 
 void VideoTableView::keyPressEvent(QKeyEvent *event) {
@@ -83,6 +87,35 @@ void VideoTableView::scrollTo(const QModelIndex &index, ScrollHint hint) {
 }
 
 void VideoTableView::showContextMenu(const QPoint &pos) {
+    //
+    // Enable delete rows item in context menu IF
+    //   1. one row is selected AND it's not downloading
+    //   2. some rows are selected AND at least one of them is not downloading
+    //
+    // while showing menu: check again when currently downloading row changes
+    //
+    QModelIndex currentlyLoadingIndex = this->model()->index(m_currentlyDownloadingRow, VideoTableModel::UrlColumn);
+
+    m_deleteSelectedAction->setEnabled(false);
+
+    // one row is selected
+    if (this->selectedIndexes().count() == 1) {
+        // enable delete action if row is not loading
+        // AND the row is not the last row
+        if ((currentlyLoadingIndex.row() != this->selectedIndexes().first().row()) &&
+                (this->selectedIndexes().first().row() != (this->model()->rowCount() - 1)))
+        {
+            m_deleteSelectedAction->setEnabled(true);
+        }
+
+    }
+
+    // many rows selected
+    if (this->selectedIndexes().count() > 1) {
+        // enable delete action always (just delete not downloading rows)
+        m_deleteSelectedAction->setEnabled(true);
+    }
+
     this->m_contextMenu->popup(this->mapToGlobal(pos));
 }
 
@@ -111,5 +144,22 @@ void VideoTableView::removeSelectedRows() {
     while (rowIterator.hasPrevious()) {
         int row = rowIterator.previous();
         this->model()->removeRow(row);
+    }
+}
+
+// slot
+void VideoTableView::changeDownloadingRow(int currentRow) {
+    this->m_currentlyDownloadingRow = currentRow;
+    //qDebug() << "VideoTableView:: current row changed to " + QString::number(currentRow);
+    if (this->m_contextMenu->isVisible()) {
+        // if one row is selected and it is the same as the current row, disable delete
+        if (this->selectedIndexes().count() == 1) {
+            if (this->selectedIndexes().first().row() == m_currentlyDownloadingRow) {
+                m_deleteSelectedAction->setEnabled(false);
+            } else {
+                m_deleteSelectedAction->setEnabled(true);
+            }
+        }
+        // if many rows are selected, don't disable delete
     }
 }
