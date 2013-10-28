@@ -36,6 +36,20 @@ void VideoTableView::keyPressEvent(QKeyEvent *event) {
 void VideoTableView::mousePressEvent(QMouseEvent *event) {
     if ((event->button() == Qt::RightButton) && (this->selectedIndexes().size() > 1)) {
         emit customContextMenuRequested(event->pos());
+    } else if (event->button() == Qt::LeftButton) {
+        QModelIndex clickedIndex = this->indexAt(event->pos());
+        if (clickedIndex.row() == (this->model()->rowCount() - 1)) {
+            QModelIndex urlIndex;
+            if (clickedIndex.column() != VideoTableModel::UrlColumn) {
+                urlIndex = this->model()->index(clickedIndex.row(), VideoTableModel::UrlColumn);
+            } else {
+                urlIndex = clickedIndex;
+            }
+            this->clearSelection();
+            this->edit(urlIndex);
+        } else {
+            QTableView::mousePressEvent(event);
+        }
     } else {
         QTableView::mousePressEvent(event);
     }
