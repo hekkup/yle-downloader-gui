@@ -23,8 +23,11 @@ VideoTableView::VideoTableView(QWidget *parent) :
 }
 
 void VideoTableView::keyPressEvent(QKeyEvent *event) {
-    if (event->matches(QKeySequence::Delete) && this->state() != QTableView::EditingState) {
+    if (event->matches(QKeySequence::Delete) && (this->state() != QTableView::EditingState)) {
         removeSelectedRows();
+    } else if (event->matches(QKeySequence::InsertParagraphSeparator) && (this->state() != QTableView::EditingState)) {
+        QModelIndex urlIndex = this->model()->index(this->currentIndex().row(), VideoTableModel::UrlColumn);
+        this->edit(urlIndex);
     } else {
         QTableView::keyPressEvent(event);
     }

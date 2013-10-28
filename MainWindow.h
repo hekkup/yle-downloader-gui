@@ -19,7 +19,6 @@ namespace Ui {
 }
 
 /**
- * @todo use Enter to enter edit mode (keyboard-only usage)
  * @todo save/restore also extra options
  * @todo paste multi-line text: get URLs from each line
  * @todo open a text file: get URLs from each line
