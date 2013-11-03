@@ -3,7 +3,8 @@
 ProgressParser::ProgressParser(QObject* parent)
     : QObject(parent),
     m_percentage(0),
-    m_gotFileName(false)
+    m_gotFileName(false),
+    m_firstPercentageReported(false)
 {
 }
 
@@ -19,7 +20,7 @@ void ProgressParser::addData(QByteArray buf)
 
 void ProgressParser::processBufferedLines()
 {
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
     // On windows, avoid double-newlines when we replace '\r'->'\n' next.
     // If the buffer happens to end between and '\r' and an '\n',
     // we get an extra newline, which only makes the output slightly uglier.
@@ -61,8 +62,9 @@ bool ProgressParser::tryAsProgressLine(QString line)
     QRegExp regex("^.* / .* sec \\((\\d+).*%\\)$");
     if (regex.exactMatch(line)) {
         int newPercentage = regex.cap(1).toInt();
-        if (newPercentage > m_percentage) {
+        if ((newPercentage > m_percentage) || !m_firstPercentageReported) {
             emit progressMade(newPercentage);
+            m_firstPercentageReported = true;
         }
         m_percentage = newPercentage;
         return true;

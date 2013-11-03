@@ -34,20 +34,20 @@ void Downloader::start()
     QString binary = "yle-dl";
     QStringList arguments;
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
     QDir yleDlDir = QDir::current();
     yleDlDir.cd(WINDOWS_YLE_DL_DIR);
-
-    m_process->setWorkingDirectory(m_destDir.absolutePath());
 
     arguments << "--vfat";
 
     arguments << "--rtmpdump" << yleDlDir.absoluteFilePath("rtmpdump.exe");
+#endif
+
+    m_process->setWorkingDirectory(m_destDir.absolutePath());
 
     if (!m_subtitles.isEmpty()) {
         arguments << "--sublang" << m_subtitles;
     }
-#endif
 
     arguments << m_extraArgs;
 

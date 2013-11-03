@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>652</width>
-    <height>562</height>
+    <height>801</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -40,6 +40,12 @@
     <item>
      <widget class="QWidget" name="destDirWidget" native="true">
       <layout class="QHBoxLayout" name="horizontalLayout">
+       <property name="topMargin">
+        <number>3</number>
+       </property>
+       <property name="bottomMargin">
+        <number>3</number>
+       </property>
        <item>
         <widget class="QLabel" name="destDirLabel">
          <property name="text">
@@ -55,37 +61,61 @@
            <height>16777215</height>
           </size>
          </property>
+         <property name="toolTip">
+          <string>Select download folder</string>
+         </property>
          <property name="text">
           <string>&amp;Select...</string>
          </property>
         </widget>
        </item>
+       <item>
+        <widget class="QPushButton" name="openDownloadFolderPushButton">
+         <property name="maximumSize">
+          <size>
+           <width>100</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Open download folder in file manager</string>
+         </property>
+         <property name="text">
+          <string>&amp;Open</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
     </item>
     <item>
-     <widget class="QWidget" name="urlWidget" native="true">
-      <layout class="QHBoxLayout" name="horizontalLayout_2">
-       <item>
-        <widget class="QLabel" name="urlLabel">
-         <property name="text">
-          <string>Video address:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="urlEdit">
-         <property name="toolTip">
-          <string>Find the video you want from YLE Areena and paste here the address from the browser's address bar.</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
+     <widget class="VideoTableView" name="videoTableView">
+      <property name="verticalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOn</enum>
+      </property>
+      <property name="horizontalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOff</enum>
+      </property>
+      <attribute name="verticalHeaderVisible">
+       <bool>false</bool>
+      </attribute>
+      <attribute name="verticalHeaderHighlightSections">
+       <bool>false</bool>
+      </attribute>
      </widget>
     </item>
     <item>
      <widget class="QWidget" name="subtitlesWidget" native="true">
       <layout class="QHBoxLayout" name="horizontalLayout_6">
+       <property name="topMargin">
+        <number>3</number>
+       </property>
+       <property name="rightMargin">
+        <number>9</number>
+       </property>
+       <property name="bottomMargin">
+        <number>3</number>
+       </property>
        <item>
         <spacer name="horizontalSpacer_2">
          <property name="orientation">
@@ -102,7 +132,7 @@
        <item>
         <widget class="QLabel" name="subtitlesLabel">
          <property name="text">
-          <string>&amp;Subtitles:</string>
+          <string>&amp;Subtitles</string>
          </property>
          <property name="buddy">
           <cstring>subtitlesComboBox</cstring>
@@ -118,17 +148,19 @@
     <item>
      <widget class="QWidget" name="downloadWidget" native="true">
       <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <property name="topMargin">
+        <number>3</number>
+       </property>
+       <property name="rightMargin">
+        <number>9</number>
+       </property>
+       <property name="bottomMargin">
+        <number>3</number>
+       </property>
        <item>
         <widget class="QPushButton" name="downloadButton">
          <property name="text">
-          <string>&amp;Download</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QProgressBar" name="progressBar">
-         <property name="maximum">
-          <number>0</number>
+          <string>Start &amp;download</string>
          </property>
         </widget>
        </item>
@@ -145,6 +177,12 @@
     <item>
      <widget class="QWidget" name="statusWidget" native="true">
       <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <property name="topMargin">
+        <number>3</number>
+       </property>
+       <property name="bottomMargin">
+        <number>3</number>
+       </property>
        <item>
         <layout class="QVBoxLayout" name="statusLabelsLayout">
          <item>
@@ -168,14 +206,17 @@
        </item>
        <item>
         <widget class="QPushButton" name="detailsButton">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
          <property name="maximumSize">
           <size>
-           <width>100</width>
+           <width>150</width>
            <height>16777215</height>
           </size>
          </property>
          <property name="text">
-          <string>&amp;Technical...</string>
+          <string>&amp;Show details...</string>
          </property>
          <property name="checkable">
           <bool>true</bool>
@@ -193,7 +234,39 @@
     </item>
     <item>
      <widget class="QWidget" name="detailsWidget" native="true">
-      <layout class="QHBoxLayout" name="horizontalLayout_5">
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <property name="topMargin">
+        <number>3</number>
+       </property>
+       <property name="bottomMargin">
+        <number>3</number>
+       </property>
+       <item>
+        <layout class="QHBoxLayout" name="extraOptionsWidget">
+         <property name="leftMargin">
+          <number>9</number>
+         </property>
+         <property name="topMargin">
+          <number>3</number>
+         </property>
+         <property name="rightMargin">
+          <number>9</number>
+         </property>
+         <property name="bottomMargin">
+          <number>3</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="yleDlExtraOptionsLabel">
+           <property name="text">
+            <string>Extra options for yle-dl</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="yleDlExtraOptionsLineEdit"/>
+         </item>
+        </layout>
+       </item>
        <item>
         <widget class="QPlainTextEdit" name="detailsTextEdit">
          <property name="minimumSize">
@@ -212,8 +285,74 @@
     </item>
    </layout>
   </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>652</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>&amp;File</string>
+    </property>
+    <addaction name="actionQuit"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>&amp;Edit</string>
+    </property>
+    <widget class="QMenu" name="menuLanguage">
+     <property name="title">
+      <string>&amp;Language</string>
+     </property>
+     <addaction name="actionFinnish"/>
+     <addaction name="actionEnglish"/>
+    </widget>
+    <addaction name="separator"/>
+    <addaction name="menuLanguage"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
+  </widget>
+  <action name="actionQuit">
+   <property name="text">
+    <string>&amp;Quit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::WindowShortcut</enum>
+   </property>
+  </action>
+  <action name="actionFinnish">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Finnish</string>
+   </property>
+  </action>
+  <action name="actionEnglish">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;English</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>VideoTableView</class>
+   <extends>QTableView</extends>
+   <header>VideoTableView.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

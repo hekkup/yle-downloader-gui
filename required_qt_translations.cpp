@@ -10,7 +10,15 @@ void containerForQtStringsToTranslate() {
         QT_TRANSLATE_NOOP("QDialogButtonBox", "&OK"),
         QT_TRANSLATE_NOOP("QDialogButtonBox", "&Cancel"),
         QT_TRANSLATE_NOOP("QDialogButtonBox", "OK"),
-        QT_TRANSLATE_NOOP("QDialogButtonBox", "Cancel")
+        QT_TRANSLATE_NOOP("QDialogButtonBox", "Cancel"),
+        // QLineEdit context menu
+        QT_TRANSLATE_NOOP("QLineEdit", "&Undo"),
+        QT_TRANSLATE_NOOP("QLineEdit", "&Redo"),
+        QT_TRANSLATE_NOOP("QLineEdit", "Cu&t"),
+        QT_TRANSLATE_NOOP("QLineEdit", "&Copy"),
+        QT_TRANSLATE_NOOP("QLineEdit", "&Paste"),
+        QT_TRANSLATE_NOOP("QLineEdit", "Delete"),
+        QT_TRANSLATE_NOOP("QLineEdit", "Select All"),
     };
     Q_UNUSED(qtStringsToTranslate);
 }

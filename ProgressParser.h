@@ -22,6 +22,7 @@ private:
     int m_percentage;
     bool m_gotFileName;
     QByteArray m_lineBuffer;
+    bool m_firstPercentageReported;
 
     void processBufferedLines();
     void processLine(QString line);
