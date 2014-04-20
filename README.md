@@ -1,18 +1,36 @@
-# YLE Areena downloader GUI #
+# YLE Areena Downloader GUI #
 
 http://mpartel.github.com/yle-downloader-gui/
 
 This is a GUI for [yle-dl](http://aajanki.github.com/yle-dl/index.html), a modified rtmpdump program by Antti Ajanki for downloading clips from [YLE Areena](http://areena.yle.fi/).
 
-The GUI is written in C++/[Qt](http://qt.nokia.com/) using [QtCreator](http://qt.nokia.com/products/developer-tools/) and currently requires rtmpdump-yle to be installed.
+The GUI is written in C++/[Qt](http://qt.nokia.com/) using [QtCreator](http://qt.nokia.com/products/developer-tools/) and requires yle-dl to be installed.
 
 A precompiled Windows package including the downloader is available on the download page.
+
+Ubuntu packages are available at https://launchpad.net/~yle-dl/+archive/release.
 
 ## Compiling ##
 
 - `lrelease yle-downloader-gui.pro`
 - `qmake`
 - `make`
+
+### Running Tests ###
+
+- `cd test`
+- `qmake`
+- `make all check`
+
+## Installation in Linux ##
+
+In order to install the application in Linux you can run the following command. If it doesn't work, please check the installation paths of files in `yle-downloader-gui.pro` project file. The file paths have been tested on Kubuntu 13.10 and they should be more or less the same in other distributions, too.
+
+- `sudo make install`
+
+Uninstallation:
+
+- `sudo make uninstall`
 
 ## Packaging for Windows ##
 
@@ -34,9 +52,9 @@ A precompiled Windows package including the downloader is available on the downl
 - Make a zip package of the above.
 - Use [Inno Setup](http://www.jrsoftware.org/isinfo.php) to compile `installer/innosetup_installer.iss`. You may need to edit the paths at the beginning of the script to point to where you gathered the above files.
 
-## Known issues ##
+## Known Issues ##
 
-- On windows, trying to download a file that already exists, yle-dl crashes to an encoding error while printing a log message.
+- On Windows, trying to download a file that already exists, yle-dl crashes to an encoding error while printing a log message.
 
 ## Thanks ##
 
@@ -44,7 +62,7 @@ A precompiled Windows package including the downloader is available on the downl
 - [Jesse Jaara](https://github.com/Huulivoide) for a better icon and suggestions.
 - [Tomas Strand](https://github.com/straend) for YLE Passi support (back when it existed).
 
-## Version history ##
+## Version History ##
 
 - 2.2 (2013-02-21)
     * Updated yle-dl to 2.0.2.

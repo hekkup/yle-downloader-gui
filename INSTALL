@@ -1,0 +1,13 @@
+== Compilation ==
+
+In source root run the following commands:
+
+lrelease yle-downloader-gui.pro
+qmake
+make
+
+== Installation ==
+
+su -c make install
+or:
+sudo make install
