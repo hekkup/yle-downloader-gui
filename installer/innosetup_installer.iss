@@ -24,7 +24,7 @@ AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
-InfoBeforeFile={#DeploymentDir}\Tietoa ohjelmasta.txt
+InfoBeforeFile={#DeploymentDir}\Tietoa_ohjelmasta.txt
 OutputBaseFilename=setup-yle-downloader-gui-{#MyAppVersion}
 Compression=lzma
 SolidCompression=yes
@@ -44,7 +44,7 @@ Source: "{#DeploymentDir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubd
 
 [Icons]
 Name: "{group}\Käynnistä YLE Areena -lataaja"; Filename: "{app}\{#MyAppExeName}"
-Name: "{group}\Tietoa ohjelmasta.txt"; Filename: "{app}\Tietoa ohjelmasta.txt"
+Name: "{group}\Tietoa_ohjelmasta.txt"; Filename: "{app}\Tietoa_ohjelmasta.txt"
 Name: "{group}\{cm:ProgramOnTheWeb,{#MyAppName}}"; Filename: "{#MyAppURL}"
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
 Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
